@@ -1,0 +1,68 @@
+import type { Tip } from "../types/tip";
+
+export const tips: Tip[] = [
+  {
+    id: "two-minute-start",
+    category: "Focus",
+    effort: "2 min",
+    title: "Two-Minute Start",
+    text: "Lower the entry cost until starting feels almost too small to resist.",
+    action: "Work on your most important task for exactly two minutes.",
+  },
+  {
+    id: "phone-distance",
+    category: "Dopamine",
+    effort: "1 min",
+    title: "Move the Phone",
+    text: "Friction beats willpower. Make the distraction physically harder to reach.",
+    action: "Put your phone in another room before starting your next task.",
+  },
+  {
+    id: "next-visible-step",
+    category: "Planning",
+    effort: "3 min",
+    title: "Name the Next Visible Step",
+    text: "Vague tasks create resistance. Concrete next actions give your brain a target.",
+    action: "Write one sentence that starts with: The next visible step is...",
+  },
+  {
+    id: "messy-first-pass",
+    category: "Creativity",
+    effort: "10 min",
+    title: "Messy First Pass",
+    text: "Perfectionism often disguises procrastination. Give yourself permission to draft badly.",
+    action: "Create a rough version for ten minutes without editing it.",
+  },
+  {
+    id: "single-tab-sprint",
+    category: "Coding",
+    effort: "15 min",
+    title: "Single-Tab Sprint",
+    text: "Context switching drains momentum. One task and one tab is enough for a short sprint.",
+    action: "Close unrelated tabs and code one small improvement for fifteen minutes.",
+  },
+  {
+    id: "study-recall",
+    category: "Studying",
+    effort: "5 min",
+    title: "Recall Before Review",
+    text: "Active recall turns passive reading into useful memory work.",
+    action: "Before rereading, write down everything you remember about the topic.",
+  },
+  {
+    id: "reset-desk",
+    category: "Environment",
+    effort: "4 min",
+    title: "Reset the Surface",
+    text: "A cleaner workspace reduces the number of decisions competing for attention.",
+    action: "Clear your desk until only the current task remains visible.",
+  },
+  {
+    id: "commitment-line",
+    category: "Discipline",
+    effort: "1 min",
+    title: "Commitment Line",
+    text: "A tiny written promise can make action feel more real than an intention in your head.",
+    action: "Write: I will work on this until the next natural stopping point.",
+  },
+];
