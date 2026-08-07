@@ -1,11 +1,18 @@
-import type { Tip } from "../types/tip";
+import type { LocalizedTip } from "../types/tip";
 
 type TipCardProps = {
-  tip: Tip;
+  actionLabel: string;
+  buttonLabel: string;
+  tip: LocalizedTip;
   onGenerateTip: () => void;
 };
 
-export function TipCard({ tip, onGenerateTip }: TipCardProps) {
+export function TipCard({
+  actionLabel,
+  buttonLabel,
+  tip,
+  onGenerateTip,
+}: TipCardProps) {
   return (
     <article className="tip-card">
       <div className="tip-card-header">
@@ -17,12 +24,12 @@ export function TipCard({ tip, onGenerateTip }: TipCardProps) {
       <p>{tip.text}</p>
 
       <div className="quest-box">
-        <p className="panel-label">Do this now</p>
+        <p className="panel-label">{actionLabel}</p>
         <p>{tip.action}</p>
       </div>
 
       <button className="primary-button" onClick={onGenerateTip} type="button">
-        Generate a New Quest
+        {buttonLabel}
       </button>
     </article>
   );

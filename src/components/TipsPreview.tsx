@@ -1,15 +1,17 @@
-import type { Tip } from "../types/tip";
+import type { LocalizedTip } from "../types/tip";
 
 type TipsPreviewProps = {
-  tips: Tip[];
+  eyebrow: string;
+  title: string;
+  tips: LocalizedTip[];
 };
 
-export function TipsPreview({ tips }: TipsPreviewProps) {
+export function TipsPreview({ eyebrow, title, tips }: TipsPreviewProps) {
   return (
     <section className="tips-preview" aria-labelledby="tips-preview-title">
       <div className="section-heading">
-        <p className="eyebrow">Content base</p>
-        <h2 id="tips-preview-title">Browse starter tips</h2>
+        <p className="eyebrow">{eyebrow}</p>
+        <h2 id="tips-preview-title">{title}</h2>
       </div>
 
       <div className="tips-grid">

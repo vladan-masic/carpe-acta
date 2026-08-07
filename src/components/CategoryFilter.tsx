@@ -1,27 +1,36 @@
+import type { CategoryId } from "../types/tip";
+
+export type CategoryFilterValue = "all" | CategoryId;
+
+type CategoryOption = {
+  id: CategoryFilterValue;
+  label: string;
+};
+
 type CategoryFilterProps = {
-  categories: string[];
-  selectedCategory: string;
-  onSelectCategory: (category: string) => void;
+  ariaLabel: string;
+  categories: CategoryOption[];
+  selectedCategory: CategoryFilterValue;
+  onSelectCategory: (category: CategoryFilterValue) => void;
 };
 
 export function CategoryFilter({
+  ariaLabel,
   categories,
   selectedCategory,
   onSelectCategory,
 }: CategoryFilterProps) {
-  const options = ["All", ...categories];
-
   return (
-    <div className="category-filter" aria-label="Tip categories">
-      {options.map((category) => (
+    <div className="category-filter" aria-label={ariaLabel}>
+      {categories.map((category) => (
         <button
           className="category-button"
-          data-active={selectedCategory === category}
-          key={category}
-          onClick={() => onSelectCategory(category)}
+          data-active={selectedCategory === category.id}
+          key={category.id}
+          onClick={() => onSelectCategory(category.id)}
           type="button"
         >
-          {category}
+          {category.label}
         </button>
       ))}
     </div>
