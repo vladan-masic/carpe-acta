@@ -1,4 +1,5 @@
-import { localeOptions, type Locale } from "../i18n/locales";
+import type { ChangeEvent } from "react";
+import { isLocale, localeOptions, type Locale } from "../i18n/locales";
 
 type LanguageSelectorProps = {
   ariaLabel: string;
@@ -11,21 +12,29 @@ export function LanguageSelector({
   locale,
   onSelectLocale,
 }: LanguageSelectorProps) {
+  function handleChange(event: ChangeEvent<HTMLSelectElement>) {
+    const nextLocale = event.target.value;
+
+    if (isLocale(nextLocale)) {
+      onSelectLocale(nextLocale);
+    }
+  }
+
   return (
-    <div className="language-selector" aria-label={ariaLabel} role="group">
-      {localeOptions.map((option) => (
-        <button
-          aria-pressed={locale === option.id}
-          className="language-button"
-          data-active={locale === option.id}
-          key={option.id}
-          lang={option.id}
-          onClick={() => onSelectLocale(option.id)}
-          type="button"
-        >
-          {option.name}
-        </button>
-      ))}
-    </div>
+    <label className="language-selector">
+      <span className="visually-hidden">{ariaLabel}</span>
+      <select
+        aria-label={ariaLabel}
+        className="language-select"
+        onChange={handleChange}
+        value={locale}
+      >
+        {localeOptions.map((option) => (
+          <option key={option.id} lang={option.id} value={option.id}>
+            {option.name}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }
