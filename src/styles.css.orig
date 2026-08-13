@@ -180,7 +180,7 @@ button {
   opacity: 1;
 }
 
-@keyframes language-menu-in {
+ language-menu-in {
   from {
     opacity: 0;
     transform: translateY(-4px) scale(0.98);
