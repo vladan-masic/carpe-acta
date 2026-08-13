@@ -23,6 +23,11 @@ type Messages = {
     eyebrow: string;
     title: string;
   };
+  footer: {
+    motto: string;
+    createdBy: string;
+    backToTop: string;
+  };
   categories: Record<CategoryId, string>;
   tips: Record<TipId, TipTranslation>;
   formatEffort: (minutes: number) => string;
@@ -51,6 +56,11 @@ const en = {
   preview: {
     eyebrow: "Content base",
     title: "Browse starter tips",
+  },
+  footer: {
+    motto: "Small actions. Real momentum.",
+    createdBy: "Created by",
+    backToTop: "Back to top",
   },
   categories: {
     focus: "Focus",
@@ -130,6 +140,11 @@ const srLatn = {
   preview: {
     eyebrow: "Baza sadržaja",
     title: "Pregledaj početne savete",
+  },
+  footer: {
+    motto: "Mali koraci. Pravi zamah.",
+    createdBy: "Kreirao",
+    backToTop: "Nazad na vrh",
   },
   categories: {
     focus: "Fokus",

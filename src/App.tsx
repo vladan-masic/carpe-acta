@@ -3,6 +3,7 @@ import {
   CategoryFilter,
   type CategoryFilterValue,
 } from "./components/CategoryFilter";
+import { AppFooter } from "./components/AppFooter";
 import { DailyQuest } from "./components/DailyQuest";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { TipCard } from "./components/TipCard";
@@ -94,54 +95,62 @@ export function App() {
   }
 
   return (
-    <main className="app-shell">
-      <div className="app-toolbar">
-        <LanguageSelector
-          ariaLabel={copy.languageSelectorLabel}
-          locale={locale}
-          onSelectLocale={setLocale}
-        />
-      </div>
-
-      <section className="hero-section">
-        <div className="hero-copy">
-          <p className="eyebrow">{copy.hero.eyebrow}</p>
-          <h1>Carpe Acta</h1>
-          <p className="hero-lede">{copy.hero.lede}</p>
+    <>
+      <main className="app-shell" id="page-top">
+        <div className="app-toolbar">
+          <LanguageSelector
+            ariaLabel={copy.languageSelectorLabel}
+            locale={locale}
+            onSelectLocale={setLocale}
+          />
         </div>
 
-        <DailyQuest
-          label={copy.dailyQuestLabel}
-          quest={localizedDailyQuest}
+        <section className="hero-section">
+          <div className="hero-copy">
+            <p className="eyebrow">{copy.hero.eyebrow}</p>
+            <h1>Carpe Acta</h1>
+            <p className="hero-lede">{copy.hero.lede}</p>
+          </div>
+
+          <DailyQuest
+            label={copy.dailyQuestLabel}
+            quest={localizedDailyQuest}
+          />
+        </section>
+
+        <section className="generator-section" aria-labelledby="tip-generator">
+          <div className="section-heading">
+            <p className="eyebrow">{copy.generator.eyebrow}</p>
+            <h2 id="tip-generator">{copy.generator.title}</h2>
+          </div>
+
+          <CategoryFilter
+            ariaLabel={copy.generator.categoriesLabel}
+            categories={categoryOptions}
+            selectedCategory={selectedCategory}
+            onSelectCategory={handleCategoryChange}
+          />
+
+          <TipCard
+            actionLabel={copy.generator.actionLabel}
+            buttonLabel={copy.generator.generateButton}
+            tip={localizedActiveTip}
+            onGenerateTip={handleGenerateTip}
+          />
+        </section>
+
+        <TipsPreview
+          eyebrow={copy.preview.eyebrow}
+          title={copy.preview.title}
+          tips={localizedTips}
         />
-      </section>
+      </main>
 
-      <section className="generator-section" aria-labelledby="tip-generator">
-        <div className="section-heading">
-          <p className="eyebrow">{copy.generator.eyebrow}</p>
-          <h2 id="tip-generator">{copy.generator.title}</h2>
-        </div>
-
-        <CategoryFilter
-          ariaLabel={copy.generator.categoriesLabel}
-          categories={categoryOptions}
-          selectedCategory={selectedCategory}
-          onSelectCategory={handleCategoryChange}
-        />
-
-        <TipCard
-          actionLabel={copy.generator.actionLabel}
-          buttonLabel={copy.generator.generateButton}
-          tip={localizedActiveTip}
-          onGenerateTip={handleGenerateTip}
-        />
-      </section>
-
-      <TipsPreview
-        eyebrow={copy.preview.eyebrow}
-        title={copy.preview.title}
-        tips={localizedTips}
+      <AppFooter
+        backToTopLabel={copy.footer.backToTop}
+        createdByLabel={copy.footer.createdBy}
+        motto={copy.footer.motto}
       />
-    </main>
+    </>
   );
 }
