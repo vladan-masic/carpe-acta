@@ -4,6 +4,7 @@ import {
   type CategoryFilterValue,
 } from "./components/CategoryFilter";
 import { AppFooter } from "./components/AppFooter";
+import { BrandEmblem } from "./components/BrandEmblem";
 import { DailyQuest } from "./components/DailyQuest";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { TipCard } from "./components/TipCard";
@@ -108,7 +109,12 @@ export function App() {
         <section className="hero-section">
           <div className="hero-copy">
             <p className="eyebrow">{copy.hero.eyebrow}</p>
-            <h1>Carpe Acta</h1>
+            <div className="hero-brand">
+              <BrandEmblem variant="hero" />
+              <h1>
+                Carpe <br />Acta
+              </h1>
+            </div>
             <p className="hero-lede">{copy.hero.lede}</p>
           </div>
 

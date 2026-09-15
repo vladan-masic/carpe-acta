@@ -1,3 +1,5 @@
+import { BrandEmblem } from "./BrandEmblem";
+
 type AppFooterProps = {
   backToTopLabel: string;
   createdByLabel: string;
@@ -16,7 +18,10 @@ export function AppFooter({
       <div className="footer-inner">
         <div className="footer-primary">
           <div>
-            <p className="footer-brand">Carpe Acta</p>
+            <div className="footer-brand-row">
+              <BrandEmblem variant="footer" />
+              <p className="footer-brand">Carpe Acta</p>
+            </div>
             <p className="footer-motto">{motto}</p>
           </div>
 
