@@ -6,7 +6,10 @@ export type CategoryId =
   | "coding"
   | "studying"
   | "environment"
-  | "discipline";
+  | "discipline"
+  | "starting"
+  | "overwhelm"
+  | "perfectionism";
 
 export type TipMetadata = {
   id: string;

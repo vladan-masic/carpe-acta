@@ -70,6 +70,9 @@ const en = {
     studying: "Studying",
     environment: "Environment",
     discipline: "Discipline",
+    starting: "Starting",
+    overwhelm: "Overwhelm",
+    perfectionism: "Perfectionism",
   },
   formatEffort: (minutes) => `${minutes} min`,
 } satisfies Messages;
@@ -112,6 +115,9 @@ const srLatn = {
     studying: "Učenje",
     environment: "Okruženje",
     discipline: "Disciplina",
+    starting: "Započinjanje",
+    overwhelm: "Preopterećenost",
+    perfectionism: "Perfekcionizam",
   },
   formatEffort: (minutes) => `${minutes} min`,
 } satisfies Messages;
