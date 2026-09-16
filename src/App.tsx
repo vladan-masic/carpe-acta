@@ -10,25 +10,10 @@ import { LanguageSelector } from "./components/LanguageSelector";
 import { TipCard } from "./components/TipCard";
 import { TipsPreview } from "./components/TipsPreview";
 import { tips } from "./data/tips";
-import {
-  getInitialLocale,
-  persistLocale,
-  type Locale,
-} from "./i18n/locales";
+import { getInitialLocale, persistLocale } from "./i18n/locales";
 import { messages } from "./i18n/messages";
-import type { LocalizedTip, Tip } from "./types/tip";
+import { localizeTip } from "./i18n/localizeTip";
 import { getDailyQuest, getRandomTip } from "./utils/tips";
-
-function localizeTip(tip: Tip, locale: Locale): LocalizedTip {
-  const copy = messages[locale];
-
-  return {
-    ...tip,
-    ...copy.tips[tip.id],
-    category: copy.categories[tip.categoryId],
-    effort: copy.formatEffort(tip.effortMinutes),
-  };
-}
 
 export function App() {
   const dailyQuest = useMemo(() => getDailyQuest(tips), []);

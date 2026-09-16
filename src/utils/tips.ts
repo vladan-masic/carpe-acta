@@ -1,6 +1,6 @@
 import type { Tip } from "../types/tip";
 
-export function getRandomTip(tips: Tip[], excludedTipId?: string): Tip {
+export function getRandomTip(tips: readonly Tip[], excludedTipId?: string): Tip {
   if (tips.length === 0) {
     throw new Error("Cannot choose a random tip from an empty list.");
   }
@@ -13,7 +13,7 @@ export function getRandomTip(tips: Tip[], excludedTipId?: string): Tip {
   return availableTips[Math.floor(Math.random() * availableTips.length)];
 }
 
-export function getDailyQuest(tips: Tip[], date = new Date()): Tip {
+export function getDailyQuest(tips: readonly Tip[], date = new Date()): Tip {
   if (tips.length === 0) {
     throw new Error("Cannot choose a daily quest from an empty list.");
   }

@@ -1,33 +1,19 @@
-export type CategoryId =
-  | "focus"
-  | "dopamine"
-  | "planning"
-  | "creativity"
-  | "coding"
-  | "studying"
-  | "environment"
-  | "discipline";
+import type { tips } from "../data/tips";
+import type { TipMetadata } from "./tipMetadata";
 
-export type TipId =
-  | "two-minute-start"
-  | "phone-distance"
-  | "next-visible-step"
-  | "messy-first-pass"
-  | "single-tab-sprint"
-  | "study-recall"
-  | "reset-desk"
-  | "commitment-line";
+export type { CategoryId, TipMetadata } from "./tipMetadata";
 
-export type Tip = {
+export type TipId = (typeof tips)[number]["id"];
+
+export type Tip = TipMetadata & {
   id: TipId;
-  categoryId: CategoryId;
-  effortMinutes: number;
 };
 
 export type TipTranslation = {
   title: string;
   text: string;
   action: string;
+  whyItWorks?: string;
 };
 
 export type LocalizedTip = Tip &
