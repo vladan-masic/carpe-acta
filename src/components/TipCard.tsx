@@ -5,6 +5,15 @@ type TipCardProps = {
   buttonLabel: string;
   tip: LocalizedTip;
   onGenerateTip: () => void;
+  completionCopy: {
+    button: string;
+    completed: string;
+    confirmation: string;
+    unsaved: string;
+    next: string;
+  };
+  completionStatus: "saved" | "unsaved" | null;
+  onComplete: () => void;
 };
 
 export function TipCard({
@@ -12,6 +21,9 @@ export function TipCard({
   buttonLabel,
   tip,
   onGenerateTip,
+  completionCopy,
+  completionStatus,
+  onComplete,
 }: TipCardProps) {
   return (
     <article className="tip-card">
@@ -28,9 +40,27 @@ export function TipCard({
         <p>{tip.action}</p>
       </div>
 
-      <button className="primary-button" onClick={onGenerateTip} type="button">
-        {buttonLabel}
-      </button>
+      <div className="tip-actions">
+        <button
+          className="primary-button"
+          onClick={onComplete}
+          disabled={completionStatus !== null}
+          type="button"
+        >
+          {completionStatus ? completionCopy.completed : completionCopy.button}
+        </button>
+        <button className="secondary-button" onClick={onGenerateTip} type="button">
+          {completionStatus ? completionCopy.next : buttonLabel}
+        </button>
+      </div>
+      <div className="completion-status" role="status" aria-atomic="true">
+        {completionStatus && (
+          <p>
+            {completionCopy.confirmation}
+            {completionStatus === "unsaved" && ` ${completionCopy.unsaved}`}
+          </p>
+        )}
+      </div>
     </article>
   );
 }

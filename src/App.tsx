@@ -14,6 +14,7 @@ import { getInitialLocale, persistLocale } from "./i18n/locales";
 import { messages } from "./i18n/messages";
 import { localizeTip } from "./i18n/localizeTip";
 import { getDailyQuest, getRandomTip } from "./utils/tips";
+import { useTipCompletion } from "./hooks/useTipCompletion";
 
 export function App() {
   const dailyQuest = useMemo(() => getDailyQuest(tips), []);
@@ -26,6 +27,7 @@ export function App() {
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryFilterValue>("all");
   const [activeTip, setActiveTip] = useState(() => getRandomTip(tips));
+  const completion = useTipCompletion();
 
   const copy = messages[locale];
   const localizedTips = useMemo(
@@ -69,6 +71,7 @@ export function App() {
 
   function handleGenerateTip() {
     setActiveTip((currentTip) => getRandomTip(filteredTips, currentTip.id));
+    completion.reset();
   }
 
   function handleCategoryChange(category: CategoryFilterValue) {
@@ -78,6 +81,7 @@ export function App() {
         ? tips
         : tips.filter((tip) => tip.categoryId === category);
     setActiveTip(getRandomTip(nextTips));
+    completion.reset();
   }
 
   return (
@@ -127,6 +131,9 @@ export function App() {
             buttonLabel={copy.generator.generateButton}
             tip={localizedActiveTip}
             onGenerateTip={handleGenerateTip}
+            completionCopy={copy.completion}
+            completionStatus={completion.status}
+            onComplete={() => completion.complete(activeTip.id)}
           />
         </section>
 

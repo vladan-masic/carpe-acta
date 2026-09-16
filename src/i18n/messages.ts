@@ -23,6 +23,13 @@ type Messages = {
     eyebrow: string;
     title: string;
   };
+  completion: {
+    button: string;
+    completed: string;
+    confirmation: string;
+    unsaved: string;
+    next: string;
+  };
   footer: {
     motto: string;
     createdBy: string;
@@ -33,6 +40,13 @@ type Messages = {
 };
 
 const en = {
+  completion: {
+    button: "I did it ✓",
+    completed: "Completed ✓",
+    confirmation: "One small action done. That’s progress.",
+    unsaved: "Your browser couldn’t save this completion. It will only be remembered for this visit.",
+    next: "Try another action",
+  },
   metadata: {
     description:
       "Carpe Acta helps you beat procrastination with practical tips and small daily quests.",
@@ -78,6 +92,13 @@ const en = {
 } satisfies Messages;
 
 const srLatn = {
+  completion: {
+    button: "Urađeno ✓",
+    completed: "Završeno ✓",
+    confirmation: "Jedna mala akcija je završena. To je napredak.",
+    unsaved: "Pregledač nije mogao da sačuva ovu završenu akciju. Biće zapamćena samo tokom ove posete.",
+    next: "Probaj drugu akciju",
+  },
   metadata: {
     description:
       "Carpe Acta pomaže u borbi protiv odlaganja praktičnim savetima i malim dnevnim misijama.",

@@ -406,6 +406,50 @@ h1 {
   gap: 16px;
 }
 
+.tip-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tip-actions button {
+  max-width: 100%;
+}
+
+.secondary-button {
+  min-height: 48px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  padding: 12px 18px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.secondary-button:hover {
+  background: #fff4df;
+}
+
+.tip-actions button:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
+}
+
+.primary-button:disabled {
+  background: var(--surface-strong);
+  cursor: default;
+}
+
+.completion-status {
+  min-height: 1.5em;
+}
+
+.completion-status p {
+  margin: 0;
+  color: var(--text);
+}
+
 .preview-card {
   min-height: 220px;
   padding: 22px;
