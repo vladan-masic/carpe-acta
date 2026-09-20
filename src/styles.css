@@ -211,10 +211,78 @@ button {
 }
 
 .hero-copy {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 48px 0;
+}
+
+/* Decorative artwork stays behind content and never captures input. */
+.hero-copy::before,
+.generator-section::before,
+.tips-preview::before,
+.tips-preview::after,
+.site-footer::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: cover;
+  mix-blend-mode: multiply;
+  mask-image: radial-gradient(ellipse at center, #000 35%, transparent 72%);
+}
+
+.hero-copy::before {
+  inset: -32px -16px -40px;
+  background-image: url("./assets/backgrounds/small-steps.webp");
+  background-position: right center;
+  opacity: 0.55;
+}
+
+.generator-section {
+  position: relative;
+  isolation: isolate;
+}
+
+.tips-preview {
+  position: relative;
+  isolation: isolate;
+  padding-bottom: 72px;
+}
+
+.tips-preview::before,
+.tips-preview::after {
+  left: -12px;
+  right: -12px;
+  height: 320px;
+  background-image: url("./assets/backgrounds/gradual-growth.webp");
+  background-position: center bottom;
+  background-size: 100% auto;
+  opacity: 0.5;
+}
+
+.tips-preview::before {
+  top: -48px;
+  height: 180px;
+  background-size: auto 260px;
+  background-position: right bottom;
+}
+
+.tips-preview::after {
+  bottom: -40px;
+}
+
+.generator-section::before {
+  top: -110px;
+  right: 0;
+  width: min(640px, 100%);
+  height: 360px;
+  background-image: url("./assets/backgrounds/imperfect-start.webp");
+  background-position: right bottom;
+  opacity: 0.48;
 }
 
 .eyebrow,
@@ -467,9 +535,20 @@ h1 {
 }
 
 .site-footer {
+  position: relative;
+  isolation: isolate;
   border-top: 4px solid var(--accent);
   background: var(--surface-strong);
   color: var(--surface);
+}
+
+.site-footer::before {
+  inset: 0;
+  background-image: url("./assets/backgrounds/onward-path.webp");
+  background-position: right 58%;
+  background-size: min(100%, 1100px) auto;
+  mix-blend-mode: normal;
+  opacity: 0.45;
 }
 
 .footer-inner {
@@ -613,6 +692,40 @@ h1 {
     padding: 24px 0 0;
   }
 
+  .hero-copy::before {
+    inset: -16px 0 -24px;
+    opacity: 0.38;
+  }
+
+  .generator-section::before {
+    top: -48px;
+    height: 280px;
+    opacity: 0.28;
+  }
+
+  .tips-preview {
+    padding-bottom: 48px;
+  }
+
+  .tips-preview::before,
+  .tips-preview::after {
+    left: 0;
+    right: 0;
+    height: 220px;
+    background-size: auto 260px;
+    opacity: 0.32;
+  }
+
+  .tips-preview::before {
+    top: -48px;
+    height: 180px;
+  }
+
+  .site-footer::before {
+    background-size: auto 100%;
+    opacity: 0.3;
+  }
+
   .hero-brand {
     gap: 12px;
   }
@@ -652,5 +765,15 @@ h1 {
   .footer-meta {
     gap: 8px;
     margin-top: 28px;
+  }
+}
+
+@media print, (forced-colors: active) {
+  .hero-copy::before,
+  .generator-section::before,
+  .tips-preview::before,
+  .tips-preview::after,
+  .site-footer::before {
+    display: none;
   }
 }
