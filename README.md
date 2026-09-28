@@ -44,6 +44,10 @@ src/
 
 ## Adding a bilingual tip
 
+The library now contains 165 bilingual tips. See
+[the CA-041–CA-160 expansion notes](docs/tip-library-expansion.md) for the
+12 new batches, editorial ID mapping, category choices, and references.
+
 1. Add metadata to `src/data/tips.ts`: a unique, stable `id`, an existing
    `categoryId`, positive `effortMinutes`, and `tags` (use `[]` until tags are
    curated). Effort estimates the immediate action, not the whole project.

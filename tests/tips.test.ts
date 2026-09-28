@@ -18,7 +18,24 @@ describe("tip library integrity", () => {
     }
   });
 
+  it("uses unique, normalized tags within each tip", () => {
+    for (const tip of tips) {
+      expect(new Set(tip.tags).size).toBe(tip.tags.length);
+      for (const tag of tip.tags) {
+        expect(tag).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+      }
+    }
+  });
+
   for (const { id: locale } of localeOptions) {
+    it(`has no identical titles or actions in ${locale}`, () => {
+      for (const field of ["title", "action"] as const) {
+        const values = tips.map((tip) =>
+          tipTranslations[locale][tip.id][field].trim().toLowerCase(),
+        );
+        expect(new Set(values).size).toBe(values.length);
+      }
+    });
     it(`has complete, nonempty content and valid categories in ${locale}`, () => {
       const translations = tipTranslations[locale];
       expect(Object.keys(translations).sort()).toEqual(tips.map((tip) => tip.id).sort());
@@ -64,6 +81,17 @@ describe("random selection", () => {
       random.mockReturnValue((index + 0.5) / tips.length);
       expect(getRandomTip(tips)).toBe(tip);
     });
+  });
+
+  it("can reach every tip through its category filter", () => {
+    const random = vi.spyOn(Math, "random");
+    for (const category of new Set(tips.map((tip) => tip.categoryId))) {
+      const pool = tips.filter((tip) => tip.categoryId === category);
+      pool.forEach((tip, index) => {
+        random.mockReturnValue((index + 0.5) / pool.length);
+        expect(getRandomTip(pool)).toBe(tip);
+      });
+    }
   });
 
   it("excludes the current tip while keeping every alternative reachable", () => {

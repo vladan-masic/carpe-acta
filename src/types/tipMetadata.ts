@@ -9,7 +9,17 @@ export type CategoryId =
   | "discipline"
   | "starting"
   | "overwhelm"
-  | "perfectionism";
+  | "perfectionism"
+  | "low-motivation"
+  | "low-energy"
+  | "fear-anxiety"
+  | "overthinking"
+  | "habits"
+  | "deadlines"
+  | "work"
+  | "exercise"
+  | "life-admin"
+  | "digital-distraction";
 
 export type TipMetadata = {
   id: string;
