@@ -78,3 +78,18 @@ array of `{ id, tipId, completedAt }` records, with unique completion IDs and IS
 timestamps. There is no history screen or account sync yet. Blocked storage,
 invalid stored data, or a failed write leaves existing data untouched and shows
 that the completion could not be saved. The current card still acknowledges it.
+
+## Favorites
+
+Use the star on a daily quest, random tip, or starter preview to save or unsave it.
+The Favorites link jumps to a collection ordered by most recently saved first.
+Each saved card shows the advice and immediate action; “Use this tip” opens it in
+the main card, selects its category, and starts a fresh completion attempt.
+Saving or removing a favorite does not change completion history.
+
+Favorites persist in this browser as an array of stable tip IDs under
+`carpe-acta-favorites-v1`. They follow the selected language, survive reloads,
+and synchronize across tabs through storage events. Unknown IDs are retained in
+storage but omitted from the visible collection. Invalid or inaccessible storage
+is not overwritten: favorites remain usable for this visit with an unsaved notice.
+There is no account synchronization; clearing browser data removes local favorites.

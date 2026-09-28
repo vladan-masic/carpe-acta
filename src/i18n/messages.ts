@@ -30,6 +30,16 @@ type Messages = {
     unsaved: string;
     next: string;
   };
+  favorites: {
+    title: string;
+    save: string;
+    saved: string;
+    toggle: string;
+    description: string;
+    empty: string;
+    open: string;
+    unsaved: string;
+  };
   footer: {
     motto: string;
     createdBy: string;
@@ -40,6 +50,16 @@ type Messages = {
 };
 
 const en = {
+  favorites: {
+    title: "Favorites",
+    save: "Save tip",
+    saved: "Saved",
+    toggle: "Favorite",
+    description: "Your useful tips, newest saves first. Saved in this browser.",
+    empty: "No favorites yet. Use the star on any tip to keep it here for later.",
+    open: "Use this tip",
+    unsaved: "Your browser couldn’t save your favorites. Changes will only last for this visit.",
+  },
   completion: {
     button: "I did it ✓",
     completed: "Completed ✓",
@@ -102,6 +122,16 @@ const en = {
 } satisfies Messages;
 
 const srLatn = {
+  favorites: {
+    title: "Omiljeni saveti",
+    save: "Sačuvaj savet",
+    saved: "Sačuvano",
+    toggle: "Omiljeni savet",
+    description: "Korisni saveti, od najskorije sačuvanih. Čuvaju se u ovom pregledaču.",
+    empty: "Još nema omiljenih saveta. Označi zvezdicu na savetu da ga sačuvaš ovde za kasnije.",
+    open: "Primeni ovaj savet",
+    unsaved: "Pregledač nije mogao da sačuva omiljene savete. Promene će važiti samo tokom ove posete.",
+  },
   completion: {
     button: "Urađeno ✓",
     completed: "Završeno ✓",

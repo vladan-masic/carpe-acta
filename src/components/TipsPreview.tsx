@@ -1,12 +1,14 @@
 import type { LocalizedTip } from "../types/tip";
+import type { ReactNode } from "react";
 
 type TipsPreviewProps = {
   eyebrow: string;
   title: string;
   tips: LocalizedTip[];
+  renderFavoriteButton: (tip: LocalizedTip) => ReactNode;
 };
 
-export function TipsPreview({ eyebrow, title, tips }: TipsPreviewProps) {
+export function TipsPreview({ eyebrow, title, tips, renderFavoriteButton }: TipsPreviewProps) {
   return (
     <section className="tips-preview" aria-labelledby="tips-preview-title">
       <div className="section-heading">
@@ -20,6 +22,7 @@ export function TipsPreview({ eyebrow, title, tips }: TipsPreviewProps) {
             <span>{tip.category}</span>
             <h3>{tip.title}</h3>
             <p>{tip.text}</p>
+            {renderFavoriteButton(tip)}
           </article>
         ))}
       </div>

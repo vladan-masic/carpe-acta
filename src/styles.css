@@ -43,6 +43,9 @@ button {
 
 .app-toolbar {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
   justify-content: flex-end;
   margin-bottom: 16px;
 }
@@ -376,7 +379,8 @@ h1 {
 }
 
 .generator-section,
-.tips-preview {
+.tips-preview,
+.favorites-section {
   margin-top: 72px;
 }
 
@@ -423,6 +427,97 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  align-items: center;
+}
+
+.tip-card-header .favorite-button {
+  margin-left: auto;
+}
+
+.favorite-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--muted);
+  background: var(--surface);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.favorite-button svg {
+  flex-shrink: 0;
+}
+
+.favorite-button[aria-pressed="true"] {
+  color: var(--accent-dark);
+  border-color: var(--accent-dark);
+  background: #fff4df;
+}
+
+.favorite-button:hover {
+  border-color: var(--accent-dark);
+}
+
+.favorite-button:focus-visible,
+.favorites-link:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
+}
+
+.favorites-link {
+  padding: 10px 12px;
+  color: var(--accent-dark);
+  font-weight: 700;
+  text-underline-offset: 4px;
+}
+
+.daily-quest > .favorite-button,
+.preview-card > .favorite-button {
+  margin-top: 16px;
+}
+
+#favorites-title,
+#active-tip-title {
+  scroll-margin-top: 24px;
+}
+
+.favorites-empty {
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 24px;
+  color: var(--muted);
+  background: var(--surface);
+}
+
+.favorite-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.favorite-card > span {
+  max-width: 100%;
+}
+
+.favorite-card-action {
+  margin: 20px 0;
+  padding-left: 12px;
+  border-left: 3px solid var(--accent);
+}
+
+.favorite-card-action strong {
+  color: var(--accent-dark);
+}
+
+.favorite-card .tip-actions {
+  margin-top: auto;
 }
 
 .tip-card h3 {

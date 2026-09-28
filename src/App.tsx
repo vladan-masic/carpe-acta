@@ -15,6 +15,10 @@ import { messages } from "./i18n/messages";
 import { localizeTip } from "./i18n/localizeTip";
 import { getDailyQuest, getRandomTip } from "./utils/tips";
 import { useTipCompletion } from "./hooks/useTipCompletion";
+import { useFavorites } from "./hooks/useFavorites";
+import { FavoriteButton } from "./components/FavoriteButton";
+import { FavoriteTips } from "./components/FavoriteTips";
+import type { LocalizedTip } from "./types/tip";
 
 export function App() {
   const dailyQuest = useMemo(() => getDailyQuest(tips), []);
@@ -28,12 +32,20 @@ export function App() {
     useState<CategoryFilterValue>("all");
   const [activeTip, setActiveTip] = useState(() => getRandomTip(tips));
   const completion = useTipCompletion();
+  const favorites = useFavorites();
 
   const copy = messages[locale];
   const localizedTips = useMemo(
     () => tips.map((tip) => localizeTip(tip, locale)),
     [locale],
   );
+  const favoriteTips = useMemo(() => {
+    const byId = new Map<string, LocalizedTip>(localizedTips.map((tip) => [tip.id, tip]));
+    return favorites.ids.flatMap((id) => {
+      const tip = byId.get(id);
+      return tip ? [tip] : [];
+    });
+  }, [favorites.ids, localizedTips]);
   const localizedDailyQuest = useMemo(
     () => localizeTip(dailyQuest, locale),
     [dailyQuest, locale],
@@ -84,10 +96,40 @@ export function App() {
     completion.reset();
   }
 
+  function handleOpenFavorite(tip: LocalizedTip) {
+    const original = tips.find((entry) => entry.id === tip.id);
+    if (!original) return;
+    setActiveTip(original);
+    setSelectedCategory(original.categoryId);
+    completion.reset();
+    requestAnimationFrame(() => {
+      const heading = document.getElementById("active-tip-title");
+      heading?.focus({ preventScroll: true });
+      heading?.scrollIntoView({
+        block: "start",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+      });
+    });
+  }
+
+  function renderFavoriteButton(tip: LocalizedTip) {
+    return (
+      <FavoriteButton
+        selected={favorites.ids.includes(tip.id)}
+        title={tip.title}
+        labels={copy.favorites}
+        onToggle={() => favorites.toggle(tip.id)}
+      />
+    );
+  }
+
   return (
     <>
       <main className="app-shell" id="page-top">
         <div className="app-toolbar">
+          <a className="favorites-link" href="#favorites-title">
+            {copy.favorites.title} ({favoriteTips.length})
+          </a>
           <LanguageSelector
             ariaLabel={copy.languageSelectorLabel}
             locale={locale}
@@ -110,6 +152,7 @@ export function App() {
           <DailyQuest
             label={copy.dailyQuestLabel}
             quest={localizedDailyQuest}
+            favoriteButton={renderFavoriteButton(localizedDailyQuest)}
           />
         </section>
 
@@ -134,13 +177,30 @@ export function App() {
             completionCopy={copy.completion}
             completionStatus={completion.status}
             onComplete={() => completion.complete(activeTip.id)}
+            favoriteButton={renderFavoriteButton(localizedActiveTip)}
           />
+          <div className="favorites-storage-status" role="status" aria-atomic="true">
+            {!favorites.persisted && <p>{copy.favorites.unsaved}</p>}
+          </div>
         </section>
+
+        <FavoriteTips
+          title={copy.favorites.title}
+          description={favorites.persisted ? copy.favorites.description : copy.favorites.unsaved}
+          emptyMessage={copy.favorites.empty}
+          openLabel={copy.favorites.open}
+          actionLabel={copy.generator.actionLabel}
+          labels={copy.favorites}
+          tips={favoriteTips}
+          onToggle={favorites.toggle}
+          onOpen={handleOpenFavorite}
+        />
 
         <TipsPreview
           eyebrow={copy.preview.eyebrow}
           title={copy.preview.title}
           tips={localizedTips}
+          renderFavoriteButton={renderFavoriteButton}
         />
       </main>
 

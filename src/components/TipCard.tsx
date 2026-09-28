@@ -1,4 +1,5 @@
 import type { LocalizedTip } from "../types/tip";
+import type { ReactNode } from "react";
 
 type TipCardProps = {
   actionLabel: string;
@@ -14,6 +15,7 @@ type TipCardProps = {
   };
   completionStatus: "saved" | "unsaved" | null;
   onComplete: () => void;
+  favoriteButton: ReactNode;
 };
 
 export function TipCard({
@@ -24,15 +26,17 @@ export function TipCard({
   completionCopy,
   completionStatus,
   onComplete,
+  favoriteButton,
 }: TipCardProps) {
   return (
     <article className="tip-card">
       <div className="tip-card-header">
         <span>{tip.category}</span>
         <span>{tip.effort}</span>
+        {favoriteButton}
       </div>
 
-      <h3>{tip.title}</h3>
+      <h3 id="active-tip-title" tabIndex={-1}>{tip.title}</h3>
       <p>{tip.text}</p>
 
       <div className="quest-box">
