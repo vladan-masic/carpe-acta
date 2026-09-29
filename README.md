@@ -93,3 +93,12 @@ and synchronize across tabs through storage events. Unknown IDs are retained in
 storage but omitted from the visible collection. Invalid or inaccessible storage
 is not overwritten: favorites remain usable for this visit with an unsaved notice.
 There is no account synchronization; clearing browser data removes local favorites.
+
+## Login
+
+Optional Supabase login supports email/password, email login links, and Google.
+Account creation, email confirmation, password reset, persistent sessions, and
+logout are supported in English and Serbian. The app remains usable as a guest.
+Favorites and completed actions remain browser-local; login does not sync them yet.
+See [authentication setup](docs/authentication.md) for public environment settings,
+Google and email-provider configuration, and the pre-release verification checklist.

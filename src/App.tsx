@@ -19,6 +19,7 @@ import { useFavorites } from "./hooks/useFavorites";
 import { FavoriteButton } from "./components/FavoriteButton";
 import { FavoriteTips } from "./components/FavoriteTips";
 import type { LocalizedTip } from "./types/tip";
+import { AuthPanel } from "./components/AuthPanel";
 
 export function App() {
   const dailyQuest = useMemo(() => getDailyQuest(tips), []);
@@ -127,6 +128,7 @@ export function App() {
     <>
       <main className="app-shell" id="page-top">
         <div className="app-toolbar">
+          <AuthPanel locale={locale} />
           <a className="favorites-link" href="#favorites-title">
             {copy.favorites.title} ({favoriteTips.length})
           </a>

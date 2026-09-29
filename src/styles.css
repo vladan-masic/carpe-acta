@@ -872,3 +872,36 @@ h1 {
     display: none;
   }
 }
+
+.auth-trigger { min-height: 44px; padding: 8px 16px; border-radius: 999px; }
+.auth-dialog {
+  width: min(460px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  overflow-y: auto;
+}
+.auth-dialog::backdrop { background: rgb(28 25 23 / 55%); }
+.auth-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.auth-heading h2 { margin: 0; font-size: 1.55rem; }
+.auth-close { flex: 0 0 44px; min-height: 44px; border: 0; border-radius: 8px; background: transparent; color: var(--text); font-size: 1.8rem; cursor: pointer; }
+.auth-dialog fieldset { display: grid; gap: 16px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.auth-dialog label { display: grid; gap: 6px; font-weight: 700; }
+.auth-dialog input { width: 100%; min-height: 46px; border: 1px solid var(--muted); border-radius: 8px; padding: 10px 12px; color: var(--text); background: white; font: inherit; }
+.auth-dialog button:focus-visible, .auth-dialog input:focus-visible, .auth-trigger:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.auth-dialog button:disabled, .auth-trigger:disabled { opacity: 0.65; cursor: wait; }
+.auth-dialog .primary-button, .auth-google { width: 100%; }
+.auth-note { color: var(--muted); font-size: 0.9rem; }
+.auth-dialog fieldset .auth-note { margin: -8px 0 0; }
+.auth-divider { text-align: center; color: var(--muted); font-size: 0.85rem; }
+.auth-links { display: grid; gap: 4px; margin-top: 16px; }
+.auth-links button { min-height: 44px; padding: 6px; border: 0; background: transparent; color: var(--accent-dark); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.auth-email { display: block; overflow-wrap: anywhere; }
+.auth-account-actions { display: grid; gap: 12px; }
+.auth-error, .auth-success { border-radius: 8px; padding: 12px; margin-bottom: 0; }
+.auth-error { color: #8b2715; background: #fceae3; }
+.auth-success { color: #21553f; background: #e7f2e9; }
