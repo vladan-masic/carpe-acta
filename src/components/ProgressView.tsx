@@ -1,3 +1,4 @@
+import { feedbackMessages } from "../i18n/feedback";
 import type { Locale } from "../i18n/locales";
 import { progressMessages } from "../i18n/progress";
 import type { LocalizedTip } from "../types/tip";
@@ -31,7 +32,7 @@ export function ProgressView({ progress, locale, tips, busy }: Props) {
         {progress.recent.map((record) => {
           const tip = byId.get(record.tipId);
           return <li key={record.id}>
-            <div><h4>{tip?.title ?? copy.unknown}</h4>{tip && <p>{tip.action}</p>}</div>
+            <div><h4>{tip?.title ?? copy.unknown}</h4>{tip && <p>{tip.action}</p>}{typeof record.feedback === "boolean" && <p className="progress-feedback">{record.feedback ? feedbackMessages[locale].yes : feedbackMessages[locale].no}</p>}</div>
             <time dateTime={record.completedAt}>{timeFormat.format(new Date(record.completedAt))}</time>
           </li>;
         })}

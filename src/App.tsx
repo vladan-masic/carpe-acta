@@ -1,3 +1,4 @@
+import { CompletionFeedback } from "./components/CompletionFeedback";
 import { HelpMeStart } from "./components/HelpMeStart";
 import { helpMeStartMessages } from "./i18n/helpMeStart";
 import { useTipSelection } from "./hooks/useTipSelection";
@@ -190,6 +191,11 @@ export function App() {
             onRetry={completion.retry}
             onComplete={() => completion.complete(activeTip.id)}
             favoriteButton={renderFavoriteButton(localizedActiveTip)}
+            feedback={completion.completedRecord && <CompletionFeedback
+              key={`${auth.session?.user.id ?? "guest"}:${completion.completedRecord.id}`}
+              record={completion.completedRecord} owner={auth.session?.user.id ?? null}
+              client={auth.client} locale={locale} onSaved={completion.refresh} disabled={completion.busy}
+            />}
           />}
           <div className="favorites-storage-status" role="status" aria-atomic="true">
             {favorites.busy ? <p>{favoritesCopy.busy}</p> : favorites.error ? <p>{favoritesCopy.error}</p> : !favorites.persisted && <p>{copy.favorites.unsaved}</p>}

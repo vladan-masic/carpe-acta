@@ -112,6 +112,7 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
     }
   }
   return {
+    completedRecord: attempt.owner === owner && status === "saved" ? record.current : null,
     status, complete, busy, signedIn: !!owner,
     progress: owner ? (state.owner === owner ? state.progress : null) : guest.readable ? summarizeProgress(guest.records) : null,
     count: owner ? (state.owner === owner ? state.count : null) : guest.readable ? guest.records.length : null,
@@ -120,7 +121,7 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
     canImport: !!owner && guest.readable && guest.records.length > 0,
     imported: !!owner && state.owner === owner && state.imported,
     importGuest: () => { if (!busy) run.current({ kind: "import" }); },
-    refresh: () => { if (!busy) run.current({ kind: "refresh" }); },
+    refresh: () => { if (!owner) setGuest(loadCompletions()); else if (!busy) run.current({ kind: "refresh" }); },
     retry: () => {
       if (!busy && status === "error" && record.current) {
         setAttempt({ owner, status: "saving" });

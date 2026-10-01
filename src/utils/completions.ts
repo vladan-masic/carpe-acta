@@ -2,6 +2,7 @@ export type TipCompletion = {
   id: string;
   tipId: string;
   completedAt: string;
+  feedback?: boolean;
 };
 
 export const completionStorageKey = "carpe-acta-completions-v1";
@@ -13,7 +14,8 @@ function isCompletion(value: unknown): value is TipCompletion {
     typeof record.id === "string" && record.id.length > 0 &&
     typeof record.tipId === "string" && record.tipId.length > 0 &&
     typeof record.completedAt === "string" &&
-    Number.isFinite(Date.parse(record.completedAt))
+    Number.isFinite(Date.parse(record.completedAt)) &&
+    (record.feedback === undefined || typeof record.feedback === "boolean")
   );
 }
 
@@ -40,4 +42,17 @@ export function saveCompletion(completion: TipCompletion): boolean {
   } catch {
     return false;
   }
+}
+
+export function saveCompletionFeedback(id: string, helpful: boolean): boolean {
+  try {
+    const raw = window.localStorage.getItem(completionStorageKey);
+    const records: unknown = raw === null ? [] : JSON.parse(raw);
+    if (!Array.isArray(records) || !records.every(isCompletion)) return false;
+    if (!records.some((record) => record.id === id)) return false;
+    window.localStorage.setItem(completionStorageKey, JSON.stringify(
+      records.map((record) => record.id === id ? { ...record, feedback: helpful } : record),
+    ));
+    return true;
+  } catch { return false; }
 }

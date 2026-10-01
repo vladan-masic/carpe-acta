@@ -112,3 +112,10 @@ Choose **Help me start** in the generator, select what is getting in the way,
 and try one relevant action estimated at five minutes or less. Further suggestions
 stay within that choice. Favorites, completion tracking and progress work as usual.
 See [guided-start behavior and mappings](docs/help-me-start.md).
+
+## Action feedback
+
+After saving a completion, optionally select **Helped me start** or **Not helpful
+this time**. Feedback appears in recent history; it does not change suggestions.
+Apply the [feedback migration and access checks](docs/completion-feedback.md)
+before deploying this version.

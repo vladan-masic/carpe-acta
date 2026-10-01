@@ -22,6 +22,7 @@ type TipCardProps = {
   onRetry: () => void;
   onComplete: () => void;
   favoriteButton: ReactNode;
+  feedback?: ReactNode;
 };
 
 export function TipCard({
@@ -33,7 +34,7 @@ export function TipCard({
   completionStatus,
   completionBusy, savingLabel, failedLabel, retryLabel, onRetry,
   onComplete,
-  favoriteButton,
+  favoriteButton, feedback,
 }: TipCardProps) {
   return (
     <article className="tip-card">
@@ -73,6 +74,7 @@ export function TipCard({
           </p>
         )}
       </div>
+      {feedback}
     </article>
   );
 }
