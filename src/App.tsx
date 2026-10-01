@@ -1,3 +1,4 @@
+import { ProgressView } from "./components/ProgressView";
 import { useEffect, useMemo, useState } from "react";
 import {
   CategoryFilter,
@@ -215,6 +216,7 @@ export function App() {
               <button type="button" className="secondary-button" disabled={completion.busy} onClick={completion.importGuest}>{completionCopy.import}</button>
             </div>}
           </div>}
+          <ProgressView progress={completion.progress} locale={locale} tips={localizedTips} busy={completion.busy} />
         </section>
 
         <FavoriteTips

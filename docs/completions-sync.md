@@ -36,8 +36,8 @@ failures still acknowledge the action with the existing unsaved notice.
 
 Imports use batches of 200 records. A partially completed import may be retried
 safely. Malformed/inaccessible local history is left untouched and reported.
-Browser history remains available after logout. There is no history timeline,
-streak calculation, or intervention ranking in this change.
+Browser history remains available after logout. The progress view below adds recent history; streak calculations and intervention
+ranking remain outside this feature.
 
 ## Validation
 
@@ -63,3 +63,22 @@ Duplicate handling follows [Supabase upsert semantics](https://supabase.com/docs
   API and database idempotency tests.
 - Frontend changes have not been deployed. After deployment, verify the flow on a
   separate device and optionally import your guest history through the new button.
+
+## Simple progress view
+
+The completed-actions section now shows seven local calendar days (today and the
+previous six), the week's completion total, days with activity, and the ten most
+recent completions with localized tip titles, actions and timestamps. Unknown tip
+IDs retain their history with a translated fallback title. Repeated actions count
+as separate events; duplicate event IDs count once. Future timestamps are excluded
+from the progress view; the existing all-time database total remains unchanged.
+
+Account progress uses the existing owner-only table policies. Recent records are
+limited separately, and weekly records are paginated in batches of 500 so busy
+weeks are not silently truncated. Guests use their readable browser history.
+Progress refreshes with completion saves/imports, focus, manual refresh and local
+midnight. Dates reflect the current device timezone, so traveling may regroup past
+activity. A failed refresh preserves the last snapshot with the existing error
+notice; an initial failure is not presented as an empty history.
+
+No new migration, environment variables or chart dependency is required.

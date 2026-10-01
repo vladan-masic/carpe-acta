@@ -30,3 +30,27 @@ it("stops a partial import on error so it can be safely retried", async () => {
   await expect(uploadCompletions(client, "alice", records)).rejects.toBe(error);
   expect(query.upsert).toHaveBeenCalledTimes(2);
 });
+
+it("reads the latest ten separately and paginates all weekly records with owner/date filters", async () => {
+  const { fetchProgress } = await import("../src/completions/api");
+  const now = new Date(2026, 9, 1, 12);
+  const row = (id: number) => ({ id: String(id), tip_id: "tip", completed_at: now.toISOString() });
+  const queries: any[] = [];
+  const from = vi.fn(() => {
+    const q: any = {};
+    for (const key of ["select", "eq", "gte", "lte", "order"]) q[key] = vi.fn(() => q);
+    q.limit = vi.fn().mockResolvedValue({ data: [row(999)], error: null });
+    q.range = vi.fn((offset) => Promise.resolve({ data: offset === 0 ? Array.from({ length: 500 }, (_, id) => row(id)) : [row(500)], error: null }));
+    queries.push(q); return q;
+  });
+  const result = await fetchProgress({ from } as unknown as SupabaseClient, "alice", now);
+  expect(result.days[6].count).toBe(501);
+  expect(result.recent[0].id).toBe("999");
+  expect(queries[0].limit).toHaveBeenCalledWith(10);
+  expect(queries[1].range).toHaveBeenCalledWith(0, 499);
+  expect(queries[2].range).toHaveBeenCalledWith(500, 999);
+  for (const query of queries) {
+    expect(query.eq).toHaveBeenCalledWith("user_id", "alice");
+    expect(query.lte).toHaveBeenCalledWith("completed_at", now.toISOString());
+  }
+});

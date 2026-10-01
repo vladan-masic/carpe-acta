@@ -1,3 +1,5 @@
+import { progressDays, recentCompletionLimit, summarizeProgress } from "../utils/progress";
+import type { ProgressData } from "../utils/progress";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { TipCompletion } from "../utils/completions";
 
@@ -20,4 +22,31 @@ export async function uploadCompletions(client: SupabaseClient, userId: string, 
     );
     if (error) throw error;
   }
+}
+
+export async function fetchProgress(client: SupabaseClient, userId: string, now = new Date()): Promise<ProgressData> {
+  const start = progressDays(now)[0].date;
+  const until = now.toISOString();
+  const recentRequest = client.from("tip_completions").select("id,tip_id,completed_at")
+    .eq("user_id", userId).lte("completed_at", until)
+    .order("completed_at", { ascending: false }).order("id").limit(recentCompletionLimit);
+  async function weekRecords() {
+    const records: TipCompletion[] = [];
+    // Never silently truncate a busy week at Supabase's default row limit.
+    for (let offset = 0; ; offset += 500) {
+      const { data, error } = await client.from("tip_completions").select("id,tip_id,completed_at")
+        .eq("user_id", userId).gte("completed_at", start).lte("completed_at", until)
+        .order("completed_at", { ascending: false }).order("id").range(offset, offset + 499);
+      if (error) throw error;
+      const rows = data ?? [];
+      records.push(...rows.map(toCompletion));
+      if (rows.length < 500) return records;
+    }
+  }
+  const [recent, week] = await Promise.all([recentRequest, weekRecords()]);
+  if (recent.error) throw recent.error;
+  return { ...summarizeProgress(week, now), recent: (recent.data ?? []).map(toCompletion) };
+}
+function toCompletion(row: { id: string; tip_id: string; completed_at: string }): TipCompletion {
+  return { id: row.id, tipId: row.tip_id, completedAt: row.completed_at };
 }

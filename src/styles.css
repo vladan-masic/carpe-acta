@@ -915,3 +915,21 @@ h1 {
 }
 .favorites-sync-controls p { margin-top: 0; }
 .favorite-button:disabled { opacity: 0.55; cursor: wait; }
+
+.progress-view { margin-top: 1.75rem; }
+.progress-caption { max-width: 65ch; }
+.progress-totals { display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; }
+.progress-totals dd { margin: 0.35rem 0 0; font-size: 1.75rem; font-weight: 700; }
+.progress-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0.6rem; padding: 0; list-style: none; }
+.progress-day { display: flex; flex-direction: column; justify-content: space-between; gap: 0.6rem; padding: 0.8rem 0.5rem; border: 1px solid #d8cbbd; border-radius: 0.7rem; text-align: center; }
+.progress-day.active { background: #f3e3d6; border-color: #ad674f; }
+.progress-day time { font-size: 0.85rem; }
+.progress-day strong { font-size: 1.25rem; }
+.progress-recent { list-style: none; padding: 0; }
+.progress-recent li { display: flex; justify-content: space-between; gap: 1.5rem; padding: 1rem 0; border-bottom: 1px solid #d8cbbd; }
+.progress-recent h4, .progress-recent p { margin: 0 0 0.4rem; }
+.progress-recent time { flex-shrink: 0; font-size: 0.85rem; }
+@media (max-width: 600px) {
+  .progress-days { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .progress-recent li { flex-direction: column; gap: 0.3rem; }
+}
