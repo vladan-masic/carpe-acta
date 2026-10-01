@@ -905,3 +905,13 @@ h1 {
 .auth-error, .auth-success { border-radius: 8px; padding: 12px; margin-bottom: 0; }
 .auth-error { color: #8b2715; background: #fceae3; }
 .auth-success { color: #21553f; background: #e7f2e9; }
+
+.favorites-sync-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.favorites-sync-controls p { margin-top: 0; }
+.favorite-button:disabled { opacity: 0.55; cursor: wait; }

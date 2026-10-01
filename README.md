@@ -16,7 +16,7 @@ The first version focuses on a small, useful loop:
 - Vite
 - Plain CSS with design tokens
 
-This keeps the first version lightweight while leaving room for later features such as favorites, search, streaks, Pomodoro sessions, XP, achievements, and RPG progression.
+This keeps the first version lightweight while leaving room for later features such as search, streaks, Pomodoro sessions, XP, achievements, and RPG progression.
 
 ## Getting Started
 
@@ -63,7 +63,7 @@ both translation maps; there is no separate ID list to maintain. Base metadata
 types live in `src/types/tipMetadata.ts` so they do not depend on the catalog.
 Interface copy remains in `src/i18n/messages.ts`; `src/i18n/localizeTip.ts`
 combines it with tip translations for display. Completion records reference tip IDs
-instead of becoming fields on shared content; future favorites should do the same.
+instead of becoming fields on shared content; favorites use separate per-user storage too.
 
 ## Action completion
 
@@ -87,18 +87,21 @@ Each saved card shows the advice and immediate action; “Use this tip” opens 
 the main card, selects its category, and starts a fresh completion attempt.
 Saving or removing a favorite does not change completion history.
 
-Favorites persist in this browser as an array of stable tip IDs under
+Guest favorites persist in this browser as an array of stable tip IDs under
 `carpe-acta-favorites-v1`. They follow the selected language, survive reloads,
 and synchronize across tabs through storage events. Unknown IDs are retained in
 storage but omitted from the visible collection. Invalid or inaccessible storage
 is not overwritten: favorites remain usable for this visit with an unsaved notice.
-There is no account synchronization; clearing browser data removes local favorites.
+Signed-in favorites sync through Supabase. Browser favorites can be explicitly
+imported into an account; the browser copy remains intact. See
+[account favorites setup](docs/favorites-sync.md) for the required migration and
+sync behavior. Clearing browser data removes guest favorites.
 
 ## Login
 
 Optional Supabase login supports email/password, email login links, and Google.
 Account creation, email confirmation, password reset, persistent sessions, and
 logout are supported in English and Serbian. The app remains usable as a guest.
-Favorites and completed actions remain browser-local; login does not sync them yet.
+Favorites sync with the signed-in account; completed actions remain browser-local.
 See [authentication setup](docs/authentication.md) for public environment settings,
 Google and email-provider configuration, and the pre-release verification checklist.

@@ -19,6 +19,8 @@ import { useFavorites } from "./hooks/useFavorites";
 import { FavoriteButton } from "./components/FavoriteButton";
 import { FavoriteTips } from "./components/FavoriteTips";
 import type { LocalizedTip } from "./types/tip";
+import { useAuth } from "./hooks/useAuth";
+import { favoritesMessages } from "./i18n/favorites";
 import { AuthPanel } from "./components/AuthPanel";
 
 export function App() {
@@ -33,7 +35,9 @@ export function App() {
     useState<CategoryFilterValue>("all");
   const [activeTip, setActiveTip] = useState(() => getRandomTip(tips));
   const completion = useTipCompletion();
-  const favorites = useFavorites();
+  const auth = useAuth();
+  const favorites = useFavorites(auth);
+  const favoritesCopy = favoritesMessages[locale];
 
   const copy = messages[locale];
   const localizedTips = useMemo(
@@ -117,6 +121,7 @@ export function App() {
     return (
       <FavoriteButton
         selected={favorites.ids.includes(tip.id)}
+        disabled={favorites.disabled}
         title={tip.title}
         labels={copy.favorites}
         onToggle={() => favorites.toggle(tip.id)}
@@ -128,7 +133,7 @@ export function App() {
     <>
       <main className="app-shell" id="page-top">
         <div className="app-toolbar">
-          <AuthPanel locale={locale} />
+          <AuthPanel locale={locale} auth={auth} />
           <a className="favorites-link" href="#favorites-title">
             {copy.favorites.title} ({favoriteTips.length})
           </a>
@@ -182,13 +187,24 @@ export function App() {
             favoriteButton={renderFavoriteButton(localizedActiveTip)}
           />
           <div className="favorites-storage-status" role="status" aria-atomic="true">
-            {!favorites.persisted && <p>{copy.favorites.unsaved}</p>}
+            {favorites.busy ? <p>{favoritesCopy.busy}</p> : favorites.error ? <p>{favoritesCopy.error}</p> : !favorites.persisted && <p>{copy.favorites.unsaved}</p>}
           </div>
         </section>
 
         <FavoriteTips
           title={copy.favorites.title}
-          description={favorites.persisted ? copy.favorites.description : copy.favorites.unsaved}
+          description={favorites.signedIn ? favoritesCopy.account : favorites.persisted ? copy.favorites.description : copy.favorites.unsaved}
+          disabled={favorites.disabled}
+          loading={favorites.busy || favorites.error}
+          controls={favorites.signedIn && (
+            <div className="favorites-sync-controls">
+              <button type="button" className="secondary-button" disabled={favorites.busy} onClick={favorites.refresh}>{favoritesCopy.refresh}</button>
+              {favorites.canImport && <div>
+                <p>{favoritesCopy.importHint}</p>
+                <button type="button" className="secondary-button" disabled={favorites.disabled} onClick={favorites.importGuest}>{favoritesCopy.import}</button>
+              </div>}
+            </div>
+          )}
           emptyMessage={copy.favorites.empty}
           openLabel={copy.favorites.open}
           actionLabel={copy.generator.actionLabel}

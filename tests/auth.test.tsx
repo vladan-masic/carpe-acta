@@ -17,7 +17,12 @@ const mock = vi.hoisted(() => ({
 }));
 vi.mock("../src/auth/client", () => ({ getSupabaseClient: () => ({ auth: mock.auth }) }));
 import { useAuth } from "../src/hooks/useAuth";
-import { AuthPanel } from "../src/components/AuthPanel";
+import { AuthPanel as AuthPanelView } from "../src/components/AuthPanel";
+
+function AuthPanel({ locale }: { locale: "en" | "sr-Latn" }) {
+  const auth = useAuth();
+  return <AuthPanelView locale={locale} auth={auth} />;
+}
 
 const client = { auth: mock.auth } as unknown as SupabaseClient;
 const session = { user: { id: "test-user", email: "reader@example.com" } } as Session;

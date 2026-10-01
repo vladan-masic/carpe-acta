@@ -1,9 +1,12 @@
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import type { LocalizedTip, TipId } from "../types/tip";
 import { FavoriteButton, type FavoriteLabels } from "./FavoriteButton";
 
 type FavoriteTipsProps = {
   title: string;
+  disabled?: boolean;
+  loading?: boolean;
+  controls?: ReactNode;
   description: string;
   emptyMessage: string;
   openLabel: string;
@@ -14,7 +17,7 @@ type FavoriteTipsProps = {
   onOpen: (tip: LocalizedTip) => void;
 };
 
-export function FavoriteTips({ title, description, emptyMessage, openLabel, actionLabel, labels, tips, onToggle, onOpen }: FavoriteTipsProps) {
+export function FavoriteTips({ title, disabled, loading, controls, description, emptyMessage, openLabel, actionLabel, labels, tips, onToggle, onOpen }: FavoriteTipsProps) {
   const heading = useRef<HTMLHeadingElement>(null);
   return (
     <section className="favorites-section" id="favorites" aria-labelledby="favorites-title">
@@ -22,7 +25,8 @@ export function FavoriteTips({ title, description, emptyMessage, openLabel, acti
         <h2 id="favorites-title" ref={heading} tabIndex={-1}>{title} ({tips.length})</h2>
         <p>{description}</p>
       </div>
-      {tips.length === 0 ? <p className="favorites-empty">{emptyMessage}</p> : (
+      {controls}
+      {tips.length === 0 ? !loading && <p className="favorites-empty">{emptyMessage}</p> : (
         <div className="tips-grid">
           {tips.map((tip) => (
             <article className="preview-card favorite-card" key={tip.id}>
@@ -39,6 +43,7 @@ export function FavoriteTips({ title, description, emptyMessage, openLabel, acti
                 </button>
                 <FavoriteButton
                   selected
+                  disabled={disabled}
                   title={tip.title}
                   labels={labels}
                   onToggle={() => {

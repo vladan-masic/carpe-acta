@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { useAuth } from "../hooks/useAuth";
+import type { useAuth } from "../hooks/useAuth";
 import { authErrorKey } from "../auth/config";
 import { performAuthAction, type AuthAction, type AuthNotice } from "../auth/actions";
 import { authMessages, type AuthMessages } from "../i18n/auth";
@@ -7,8 +7,7 @@ import type { Locale } from "../i18n/locales";
 
 type FormMode = "login" | "signup" | "link" | "reset" | "password";
 
-export function AuthPanel({ locale }: { locale: Locale }) {
-  const auth = useAuth();
+export function AuthPanel({ locale, auth }: { locale: Locale; auth: ReturnType<typeof useAuth> }) {
   const copy = authMessages[locale];
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);

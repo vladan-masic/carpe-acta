@@ -6,12 +6,13 @@ export type FavoriteLabels = {
 
 type FavoriteButtonProps = {
   selected: boolean;
+  disabled?: boolean;
   title: string;
   labels: FavoriteLabels;
   onToggle: () => void;
 };
 
-export function FavoriteButton({ selected, title, labels, onToggle }: FavoriteButtonProps) {
+export function FavoriteButton({ selected, disabled, title, labels, onToggle }: FavoriteButtonProps) {
   return (
     <button
       className="favorite-button"
@@ -19,6 +20,7 @@ export function FavoriteButton({ selected, title, labels, onToggle }: FavoriteBu
       aria-pressed={selected}
       aria-label={`${labels.toggle}: ${title}`}
       onClick={onToggle}
+      disabled={disabled}
     >
       <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
         <path
