@@ -95,7 +95,7 @@ export function App() {
     completion.reset();
   }
 
-  function handleOpenFavorite(tip: LocalizedTip) {
+  function handleOpenTip(tip: LocalizedTip) {
     const original = tips.find((entry) => entry.id === tip.id);
     if (!original) return;
     selection.openTip(original);
@@ -219,7 +219,7 @@ export function App() {
               <button type="button" className="secondary-button" disabled={completion.busy} onClick={completion.importGuest}>{completionCopy.import}</button>
             </div>}
           </div>}
-          <ProgressView progress={completion.progress} locale={locale} tips={localizedTips} busy={completion.busy} />
+          <ProgressView progress={completion.progress} locale={locale} tips={localizedTips} busy={completion.busy} onTry={handleOpenTip} />
         </section>
 
         <FavoriteTips
@@ -242,7 +242,7 @@ export function App() {
           labels={copy.favorites}
           tips={favoriteTips}
           onToggle={favorites.toggle}
-          onOpen={handleOpenFavorite}
+          onOpen={handleOpenTip}
         />
 
         <TipsPreview

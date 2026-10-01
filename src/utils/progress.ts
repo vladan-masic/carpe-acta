@@ -1,9 +1,11 @@
+import { summarizeHelpfulTips, type HelpfulTip } from "./helpfulTips";
 import type { TipCompletion } from "./completions";
 
 export const recentCompletionLimit = 10;
 export type ProgressData = {
   days: { date: string; count: number }[];
   recent: TipCompletion[];
+  helpful: HelpfulTip[];
 };
 
 // Calendar arithmetic uses the device's local timezone, including DST changes.
@@ -25,5 +27,5 @@ export function summarizeProgress(records: TipCompletion[], now = new Date()): P
   }
   const recent = unique.sort((a, b) => Date.parse(b.completedAt) - Date.parse(a.completedAt) || a.id.localeCompare(b.id))
     .slice(0, recentCompletionLimit);
-  return { days, recent };
+  return { days, recent, helpful: summarizeHelpfulTips(unique, now) };
 }

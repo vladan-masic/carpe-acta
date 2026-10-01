@@ -1,11 +1,12 @@
+import { WhatHelpsMe } from "./WhatHelpsMe";
 import { feedbackMessages } from "../i18n/feedback";
 import type { Locale } from "../i18n/locales";
 import { progressMessages } from "../i18n/progress";
 import type { LocalizedTip } from "../types/tip";
 import type { ProgressData } from "../utils/progress";
 
-type Props = { progress: ProgressData | null; locale: Locale; tips: LocalizedTip[]; busy: boolean };
-export function ProgressView({ progress, locale, tips, busy }: Props) {
+type Props = { progress: ProgressData | null; locale: Locale; tips: LocalizedTip[]; busy: boolean; onTry?: (tip: LocalizedTip) => void };
+export function ProgressView({ progress, locale, tips, busy, onTry }: Props) {
   const copy = progressMessages[locale];
   if (!progress) return <p role="status">{busy ? copy.loading : copy.unavailable}</p>;
   const byId = new Map<string, LocalizedTip>(tips.map((tip) => [tip.id, tip]));
@@ -27,6 +28,7 @@ export function ProgressView({ progress, locale, tips, busy }: Props) {
           <strong>{day.count.toLocaleString(locale)}</strong>
         </li>)}
       </ol>
+      <WhatHelpsMe entries={progress.helpful} tips={tips} locale={locale} onTry={onTry} />
       <h3>{copy.recent}</h3>
       {progress.recent.length === 0 ? <p>{copy.empty}</p> : <ol className="progress-recent">
         {progress.recent.map((record) => {

@@ -1,3 +1,4 @@
+import { summarizeHelpfulTips } from "../utils/helpfulTips";
 import { importCompletionFeedback } from "./feedback";
 import { progressDays, recentCompletionLimit, summarizeProgress } from "../utils/progress";
 import type { ProgressData } from "../utils/progress";
@@ -45,11 +46,25 @@ export async function fetchProgress(client: SupabaseClient, userId: string, now 
       if (rows.length < 500) return records;
     }
   }
-  const [recent, week] = await Promise.all([recentRequest, weekRecords()]);
+  const [recent, week, rated] = await Promise.all([recentRequest, weekRecords(), fetchRatedCompletions(client, userId, now)]);
   if (recent.error) throw recent.error;
-  return { ...summarizeProgress(week, now), recent: (recent.data ?? []).map(toCompletion) };
+  return { ...summarizeProgress(week, now), recent: (recent.data ?? []).map(toCompletion), helpful: summarizeHelpfulTips(rated, now) };
 }
 function toCompletion(row: { id: string; tip_id: string; completed_at: string; completion_feedback?: { helpful: boolean } | { helpful: boolean }[] | null }): TipCompletion {
   const feedback = Array.isArray(row.completion_feedback) ? row.completion_feedback[0] : row.completion_feedback;
   return { id: row.id, tipId: row.tip_id, completedAt: row.completed_at, ...(feedback ? { feedback: feedback.helpful } : {}) };
+}
+
+export async function fetchRatedCompletions(client: SupabaseClient, userId: string, now = new Date()): Promise<TipCompletion[]> {
+  const records: TipCompletion[] = [];
+  for (let offset = 0; ; offset += 500) {
+    const { data, error } = await client.from("tip_completions")
+      .select("id,tip_id,completed_at,completion_feedback!inner(helpful)")
+      .eq("user_id", userId).lte("completed_at", now.toISOString())
+      .order("completed_at", { ascending: false }).order("id").range(offset, offset + 499);
+    if (error) throw error;
+    const rows = data ?? [];
+    records.push(...rows.map(toCompletion));
+    if (rows.length < 500) return records;
+  }
 }

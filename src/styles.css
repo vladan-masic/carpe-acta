@@ -939,3 +939,8 @@ h1 {
 .help-start-choices { display: flex; flex-wrap: wrap; gap: 0.65rem; border: 0; padding: 0; margin: 1rem 0; }
 .help-start-choices legend { font-weight: 700; margin-bottom: 0.8rem; }
 .help-start-choices .category-button { white-space: normal; text-align: left; }
+
+.what-helps { margin-block: 2rem; }
+.what-helps-list { list-style: none; padding: 0; display: grid; gap: 1rem; }
+.what-helps-list li { padding: 1rem; border: 1px solid #d8cbbd; border-radius: 0.7rem; }
+.what-helps-list h4 { margin-top: 0; }

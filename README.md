@@ -119,3 +119,9 @@ After saving a completion, optionally select **Helped me start** or **Not helpfu
 this time**. Feedback appears in recent history; it does not change suggestions.
 Apply the [feedback migration and access checks](docs/completion-feedback.md)
 before deploying this version.
+
+## What helps me
+
+The progress view shows tips marked as helpful, with feedback counts and a
+**Try again** button. It uses all saved feedback and leaves favorites and random
+suggestions unchanged. See [behavior and data rules](docs/what-helps-me.md).

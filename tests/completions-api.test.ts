@@ -48,9 +48,31 @@ it("reads the latest ten separately and paginates all weekly records with owner/
   expect(result.recent[0].id).toBe("999");
   expect(queries[0].limit).toHaveBeenCalledWith(10);
   expect(queries[1].range).toHaveBeenCalledWith(0, 499);
-  expect(queries[2].range).toHaveBeenCalledWith(500, 999);
+  expect(queries.filter((query) => query.gte.mock.calls.length)[1].range).toHaveBeenCalledWith(500, 999);
   for (const query of queries) {
     expect(query.eq).toHaveBeenCalledWith("user_id", "alice");
     expect(query.lte).toHaveBeenCalledWith("completed_at", now.toISOString());
   }
+});
+
+it("loads all rated history through an inner join and preserves negative feedback", async () => {
+  const { fetchRatedCompletions } = await import("../src/completions/api");
+  const q: any = {};
+  for (const key of ["select", "eq", "lte", "order"]) q[key] = vi.fn(() => q);
+  q.range = vi.fn().mockResolvedValueOnce({ data: Array.from({ length: 500 }, (_, id) => ({ id: String(id), tip_id: "old-tip", completed_at: "2020-01-01T00:00:00Z", completion_feedback: { helpful: true } })), error: null })
+    .mockResolvedValueOnce({ data: [{ id: "last", tip_id: "old-tip", completed_at: "2026-01-01T00:00:00Z", completion_feedback: [{ helpful: false }] }], error: null });
+  const records = await fetchRatedCompletions({ from: () => q } as unknown as SupabaseClient, "alice");
+  expect(records).toHaveLength(501);
+  expect(records[500].feedback).toBe(false);
+  expect(q.select).toHaveBeenCalledWith("id,tip_id,completed_at,completion_feedback!inner(helpful)");
+  expect(q.eq).toHaveBeenCalledWith("user_id", "alice");
+  expect(q.range.mock.calls).toEqual([[0, 499], [500, 999]]);
+});
+it("rejects a failed rated-history read rather than displaying false empty results", async () => {
+  const { fetchRatedCompletions } = await import("../src/completions/api");
+  const q: any = {};
+  for (const key of ["select", "eq", "lte", "order"]) q[key] = () => q;
+  const error = new Error("offline");
+  q.range = () => Promise.resolve({ error, data: null });
+  await expect(fetchRatedCompletions({ from: () => q } as unknown as SupabaseClient, "alice")).rejects.toBe(error);
 });
