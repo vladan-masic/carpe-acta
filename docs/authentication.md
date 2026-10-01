@@ -4,7 +4,8 @@ Carpe Acta supports email/password accounts, email login links, and Google throu
 Supabase Auth. Guests can continue using every existing tip feature. Signed-in
 favorites sync through Supabase; see [favorites setup](favorites-sync.md).
 Guest favorites and completion history remain browser-local and are not deleted
-on logout. Guest favorites are uploaded only through the explicit import action.
+on logout. Each can be imported explicitly after login. New signed-in completions
+use account storage; see [completion sync](completions-sync.md).
 
 ## Connect the project
 

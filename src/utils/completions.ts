@@ -17,6 +17,15 @@ function isCompletion(value: unknown): value is TipCompletion {
   );
 }
 
+export function loadCompletions(): { records: TipCompletion[]; readable: boolean } {
+  try {
+    const raw = window.localStorage.getItem(completionStorageKey);
+    const records: unknown = raw === null ? [] : JSON.parse(raw);
+    if (!Array.isArray(records) || !records.every(isCompletion)) throw new Error("Invalid history");
+    return { records: [...new Map(records.map((record) => [record.id, record])).values()], readable: true };
+  } catch { return { records: [], readable: false }; }
+}
+
 // Read at the time of each write so other visits' completions are retained.
 // Invalid or inaccessible storage is left untouched, never replaced with [].
 export function saveCompletion(completion: TipCompletion): boolean {

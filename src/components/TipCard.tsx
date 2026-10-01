@@ -1,4 +1,5 @@
 import type { LocalizedTip } from "../types/tip";
+import type { CompletionStatus } from "../hooks/useTipCompletion";
 import type { ReactNode } from "react";
 
 type TipCardProps = {
@@ -13,7 +14,12 @@ type TipCardProps = {
     unsaved: string;
     next: string;
   };
-  completionStatus: "saved" | "unsaved" | null;
+  completionStatus: CompletionStatus;
+  completionBusy: boolean;
+  savingLabel: string;
+  failedLabel: string;
+  retryLabel: string;
+  onRetry: () => void;
   onComplete: () => void;
   favoriteButton: ReactNode;
 };
@@ -25,6 +31,7 @@ export function TipCard({
   onGenerateTip,
   completionCopy,
   completionStatus,
+  completionBusy, savingLabel, failedLabel, retryLabel, onRetry,
   onComplete,
   favoriteButton,
 }: TipCardProps) {
@@ -48,17 +55,18 @@ export function TipCard({
         <button
           className="primary-button"
           onClick={onComplete}
-          disabled={completionStatus !== null}
+          disabled={completionBusy || completionStatus !== null}
           type="button"
         >
-          {completionStatus ? completionCopy.completed : completionCopy.button}
+          {completionStatus === "saving" ? savingLabel : completionStatus ? completionCopy.completed : completionCopy.button}
         </button>
         <button className="secondary-button" onClick={onGenerateTip} type="button">
           {completionStatus ? completionCopy.next : buttonLabel}
         </button>
+        {completionStatus === "error" && <button type="button" className="secondary-button" disabled={completionBusy} onClick={onRetry}>{retryLabel}</button>}
       </div>
       <div className="completion-status" role="status" aria-atomic="true">
-        {completionStatus && (
+        {completionStatus === "saving" ? <p>{savingLabel}</p> : completionStatus === "error" ? <p>{failedLabel}</p> : completionStatus && (
           <p>
             {completionCopy.confirmation}
             {completionStatus === "unsaved" && ` ${completionCopy.unsaved}`}

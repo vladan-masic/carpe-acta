@@ -73,7 +73,7 @@ once. Generating another tip or selecting a category starts a fresh attempt,
 even if a single-tip category returns the same tip. Switching language preserves
 the current completion state. Reloading starts a fresh attempt and retains history.
 
-History is stored only in this browser under `carpe-acta-completions-v1` as an
+Guest history is stored in this browser under `carpe-acta-completions-v1` as an
 array of `{ id, tipId, completedAt }` records, with unique completion IDs and ISO
 timestamps. There is no history screen or account sync yet. Blocked storage,
 invalid stored data, or a failed write leaves existing data untouched and shows
@@ -102,6 +102,6 @@ sync behavior. Clearing browser data removes guest favorites.
 Optional Supabase login supports email/password, email login links, and Google.
 Account creation, email confirmation, password reset, persistent sessions, and
 logout are supported in English and Serbian. The app remains usable as a guest.
-Favorites sync with the signed-in account; completed actions remain browser-local.
+Favorites and completed actions sync with the signed-in account. Guest data remains browser-local; import it explicitly after login. See [completion sync](docs/completions-sync.md) for setup, retry behavior, and verification.
 See [authentication setup](docs/authentication.md) for public environment settings,
 Google and email-provider configuration, and the pre-release verification checklist.

@@ -19,6 +19,7 @@ import { useFavorites } from "./hooks/useFavorites";
 import { FavoriteButton } from "./components/FavoriteButton";
 import { FavoriteTips } from "./components/FavoriteTips";
 import type { LocalizedTip } from "./types/tip";
+import { completionMessages } from "./i18n/completions";
 import { useAuth } from "./hooks/useAuth";
 import { favoritesMessages } from "./i18n/favorites";
 import { AuthPanel } from "./components/AuthPanel";
@@ -34,8 +35,9 @@ export function App() {
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryFilterValue>("all");
   const [activeTip, setActiveTip] = useState(() => getRandomTip(tips));
-  const completion = useTipCompletion();
   const auth = useAuth();
+  const completion = useTipCompletion(auth);
+  const completionCopy = completionMessages[locale];
   const favorites = useFavorites(auth);
   const favoritesCopy = favoritesMessages[locale];
 
@@ -183,12 +185,36 @@ export function App() {
             onGenerateTip={handleGenerateTip}
             completionCopy={copy.completion}
             completionStatus={completion.status}
+            completionBusy={completion.busy}
+            savingLabel={completionCopy.saving}
+            failedLabel={completionCopy.failed}
+            retryLabel={completionCopy.retry}
+            onRetry={completion.retry}
             onComplete={() => completion.complete(activeTip.id)}
             favoriteButton={renderFavoriteButton(localizedActiveTip)}
           />
           <div className="favorites-storage-status" role="status" aria-atomic="true">
             {favorites.busy ? <p>{favoritesCopy.busy}</p> : favorites.error ? <p>{favoritesCopy.error}</p> : !favorites.persisted && <p>{copy.favorites.unsaved}</p>}
           </div>
+        </section>
+
+        <section className="favorites-section" aria-labelledby="completed-actions-title">
+          <div className="section-heading">
+            <h2 id="completed-actions-title">{completionCopy.title}{completion.count !== null ? ` (${completion.count})` : ""}</h2>
+            <p>{completion.signedIn ? completionCopy.account : completionCopy.guest}</p>
+          </div>
+          <div role="status" aria-atomic="true">
+            {completion.error && <p>{completionCopy.unavailable}</p>}
+            {completion.guestUnreadable && <p>{completionCopy.unreadable}</p>}
+            {completion.imported && <p>{completionCopy.imported}</p>}
+          </div>
+          {completion.signedIn && <div className="favorites-sync-controls">
+            <button type="button" className="secondary-button" disabled={completion.busy} onClick={completion.refresh}>{completionCopy.refresh}</button>
+            {completion.canImport && <div>
+              <p>{completionCopy.importHint}</p>
+              <button type="button" className="secondary-button" disabled={completion.busy} onClick={completion.importGuest}>{completionCopy.import}</button>
+            </div>}
+          </div>}
         </section>
 
         <FavoriteTips

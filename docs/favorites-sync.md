@@ -35,8 +35,8 @@ public Supabase URL/key. Never put a service-role key in the frontend.
   controls are disabled. If a request fails, the last snapshot remains visible
   with an error and further edits require a successful refresh. Offline account
   writes are not queued.
-- Guest storage and completion history remain separate. Completed actions are
-  still browser-local.
+- Guest storage and completion history remain separate. Signed-in completed actions now use separate account storage; see
+  [completion sync](completions-sync.md).
 
 ## Verification
 
