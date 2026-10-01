@@ -26,8 +26,8 @@ increment. Future account data must use per-user row-level security policies.
   confirmation enabled. Set the password minimum to at least 8 characters;
   the service enforces any additional strength requirements.
 - Under Authentication → URL Configuration, set Site URL to the production
-  origin (currently `https://carpe-acta.netlify.app`). Allow the exact callback
-  URLs `https://carpe-acta.netlify.app/` and `http://localhost:5173/`.
+  origin `https://carpe-acta.vercel.app/`. Allow the exact callback
+  URLs `https://carpe-acta.vercel.app/` and `http://localhost:5173/`.
   If using `127.0.0.1` or a different port, add that exact URL too.
 - The app sends the current origin and pathname as the redirect URL, without
   query parameters or fragments. Serve it at `/` and use this exact allowed URL.
