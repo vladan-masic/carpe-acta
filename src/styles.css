@@ -944,3 +944,6 @@ h1 {
 .what-helps-list { list-style: none; padding: 0; display: grid; gap: 1rem; }
 .what-helps-list li { padding: 1rem; border: 1px solid #d8cbbd; border-radius: 0.7rem; }
 .what-helps-list h4 { margin-top: 0; }
+
+.tip-actions .secondary-button:disabled { opacity: 0.55; cursor: default; }
+.help-start-minimum { color: var(--muted); font-size: 0.9rem; }

@@ -23,6 +23,7 @@ type TipCardProps = {
   onComplete: () => void;
   favoriteButton: ReactNode;
   feedback?: ReactNode;
+  extraActions?: ReactNode;
 };
 
 export function TipCard({
@@ -34,7 +35,7 @@ export function TipCard({
   completionStatus,
   completionBusy, savingLabel, failedLabel, retryLabel, onRetry,
   onComplete,
-  favoriteButton, feedback,
+  favoriteButton, feedback, extraActions,
 }: TipCardProps) {
   return (
     <article className="tip-card">
@@ -64,6 +65,7 @@ export function TipCard({
         <button className="secondary-button" onClick={onGenerateTip} type="button">
           {completionStatus ? completionCopy.next : buttonLabel}
         </button>
+        {extraActions}
         {completionStatus === "error" && <button type="button" className="secondary-button" disabled={completionBusy} onClick={onRetry}>{retryLabel}</button>}
       </div>
       <div className="completion-status" role="status" aria-atomic="true">

@@ -167,7 +167,9 @@ export function App() {
             completion.reset();
           }}>{selection.helping ? startCopy.back : startCopy.title}</button>
 
-          {selection.helping ? <HelpMeStart locale={locale} selected={selection.barrier} onSelect={(barrier) => {
+          {selection.helping ? <HelpMeStart locale={locale} selected={selection.barrier}
+            timeBudget={selection.timeBudget} hasSuggestion={selection.hasSuggestion}
+            onTimeSelect={(budget) => { selection.selectTimeBudget(budget); completion.reset(); }} onSelect={(barrier) => {
             selection.selectBarrier(barrier);
             completion.reset();
           }} /> : <CategoryFilter
@@ -177,7 +179,7 @@ export function App() {
             onSelectCategory={handleCategoryChange}
           />}
 
-          {(!selection.helping || selection.barrier) && <TipCard
+          {selection.hasSuggestion && <TipCard
             actionLabel={copy.generator.actionLabel}
             buttonLabel={selection.helping ? startCopy.another : copy.generator.generateButton}
             tip={localizedActiveTip}
@@ -191,12 +193,17 @@ export function App() {
             onRetry={completion.retry}
             onComplete={() => completion.complete(activeTip.id)}
             favoriteButton={renderFavoriteButton(localizedActiveTip)}
+            extraActions={selection.helping && <button type="button" className="secondary-button"
+              disabled={!selection.canGoSmaller} onClick={() => { selection.smaller(); completion.reset(); }}>
+              {startCopy.smaller}
+            </button>}
             feedback={completion.completedRecord && <CompletionFeedback
               key={`${auth.session?.user.id ?? "guest"}:${completion.completedRecord.id}`}
               record={completion.completedRecord} owner={auth.session?.user.id ?? null}
               client={auth.client} locale={locale} onSaved={completion.refresh} disabled={completion.busy}
             />}
           />}
+          {selection.helping && selection.hasSuggestion && !selection.canGoSmaller && <p className="help-start-minimum">{startCopy.shortest}</p>}
           <div className="favorites-storage-status" role="status" aria-atomic="true">
             {favorites.busy ? <p>{favoritesCopy.busy}</p> : favorites.error ? <p>{favoritesCopy.error}</p> : !favorites.persisted && <p>{copy.favorites.unsaved}</p>}
           </div>

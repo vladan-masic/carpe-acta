@@ -19,6 +19,19 @@ The eight choices map to existing categories in `src/data/startBarriers.ts`:
 | Low motivation | Low Motivation |
 | Not sure | Starting |
 
+The optional time choice offers up to 1, 2, or 5 minutes. “No preference” (the
+initial selection) keeps the existing five-minute ceiling. Time can be chosen
+before or after a blocker. If no existing tip fits, the card is hidden and a
+localized message invites a different time or blocker; longer tips are never
+silently substituted.
+
+“Something smaller” chooses a strictly shorter estimated action within the same
+blocker and budget. Further suggestions stay below that previous action's effort.
+At the shortest available action, this button is disabled with explanatory text;
+“Try another suggestion” still offers alternatives when available. Changing the
+blocker or time clears this additional shorter-action limit. These are estimates
+from the catalog, not a timer or a guarantee of how long an action will take.
+
 Only tips with an estimated effort of five minutes or less are eligible. This is
 transparent category matching, not diagnosis or learned personalization. No new
 categories or tips were added, and existing IDs and catalog order are unchanged.
@@ -27,7 +40,8 @@ editing the catalog or mappings.
 
 Back to random tips restores the previously selected category with a fresh tip.
 Opening a favorite leaves guided mode and uses that tip's category. Switching
-languages preserves the selected blocker and active tip. All copy is English and
+languages preserves the selected blocker, time budget, and active tip. Leaving or
+re-entering guided mode resets its time budget and shorter-action limit. All copy is English and
 Serbian Latin. Selection lives only in memory; it is not added to account history
 or stored in localStorage. Completed actions still record the ordinary tip ID.
 

@@ -15,7 +15,10 @@ export const startBarriers = {
 export type StartBarrier = keyof typeof startBarriers;
 export const startBarrierIds = Object.keys(startBarriers) as StartBarrier[];
 
-export function getStartingTips(catalog: readonly Tip[], barrier: StartBarrier): Tip[] {
+export const startTimeBudgets = [1, 2, 5] as const;
+export type StartTimeBudget = typeof startTimeBudgets[number];
+
+export function getStartingTips(catalog: readonly Tip[], barrier: StartBarrier, maxMinutes = 5): Tip[] {
   const categories: readonly CategoryId[] = startBarriers[barrier];
-  return catalog.filter((tip) => categories.includes(tip.categoryId) && tip.effortMinutes <= 5);
+  return catalog.filter((tip) => categories.includes(tip.categoryId) && tip.effortMinutes <= maxMinutes);
 }

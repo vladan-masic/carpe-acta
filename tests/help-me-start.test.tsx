@@ -6,7 +6,7 @@ import { getStartingTips, startBarrierIds, startBarriers } from "../src/data/sta
 import { useTipSelection } from "../src/hooks/useTipSelection";
 import { HelpMeStart } from "../src/components/HelpMeStart";
 import { helpMeStartMessages } from "../src/i18n/helpMeStart";
-afterEach(cleanup);
+afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 it.each(startBarrierIds)("%s has several short relevant suggestions with stable catalog IDs", (barrier) => {
   const pool = getStartingTips(tips, barrier);
   expect(pool.length).toBeGreaterThan(1);
@@ -53,19 +53,83 @@ it("opening a favorite leaves the guided flow and uses that tip's category", () 
 it.each(["en", "sr-Latn"] as const)("renders accessible choices and selected feedback in %s", (locale) => {
   const onSelect = vi.fn();
   const copy = helpMeStartMessages[locale];
-  const { rerender } = render(<HelpMeStart locale={locale} selected={null} onSelect={onSelect} />);
+  const { rerender } = render(<HelpMeStart timeBudget={null} onTimeSelect={() => {}} hasSuggestion={true} locale={locale} selected={null} onSelect={onSelect} />);
   expect(screen.getByRole("group", { name: copy.question })).toBeTruthy();
   expect(screen.getByRole("status").textContent).toBe(copy.prompt);
   fireEvent.click(screen.getByRole("button", { name: copy.choices.energy }));
   expect(onSelect).toHaveBeenCalledWith("energy");
-  rerender(<HelpMeStart locale={locale} selected="energy" onSelect={onSelect} />);
+  rerender(<HelpMeStart timeBudget={null} onTimeSelect={() => {}} hasSuggestion={true} locale={locale} selected="energy" onSelect={onSelect} />);
   expect(screen.getByRole("button", { name: copy.choices.energy }).getAttribute("aria-pressed")).toBe("true");
   expect(screen.getByRole("status").textContent).toContain(copy.choices.energy);
 });
 it("language changes retain the selected blocker", () => {
   const onSelect = vi.fn();
-  const { rerender } = render(<HelpMeStart locale="en" selected="fear" onSelect={onSelect} />);
-  rerender(<HelpMeStart locale="sr-Latn" selected="fear" onSelect={onSelect} />);
+  const { rerender } = render(<HelpMeStart timeBudget={null} onTimeSelect={() => {}} hasSuggestion={true} locale="en" selected="fear" onSelect={onSelect} />);
+  rerender(<HelpMeStart timeBudget={null} onTimeSelect={() => {}} hasSuggestion={true} locale="sr-Latn" selected="fear" onSelect={onSelect} />);
   expect(screen.getByRole("button", { name: helpMeStartMessages["sr-Latn"].choices.fear }).getAttribute("aria-pressed")).toBe("true");
   expect(onSelect).not.toHaveBeenCalled();
+});
+it.each(startBarrierIds)("%s respects each time budget without substituting longer actions", (barrier) => {
+  for (const budget of [1, 2, 5]) {
+    const pool = getStartingTips(tips, barrier, budget);
+    expect(pool.every((tip) => tip.effortMinutes <= budget)).toBe(true);
+    expect(pool).toEqual(getStartingTips(tips, barrier).filter((tip) => tip.effortMinutes <= budget));
+  }
+});
+it("allows choosing a time first, hides empty matches, and recovers when time or blocker changes", () => {
+  const { result } = renderHook(useTipSelection);
+  act(() => result.current.start());
+  act(() => result.current.selectTimeBudget(1));
+  expect(result.current.hasSuggestion).toBe(false);
+  act(() => result.current.selectBarrier("energy"));
+  expect(result.current.hasSuggestion).toBe(false);
+  expect(result.current.canGoSmaller).toBe(false);
+  act(() => result.current.generate());
+  act(() => result.current.smaller());
+  expect(result.current.hasSuggestion).toBe(false);
+  act(() => result.current.selectTimeBudget(2));
+  expect(result.current.hasSuggestion).toBe(true);
+  expect(result.current.activeTip.effortMinutes).toBe(2);
+  act(() => result.current.selectTimeBudget(1));
+  act(() => result.current.selectBarrier("distraction"));
+  expect(result.current.hasSuggestion).toBe(true);
+  expect(result.current.activeTip.effortMinutes).toBe(1);
+});
+it("selects strictly smaller actions, keeps subsequent suggestions short, and stops at the minimum", () => {
+  const { result } = renderHook(useTipSelection);
+  const pool = getStartingTips(tips, "energy");
+  const index = pool.findIndex((tip) => tip.effortMinutes === 3);
+  // Exclude an unrelated previous tip so this random position deterministically picks a three-minute action.
+  act(() => result.current.openTip(tips[0]));
+  vi.spyOn(Math, "random").mockReturnValue((index + 0.5) / pool.length);
+  act(() => result.current.selectBarrier("energy"));
+  expect(result.current.activeTip.effortMinutes).toBe(3);
+  expect(result.current.canGoSmaller).toBe(true);
+  act(() => result.current.smaller());
+  expect(result.current.activeTip.effortMinutes).toBe(2);
+  expect(result.current.canGoSmaller).toBe(false);
+  const smallest = result.current.activeTip;
+  act(() => result.current.smaller());
+  expect(result.current.activeTip).toBe(smallest);
+  act(() => result.current.generate());
+  expect(result.current.activeTip.effortMinutes).toBe(2);
+  expect(result.current.activeTip.id).not.toBe(smallest.id);
+  act(() => result.current.selectTimeBudget(5));
+  expect(result.current.smallerThan).toBeNull();
+  act(() => result.current.leave());
+  expect(result.current.timeBudget).toBeNull();
+  expect(result.current.hasSuggestion).toBe(true);
+});
+it.each(["en", "sr-Latn"] as const)("offers optional time choices and explains empty matches in %s", (locale) => {
+  const onTimeSelect = vi.fn();
+  const copy = helpMeStartMessages[locale];
+  render(<HelpMeStart locale={locale} selected="energy" onSelect={() => {}}
+    timeBudget={1} onTimeSelect={onTimeSelect} hasSuggestion={false} />);
+  expect(screen.getByRole("group", { name: copy.timeQuestion })).toBeTruthy();
+  expect(screen.getByRole("button", { name: copy.minutes[1] }).getAttribute("aria-pressed")).toBe("true");
+  expect(screen.getByRole("status").textContent).toBe(copy.empty);
+  fireEvent.click(screen.getByRole("button", { name: copy.minutes[2] }));
+  expect(onTimeSelect).toHaveBeenLastCalledWith(2);
+  fireEvent.click(screen.getByRole("button", { name: copy.noPreference }));
+  expect(onTimeSelect).toHaveBeenLastCalledWith(null);
 });
