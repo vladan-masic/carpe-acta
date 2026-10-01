@@ -933,3 +933,9 @@ h1 {
   .progress-days { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .progress-recent li { flex-direction: column; gap: 0.3rem; }
 }
+
+.help-start-toggle { margin-bottom: 1.25rem; }
+.help-start-panel { margin-bottom: 1.25rem; }
+.help-start-choices { display: flex; flex-wrap: wrap; gap: 0.65rem; border: 0; padding: 0; margin: 1rem 0; }
+.help-start-choices legend { font-weight: 700; margin-bottom: 0.8rem; }
+.help-start-choices .category-button { white-space: normal; text-align: left; }

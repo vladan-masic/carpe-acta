@@ -105,3 +105,10 @@ logout are supported in English and Serbian. The app remains usable as a guest.
 Favorites and completed actions sync with the signed-in account. Guest data remains browser-local; import it explicitly after login. See [completion sync](docs/completions-sync.md) for setup, retry behavior, and verification.
 See [authentication setup](docs/authentication.md) for public environment settings,
 Google and email-provider configuration, and the pre-release verification checklist.
+
+## Help Me Start
+
+Choose **Help me start** in the generator, select what is getting in the way,
+and try one relevant action estimated at five minutes or less. Further suggestions
+stay within that choice. Favorites, completion tracking and progress work as usual.
+See [guided-start behavior and mappings](docs/help-me-start.md).

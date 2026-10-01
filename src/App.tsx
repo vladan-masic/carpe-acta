@@ -1,3 +1,6 @@
+import { HelpMeStart } from "./components/HelpMeStart";
+import { helpMeStartMessages } from "./i18n/helpMeStart";
+import { useTipSelection } from "./hooks/useTipSelection";
 import { ProgressView } from "./components/ProgressView";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -14,7 +17,7 @@ import { tips } from "./data/tips";
 import { getInitialLocale, persistLocale } from "./i18n/locales";
 import { messages } from "./i18n/messages";
 import { localizeTip } from "./i18n/localizeTip";
-import { getDailyQuest, getRandomTip } from "./utils/tips";
+import { getDailyQuest } from "./utils/tips";
 import { useTipCompletion } from "./hooks/useTipCompletion";
 import { useFavorites } from "./hooks/useFavorites";
 import { FavoriteButton } from "./components/FavoriteButton";
@@ -33,9 +36,9 @@ export function App() {
   );
 
   const [locale, setLocale] = useState(getInitialLocale);
-  const [selectedCategory, setSelectedCategory] =
-    useState<CategoryFilterValue>("all");
-  const [activeTip, setActiveTip] = useState(() => getRandomTip(tips));
+  const selection = useTipSelection();
+  const { activeTip, category: selectedCategory } = selection;
+  const startCopy = helpMeStartMessages[locale];
   const auth = useAuth();
   const completion = useTipCompletion(auth);
   const completionCopy = completionMessages[locale];
@@ -73,14 +76,6 @@ export function App() {
     [categoryIds, copy],
   );
 
-  const filteredTips = useMemo(() => {
-    if (selectedCategory === "all") {
-      return tips;
-    }
-
-    return tips.filter((tip) => tip.categoryId === selectedCategory);
-  }, [selectedCategory]);
-
   useEffect(() => {
     persistLocale(locale);
     document.documentElement.lang = locale;
@@ -90,25 +85,19 @@ export function App() {
   }, [copy.metadata.description, locale]);
 
   function handleGenerateTip() {
-    setActiveTip((currentTip) => getRandomTip(filteredTips, currentTip.id));
+    selection.generate();
     completion.reset();
   }
 
   function handleCategoryChange(category: CategoryFilterValue) {
-    setSelectedCategory(category);
-    const nextTips =
-      category === "all"
-        ? tips
-        : tips.filter((tip) => tip.categoryId === category);
-    setActiveTip(getRandomTip(nextTips));
+    selection.selectCategory(category);
     completion.reset();
   }
 
   function handleOpenFavorite(tip: LocalizedTip) {
     const original = tips.find((entry) => entry.id === tip.id);
     if (!original) return;
-    setActiveTip(original);
-    setSelectedCategory(original.categoryId);
+    selection.openTip(original);
     completion.reset();
     requestAnimationFrame(() => {
       const heading = document.getElementById("active-tip-title");
@@ -168,23 +157,31 @@ export function App() {
 
         <section className="generator-section" aria-labelledby="tip-generator">
           <div className="section-heading">
-            <p className="eyebrow">{copy.generator.eyebrow}</p>
-            <h2 id="tip-generator">{copy.generator.title}</h2>
+            <p className="eyebrow">{selection.helping ? startCopy.title : copy.generator.eyebrow}</p>
+            <h2 id="tip-generator">{selection.helping ? startCopy.title : copy.generator.title}</h2>
           </div>
 
-          <CategoryFilter
+          <button type="button" className="secondary-button help-start-toggle" onClick={() => {
+            if (selection.helping) selection.leave(); else selection.start();
+            completion.reset();
+          }}>{selection.helping ? startCopy.back : startCopy.title}</button>
+
+          {selection.helping ? <HelpMeStart locale={locale} selected={selection.barrier} onSelect={(barrier) => {
+            selection.selectBarrier(barrier);
+            completion.reset();
+          }} /> : <CategoryFilter
             ariaLabel={copy.generator.categoriesLabel}
             categories={categoryOptions}
             selectedCategory={selectedCategory}
             onSelectCategory={handleCategoryChange}
-          />
+          />}
 
-          <TipCard
+          {(!selection.helping || selection.barrier) && <TipCard
             actionLabel={copy.generator.actionLabel}
-            buttonLabel={copy.generator.generateButton}
+            buttonLabel={selection.helping ? startCopy.another : copy.generator.generateButton}
             tip={localizedActiveTip}
             onGenerateTip={handleGenerateTip}
-            completionCopy={copy.completion}
+            completionCopy={selection.helping ? { ...copy.completion, next: startCopy.another } : copy.completion}
             completionStatus={completion.status}
             completionBusy={completion.busy}
             savingLabel={completionCopy.saving}
@@ -193,7 +190,7 @@ export function App() {
             onRetry={completion.retry}
             onComplete={() => completion.complete(activeTip.id)}
             favoriteButton={renderFavoriteButton(localizedActiveTip)}
-          />
+          />}
           <div className="favorites-storage-status" role="status" aria-atomic="true">
             {favorites.busy ? <p>{favoritesCopy.busy}</p> : favorites.error ? <p>{favoritesCopy.error}</p> : !favorites.persisted && <p>{copy.favorites.unsaved}</p>}
           </div>
