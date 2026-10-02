@@ -81,6 +81,22 @@ timestamps. There is no history screen or account sync yet. Blocked storage,
 invalid stored data, or a failed write leaves existing data untouched and shows
 that the completion could not be saved. The current card still acknowledges it.
 
+## Searchable tip library
+
+Open **Browse all tips** below the action card to search the full catalog in the
+selected language. Search matches words across titles, descriptions, and actions,
+ignoring case and Latin accents (including `dj` for Serbian `đ`). Combine search
+with a category and maximum effort, including one-minute actions. Results keep
+catalog order and show six at a time; **Show more** adds six and moves keyboard
+focus to the first new result. Changing search, filters, or language returns to
+the first six matches. Clear search and filters restores the full catalog.
+
+Favorite stars use the existing guest/account controls. **Try this** opens the
+exact tip in the main action card with a fresh completion attempt, leaving Help
+Me Start if needed. Browsing does not change the active tip or daily quest.
+The collapsed library preserves its search while keeping the main page compact.
+No backend changes, dependencies, or additional persistent data are required.
+
 ## Favorites
 
 Use the star on a daily quest, random tip, or starter preview to save or unsave it.

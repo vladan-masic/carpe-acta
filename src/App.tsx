@@ -1,5 +1,6 @@
 import { CompletionFeedback } from "./components/CompletionFeedback";
 import { HelpMeStart } from "./components/HelpMeStart";
+import { TipLibrary } from "./components/TipLibrary";
 import { helpMeStartMessages } from "./i18n/helpMeStart";
 import { useTipSelection } from "./hooks/useTipSelection";
 import { ProgressView } from "./components/ProgressView";
@@ -208,6 +209,8 @@ export function App() {
             {favorites.busy ? <p>{favoritesCopy.busy}</p> : favorites.error ? <p>{favoritesCopy.error}</p> : !favorites.persisted && <p>{copy.favorites.unsaved}</p>}
           </div>
         </section>
+
+        <TipLibrary tips={localizedTips} locale={locale} renderFavoriteButton={renderFavoriteButton} onTry={handleOpenTip} />
 
         <section className="favorites-section" aria-labelledby="completed-actions-title">
           <div className="section-heading">

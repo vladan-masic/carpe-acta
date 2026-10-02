@@ -947,3 +947,21 @@ h1 {
 
 .tip-actions .secondary-button:disabled { opacity: 0.55; cursor: default; }
 .help-start-minimum { color: var(--muted); font-size: 0.9rem; }
+
+.tip-library { margin-top: 32px; }
+.tip-library h2 { margin-bottom: 16px; font-size: 1.1rem; }
+.tip-library button:focus-visible,
+.tip-library input:focus-visible,
+.tip-library select:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.library-filters { display: grid; grid-template-columns: 2fr 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+.library-filters label { display: grid; gap: 6px; min-width: 0; font-weight: 700; }
+.library-filters input,
+.library-filters select { width: 100%; min-width: 0; min-height: 48px; border: 1px solid var(--muted); border-radius: 8px; padding: 10px; background: var(--surface); color: var(--text); font: inherit; }
+.library-result-count { margin: 20px 0; color: var(--muted); }
+.library-tip-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.library-tip-meta span { max-width: 100%; }
+.tip-library h3 { scroll-margin-top: 24px; }
+.library-more { margin-top: 24px; }
+@media (max-width: 820px) {
+  .library-filters { grid-template-columns: 1fr; }
+}
