@@ -3,9 +3,10 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 type AppToolbarProps = {
   label: string;
   children: ReactNode;
+  navigation?: ReactNode;
 };
 
-export function AppToolbar({ label, children }: AppToolbarProps) {
+export function AppToolbar({ label, children, navigation }: AppToolbarProps) {
   const [open, setOpen] = useState(false);
   const controlsId = useId();
   const toolbar = useRef<HTMLDivElement>(null);
@@ -40,12 +41,15 @@ export function AppToolbar({ label, children }: AppToolbarProps) {
         {label}
       </button>
       <div className="toolbar-controls" id={controlsId} data-open={open} onClick={(event) => {
-        const link = (event.target as Element).closest<HTMLAnchorElement>('a[href="#favorites-title"]');
+        const link = (event.target as Element).closest<HTMLAnchorElement>('a[href^="#"]');
         if (link) {
           setOpen(false);
-          document.getElementById("favorites-title")?.focus({ preventScroll: true });
+          if (!event.defaultPrevented) document.getElementById(link.hash.slice(1))?.focus({ preventScroll: true });
         }
-      }}>{children}</div>
+      }}>
+        {navigation}
+        <div className="toolbar-account-controls">{children}</div>
+      </div>
     </div>
   );
 }

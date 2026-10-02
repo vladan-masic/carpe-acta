@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, within, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, within, waitFor } from "@testing-library/react";
 import { useState } from "react";
 import { TipLibrary } from "../src/components/TipLibrary";
 import { FavoriteButton } from "../src/components/FavoriteButton";
@@ -39,7 +39,8 @@ it("normalizes Serbian Latin accents and searches only the supplied language", (
 
 function Library({ locale = "en", disabled = false, onTry = vi.fn() }: { locale?: Locale; disabled?: boolean; onTry?: ReturnType<typeof vi.fn> }) {
   const [saved, setSaved] = useState<string[]>([]);
-  return <TipLibrary tips={tips.map((tip) => localizeTip(tip, locale))} locale={locale} onTry={onTry}
+  const [open, setOpen] = useState(false);
+  return <TipLibrary tips={tips.map((tip) => localizeTip(tip, locale))} locale={locale} onTry={onTry} open={open} onOpenChange={setOpen}
     renderFavoriteButton={(tip) => <FavoriteButton title={tip.title} labels={messages[locale].favorites}
       selected={saved.includes(tip.id)} disabled={disabled}
       onToggle={() => setSaved((ids) => ids.includes(tip.id) ? ids.filter((id) => id !== tip.id) : [...ids, tip.id])} />} />;
@@ -88,9 +89,9 @@ it("pages through the whole catalog, focuses new results, and resets after crite
   rerender(<Library locale="sr-Latn" disabled />);
   expect(screen.getAllByRole("article")).toHaveLength(6);
   expect((screen.getAllByRole("button", { name: /^Omiljeni savet:/ })[0] as HTMLButtonElement).disabled).toBe(true);
-  while (screen.queryByRole("button", { name: "Prikaži još" })) {
-    fireEvent.click(screen.getByRole("button", { name: "Prikaži još" }));
-  }
+  const more = screen.getByRole("button", { name: "Prikaži još" });
+  for (let shown = 6; shown < tips.length; shown += 6) fireEvent.click(more);
+  expect(screen.queryByRole("button", { name: "Prikaži još" })).toBeNull();
   expect(screen.getAllByRole("article")).toHaveLength(177);
   expect(screen.getByRole("status").textContent).toBe("Prikazano 177 od 177 saveta");
 });
@@ -123,4 +124,33 @@ it("integrates with the action card, completion reset, guided mode, and shared g
   expect(active().textContent).toBe(localizeTip(tips[0], "en").title);
   expect(document.querySelector(".daily-quest h2")!.textContent).toBe(quest);
   expect(screen.queryByRole("button", { name: "Back to random tips" })).toBeNull();
+  // Finish the action-card focus callbacks before restoring browser mocks.
+  await act(async () => { await new Promise<void>((resolve) => requestAnimationFrame(() => resolve())); });
+});
+
+it.each(["en", "sr-Latn"] as const)("navigates sections and opens search without changing the action in %s", async (locale) => {
+  localStorage.setItem("carpe-acta-locale", locale);
+  Element.prototype.scrollIntoView = vi.fn();
+  render(<App />);
+  const copy = messages[locale];
+  const nav = within(screen.getByRole("navigation", { name: copy.navigation.label }));
+  expect(nav.getAllByRole("link")).toHaveLength(4);
+  const original = document.getElementById("active-tip-title")!.textContent;
+  expect(document.getElementById("tips-preview-title")).toBeNull();
+  expect(screen.queryByRole("searchbox")).toBeNull();
+  fireEvent.click(nav.getByRole("link", { name: copy.navigation.browse }));
+  await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("searchbox")));
+  fireEvent.change(screen.getByRole("searchbox"), { target: { value: "test query" } });
+  fireEvent.click(nav.getByRole("link", { name: copy.navigation.progress }));
+  expect(document.activeElement?.id).toBe("completed-actions-title");
+  fireEvent.click(nav.getByRole("link", { name: `${copy.favorites.title} (0)` }));
+  expect(document.activeElement?.id).toBe("favorites-title");
+  fireEvent.click(nav.getByRole("link", { name: copy.navigation.start }));
+  expect(document.activeElement?.id).toBe("tip-generator");
+  fireEvent.click(screen.getByRole("button", { name: tipLibraryMessages[locale].title }));
+  expect(screen.queryByRole("searchbox")).toBeNull();
+  fireEvent.click(nav.getByRole("link", { name: copy.navigation.browse }));
+  await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("searchbox")));
+  expect((screen.getByRole("searchbox") as HTMLInputElement).value).toBe("test query");
+  expect(document.getElementById("active-tip-title")!.textContent).toBe(original);
 });

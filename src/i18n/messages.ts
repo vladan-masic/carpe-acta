@@ -7,6 +7,7 @@ type Messages = {
   };
   languageSelectorLabel: string;
   menuLabel: string;
+  navigation: { label: string; start: string; browse: string; progress: string };
   hero: {
     eyebrow: string;
     lede: string;
@@ -21,10 +22,6 @@ type Messages = {
     fewerCategories: string;
     actionLabel: string;
     generateButton: string;
-  };
-  preview: {
-    eyebrow: string;
-    title: string;
   };
   completion: {
     button: string;
@@ -76,6 +73,7 @@ const en = {
   },
   languageSelectorLabel: "Select language",
   menuLabel: "Menu",
+  navigation: { label: "Main navigation", start: "Start", browse: "Browse tips", progress: "Progress" },
   hero: {
     eyebrow: "Anti-procrastination quests",
     lede:
@@ -91,10 +89,6 @@ const en = {
     fewerCategories: "Hide categories",
     actionLabel: "Do this now",
     generateButton: "Generate a New Quest",
-  },
-  preview: {
-    eyebrow: "Content base",
-    title: "Browse starter tips",
   },
   footer: {
     motto: "Small actions. Real momentum.",
@@ -151,6 +145,7 @@ const srLatn = {
   },
   languageSelectorLabel: "Izaberi jezik",
   menuLabel: "Meni",
+  navigation: { label: "Glavna navigacija", start: "Počni", browse: "Pregledaj savete", progress: "Napredak" },
   hero: {
     eyebrow: "Misije protiv odlaganja",
     lede:
@@ -166,10 +161,6 @@ const srLatn = {
     fewerCategories: "Sakrij kategorije",
     actionLabel: "Uradi ovo sada",
     generateButton: "Generiši novu misiju",
-  },
-  preview: {
-    eyebrow: "Baza sadržaja",
-    title: "Pregledaj početne savete",
   },
   footer: {
     motto: "Mali koraci. Pravi zamah.",

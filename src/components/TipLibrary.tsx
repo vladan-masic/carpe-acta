@@ -8,13 +8,14 @@ import { filterLibraryTips } from "../utils/tipLibrary";
 type TipLibraryProps = {
   tips: LocalizedTip[];
   locale: Locale;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   renderFavoriteButton: (tip: LocalizedTip) => ReactNode;
   onTry: (tip: LocalizedTip) => void;
 };
 const PAGE_SIZE = 6;
 
-export function TipLibrary({ tips, locale, renderFavoriteButton, onTry }: TipLibraryProps) {
-  const [open, setOpen] = useState(false);
+export function TipLibrary({ tips, locale, open, onOpenChange, renderFavoriteButton, onTry }: TipLibraryProps) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"all" | CategoryId>("all");
   const [maxEffort, setMaxEffort] = useState<number | null>(null);
@@ -34,13 +35,13 @@ export function TipLibrary({ tips, locale, renderFavoriteButton, onTry }: TipLib
     <section className="tip-library" aria-labelledby="tip-library-title">
       <h2 id="tip-library-title">
         <button className="secondary-button" type="button" aria-expanded={open}
-          aria-controls="tip-library-content" onClick={() => setOpen(!open)}>{copy.title}</button>
+          aria-controls="tip-library-content" onClick={() => onOpenChange(!open)}>{copy.title}</button>
       </h2>
       <div id="tip-library-content" hidden={!open}>
         <p>{copy.intro}</p>
         <div className="library-filters">
           <label>{copy.search}
-            <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} />
+            <input id="tip-library-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} />
           </label>
           <label>{copy.category}
             <select value={category} onChange={(event) => setCategory(event.target.value as typeof category)}>

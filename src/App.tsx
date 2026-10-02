@@ -16,7 +16,6 @@ import { BrandEmblem } from "./components/BrandEmblem";
 import { DailyQuest } from "./components/DailyQuest";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { TipCard } from "./components/TipCard";
-import { TipsPreview } from "./components/TipsPreview";
 import { tips } from "./data/tips";
 import { getInitialLocale, persistLocale } from "./i18n/locales";
 import { messages } from "./i18n/messages";
@@ -40,6 +39,7 @@ export function App() {
   );
 
   const [locale, setLocale] = useState(getInitialLocale);
+  const [libraryOpen, setLibraryOpen] = useState(false);
   const selection = useTipSelection();
   const { activeTip, category: selectedCategory } = selection;
   const startCopy = helpMeStartMessages[locale];
@@ -128,11 +128,23 @@ export function App() {
   return (
     <>
       <main className="app-shell" id="page-top" tabIndex={-1}>
-        <AppToolbar label={copy.menuLabel}>
+        <AppToolbar label={copy.menuLabel} navigation={
+          <nav className="section-navigation" aria-label={copy.navigation.label}>
+            <a href="#tip-generator">{copy.navigation.start}</a>
+            <a href="#tip-library-title" onClick={(event) => {
+              event.preventDefault();
+              setLibraryOpen(true);
+              requestAnimationFrame(() => {
+                const search = document.getElementById("tip-library-search");
+                search?.focus({ preventScroll: true });
+                document.getElementById("tip-library-title")?.scrollIntoView({ block: "start" });
+              });
+            }}>{copy.navigation.browse}</a>
+            <a href="#completed-actions-title">{copy.navigation.progress}</a>
+            <a href="#favorites-title">{copy.favorites.title} ({favoriteTips.length})</a>
+          </nav>
+        }>
           <AuthPanel locale={locale} auth={auth} />
-          <a className="favorites-link" href="#favorites-title">
-            {copy.favorites.title} ({favoriteTips.length})
-          </a>
           <LanguageSelector
             ariaLabel={copy.languageSelectorLabel}
             locale={locale}
@@ -162,7 +174,7 @@ export function App() {
         <section className="generator-section" aria-labelledby="tip-generator">
           <div className="section-heading">
             <p className="eyebrow">{selection.helping ? startCopy.title : copy.generator.eyebrow}</p>
-            <h2 id="tip-generator">{selection.helping ? startCopy.title : copy.generator.title}</h2>
+            <h2 id="tip-generator" tabIndex={-1}>{selection.helping ? startCopy.title : copy.generator.title}</h2>
           </div>
 
           <button type="button" className="secondary-button help-start-toggle" onClick={() => {
@@ -214,11 +226,11 @@ export function App() {
           </div>
         </section>
 
-        <TipLibrary tips={localizedTips} locale={locale} renderFavoriteButton={renderFavoriteButton} onTry={handleOpenTip} />
+        <TipLibrary tips={localizedTips} locale={locale} open={libraryOpen} onOpenChange={setLibraryOpen} renderFavoriteButton={renderFavoriteButton} onTry={handleOpenTip} />
 
         <section className="favorites-section" aria-labelledby="completed-actions-title">
           <div className="section-heading">
-            <h2 id="completed-actions-title">{completionCopy.title}{completion.count !== null ? ` (${completion.count})` : ""}</h2>
+            <h2 id="completed-actions-title" tabIndex={-1}>{completionCopy.title}{completion.count !== null ? ` (${completion.count})` : ""}</h2>
             <p>{completion.signedIn ? completionCopy.account : completionCopy.guest}</p>
           </div>
           <div role="status" aria-atomic="true">
@@ -259,12 +271,6 @@ export function App() {
           onOpen={handleOpenTip}
         />
 
-        <TipsPreview
-          eyebrow={copy.preview.eyebrow}
-          title={copy.preview.title}
-          tips={localizedTips}
-          renderFavoriteButton={renderFavoriteButton}
-        />
       </main>
 
       <AppFooter

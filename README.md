@@ -53,7 +53,7 @@ every blocker has at least two suggestions at the shortest time budget.
 1. Add metadata to `src/data/tips.ts`: a unique, stable `id`, an existing
    `categoryId`, positive `effortMinutes`, and `tags` (use `[]` until tags are
    curated). Effort estimates the immediate action, not the whole project.
-   Preserve existing IDs and ordering; order affects daily quests and previews.
+   Preserve existing IDs and ordering; order affects daily quests and library results.
 2. Add the same ID to both `src/i18n/tips/en.ts` and
    `src/i18n/tips/sr-Latn.ts`, with nonempty `title`, `text`, and `action`.
    `whyItWorks` is optional; add it only when reviewed content exists. It is not
@@ -81,11 +81,17 @@ timestamps. There is no history screen or account sync yet. Blocked storage,
 invalid stored data, or a failed write leaves existing data untouched and shows
 that the completion could not be saved. The current card still acknowledges it.
 
-## Mobile navigation
+## Navigation
 
-On screens up to 600px wide, the floating **Menu** at the top-right groups account,
-favorites, and language controls and remains available while scrolling. Its panel
-scrolls independently when space is limited. The category picker shows the current selection and expands with
+The sticky desktop navigation links to **Start**, **Browse tips**, **Progress**,
+and **Favorites**, with account and language controls on the right. Browse tips
+opens the library and focuses search; other links focus their section headings.
+Navigation preserves the current action and library filters. The former starter
+preview has been removed because the full library includes those tips.
+
+On screens up to 1000px wide, the floating **Menu** at the top-right contains these
+four links, followed by account and language controls below a divider. Its panel
+scrolls independently when space is limited. On screens up to 600px wide, the category picker shows the current selection and expands with
 **Show categories**. These disclosures only change the layout, not tip selection.
 The floating **Back to top** arrow stays in the lower-right corner, scrolls smoothly
 to the top, and returns keyboard focus to the page start. Reduced-motion preferences
@@ -110,7 +116,7 @@ No backend changes, dependencies, or additional persistent data are required.
 
 ## Favorites
 
-Use the star on a daily quest, random tip, or starter preview to save or unsave it.
+Use the star on a daily quest, random tip, or library result to save or unsave it.
 The Favorites link jumps to a collection ordered by most recently saved first.
 Each saved card shows the advice and immediate action; “Use this tip” opens it in
 the main card, selects its category, and starts a fresh completion attempt.
