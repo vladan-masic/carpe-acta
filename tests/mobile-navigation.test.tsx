@@ -6,7 +6,7 @@ import { CategoryFilter } from "../src/components/CategoryFilter";
 import { BackToTop } from "../src/components/BackToTop";
 import { messages } from "../src/i18n/messages";
 
-afterEach(cleanup);
+afterEach(() => { cleanup(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
 it.each(["en", "sr-Latn"] as const)("discloses categories without selecting a new tip in %s", (locale) => {
   const copy = messages[locale];
@@ -54,9 +54,20 @@ it("lets nested controls consume Escape without also closing the toolbar", () =>
 });
 
 it.each(["en", "sr-Latn"] as const)("provides a labeled top link and returns keyboard focus in %s", (locale) => {
+  vi.stubGlobal("matchMedia", () => ({ matches: false }));
+  const scroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
   render(<><main id="page-top" tabIndex={-1}>Page</main><BackToTop label={messages[locale].footer.backToTop} /></>);
   const link = screen.getByRole("link", { name: messages[locale].footer.backToTop });
   expect(link.getAttribute("href")).toBe("#page-top");
   fireEvent.click(link);
   expect(document.activeElement).toBe(screen.getByRole("main"));
+  expect(scroll).toHaveBeenCalledWith({ top: 0, left: 0, behavior: "smooth" });
+});
+
+it("returns to the top without animation when reduced motion is requested", () => {
+  vi.stubGlobal("matchMedia", () => ({ matches: true }));
+  const scroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+  render(<BackToTop label="Back to top" />);
+  fireEvent.click(screen.getByRole("link", { name: "Back to top" }));
+  expect(scroll).toHaveBeenCalledWith({ top: 0, left: 0, behavior: "instant" });
 });

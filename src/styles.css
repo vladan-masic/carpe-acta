@@ -965,8 +965,27 @@ h1 {
 .footer-inner { padding-bottom: 88px; }
 
 @media (max-width: 600px) {
-  .app-toolbar { align-items: stretch; flex-direction: column; }
-  .toolbar-menu-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 8px; align-self: flex-end; }
+  .app-shell { padding-top: 88px; }
+  .app-toolbar {
+    position: fixed;
+    z-index: 30;
+    top: max(12px, env(safe-area-inset-top));
+    right: max(12px, env(safe-area-inset-right));
+    width: min(360px, calc(100% - 24px));
+    align-items: stretch;
+    flex-direction: column;
+    pointer-events: none;
+  }
+  .toolbar-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    align-self: flex-end;
+    background: var(--surface);
+    box-shadow: 0 4px 16px rgb(31 41 51 / 20%);
+    pointer-events: auto;
+  }
   .toolbar-controls { display: none; }
   .toolbar-controls[data-open="true"] {
     display: grid;
@@ -975,6 +994,11 @@ h1 {
     border: 1px solid var(--line);
     border-radius: 12px;
     background: var(--surface);
+    box-shadow: var(--shadow);
+    max-height: calc(100dvh - 96px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    pointer-events: auto;
   }
   .toolbar-controls .auth-trigger,
   .toolbar-controls .favorites-link,

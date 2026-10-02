@@ -83,11 +83,13 @@ that the completion could not be saved. The current card still acknowledges it.
 
 ## Mobile navigation
 
-On screens up to 600px wide, **Menu** groups account, favorites, and language
-controls. The category picker shows the current selection and expands with
+On screens up to 600px wide, the floating **Menu** at the top-right groups account,
+favorites, and language controls and remains available while scrolling. Its panel
+scrolls independently when space is limited. The category picker shows the current selection and expands with
 **Show categories**. These disclosures only change the layout, not tip selection.
-The floating **Back to top** arrow stays in the lower-right corner and returns
-keyboard focus to the page start. Account dialogs remain available independently
+The floating **Back to top** arrow stays in the lower-right corner, scrolls smoothly
+to the top, and returns keyboard focus to the page start. Reduced-motion preferences
+disable the animation. Account dialogs remain available independently
 of the collapsed menu, including login callbacks and password recovery.
 
 ## Searchable tip library
