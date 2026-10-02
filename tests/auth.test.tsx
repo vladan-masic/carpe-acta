@@ -165,6 +165,50 @@ async function openLogin(locale: "en" | "sr-Latn" = "en") {
 }
 
 describe("login interface", () => {
+  it.each(["en", "sr-Latn"] as const)("dismisses the account card on a backdrop click and restores focus in %s", async (locale) => {
+    mock.auth.getSession.mockResolvedValue({ data: { session }, error: null });
+    render(<AuthPanel locale={locale} />);
+    const trigger = await screen.findByRole("button", { name: authMessages[locale].account, exact: true });
+    fireEvent.click(trigger);
+    const dialog = screen.getByRole("dialog");
+    vi.spyOn(dialog, "getBoundingClientRect").mockReturnValue({ left: 100, right: 500, top: 100, bottom: 500 } as DOMRect);
+    fireEvent(dialog, new MouseEvent("pointerdown", { bubbles: true, clientX: 20, clientY: 20, button: 0 }));
+    fireEvent.click(dialog, { clientX: 20, clientY: 20 });
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+    expect(mock.auth.signOut).not.toHaveBeenCalled();
+  });
+
+  it("keeps the card open for interior clicks and drags that cross the backdrop", async () => {
+    await openLogin();
+    const dialog = screen.getByRole("dialog");
+    vi.spyOn(dialog, "getBoundingClientRect").mockReturnValue({ left: 100, right: 500, top: 100, bottom: 500 } as DOMRect);
+    const point = (x: number) => ({ bubbles: true, clientX: x, clientY: 200, button: 0 });
+    // Padding belongs to the card even though its event target is the dialog.
+    for (const [start, end] of [[110, 110], [200, 20], [20, 200]]) {
+      fireEvent(dialog, new MouseEvent("pointerdown", point(start)));
+      fireEvent.click(dialog, point(end));
+      expect(screen.getByRole("dialog")).toBe(dialog);
+    }
+    fireEvent.click(screen.getByLabelText("Email address"));
+    expect(screen.getByRole("dialog")).toBe(dialog);
+    fireEvent(dialog, new MouseEvent("pointerdown", point(20)));
+    fireEvent.pointerCancel(dialog);
+    fireEvent.click(dialog, point(20));
+    expect(screen.getByRole("dialog")).toBe(dialog);
+  });
+
+  it("clears entered passwords when the login card is dismissed outside", async () => {
+    const user = await openLogin();
+    await user.type(screen.getByLabelText("Password", { exact: true }), "temporary-password");
+    const dialog = screen.getByRole("dialog");
+    vi.spyOn(dialog, "getBoundingClientRect").mockReturnValue({ left: 100, right: 500, top: 100, bottom: 500 } as DOMRect);
+    fireEvent(dialog, new MouseEvent("pointerdown", { bubbles: true, clientX: 20, clientY: 20, button: 0 }));
+    fireEvent.click(dialog, { clientX: 20, clientY: 20 });
+    await user.click(screen.getByRole("button", { name: "Log in", exact: true }));
+    expect((screen.getByLabelText("Password", { exact: true }) as HTMLInputElement).value).toBe("");
+  });
+
   it("offers all three methods and localizes the complete form", async () => {
     const user = await openLogin("sr-Latn");
     expect(screen.getByRole("button", { name: "Nastavi preko Google-a" })).toBeTruthy();
