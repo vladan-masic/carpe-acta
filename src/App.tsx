@@ -10,6 +10,8 @@ import {
   type CategoryFilterValue,
 } from "./components/CategoryFilter";
 import { AppFooter } from "./components/AppFooter";
+import { AppToolbar } from "./components/AppToolbar";
+import { BackToTop } from "./components/BackToTop";
 import { BrandEmblem } from "./components/BrandEmblem";
 import { DailyQuest } from "./components/DailyQuest";
 import { LanguageSelector } from "./components/LanguageSelector";
@@ -125,8 +127,8 @@ export function App() {
 
   return (
     <>
-      <main className="app-shell" id="page-top">
-        <div className="app-toolbar">
+      <main className="app-shell" id="page-top" tabIndex={-1}>
+        <AppToolbar label={copy.menuLabel}>
           <AuthPanel locale={locale} auth={auth} />
           <a className="favorites-link" href="#favorites-title">
             {copy.favorites.title} ({favoriteTips.length})
@@ -136,7 +138,7 @@ export function App() {
             locale={locale}
             onSelectLocale={setLocale}
           />
-        </div>
+        </AppToolbar>
 
         <section className="hero-section">
           <div className="hero-copy">
@@ -175,6 +177,8 @@ export function App() {
             completion.reset();
           }} /> : <CategoryFilter
             ariaLabel={copy.generator.categoriesLabel}
+            moreLabel={copy.generator.moreCategories}
+            lessLabel={copy.generator.fewerCategories}
             categories={categoryOptions}
             selectedCategory={selectedCategory}
             onSelectCategory={handleCategoryChange}
@@ -264,10 +268,10 @@ export function App() {
       </main>
 
       <AppFooter
-        backToTopLabel={copy.footer.backToTop}
         createdByLabel={copy.footer.createdBy}
         motto={copy.footer.motto}
       />
+      <BackToTop label={copy.footer.backToTop} />
     </>
   );
 }

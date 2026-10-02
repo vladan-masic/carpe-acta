@@ -6,6 +6,7 @@ type Messages = {
     description: string;
   };
   languageSelectorLabel: string;
+  menuLabel: string;
   hero: {
     eyebrow: string;
     lede: string;
@@ -16,6 +17,8 @@ type Messages = {
     title: string;
     categoriesLabel: string;
     allCategories: string;
+    moreCategories: string;
+    fewerCategories: string;
     actionLabel: string;
     generateButton: string;
   };
@@ -72,6 +75,7 @@ const en = {
       "Carpe Acta helps you beat procrastination with practical tips and small daily quests.",
   },
   languageSelectorLabel: "Select language",
+  menuLabel: "Menu",
   hero: {
     eyebrow: "Anti-procrastination quests",
     lede:
@@ -83,6 +87,8 @@ const en = {
     title: "Generate your next move",
     categoriesLabel: "Tip categories",
     allCategories: "All",
+    moreCategories: "Show categories",
+    fewerCategories: "Hide categories",
     actionLabel: "Do this now",
     generateButton: "Generate a New Quest",
   },
@@ -144,6 +150,7 @@ const srLatn = {
       "Carpe Acta pomaže u borbi protiv odlaganja praktičnim savetima i malim dnevnim misijama.",
   },
   languageSelectorLabel: "Izaberi jezik",
+  menuLabel: "Meni",
   hero: {
     eyebrow: "Misije protiv odlaganja",
     lede:
@@ -155,6 +162,8 @@ const srLatn = {
     title: "Odredi svoj sledeći potez",
     categoriesLabel: "Kategorije saveta",
     allCategories: "Sve",
+    moreCategories: "Prikaži kategorije",
+    fewerCategories: "Sakrij kategorije",
     actionLabel: "Uradi ovo sada",
     generateButton: "Generiši novu misiju",
   },

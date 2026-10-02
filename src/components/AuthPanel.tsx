@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { createPortal } from "react-dom";
 import type { useAuth } from "../hooks/useAuth";
 import { authErrorKey } from "../auth/config";
 import { performAuthAction, type AuthAction, type AuthNotice } from "../auth/actions";
@@ -95,7 +96,7 @@ export function AuthPanel({ locale, auth }: { locale: Locale; auth: ReturnType<t
     <button className="auth-trigger secondary-button" type="button" ref={trigger} onClick={open} disabled={auth.loading}>
       {auth.loading ? copy.loading : auth.session ? copy.account : copy.login}
     </button>
-    <dialog className="auth-dialog" ref={dialog} aria-labelledby="auth-title" onClose={() => {
+    {createPortal(<dialog className="auth-dialog" ref={dialog} aria-labelledby="auth-title" onClose={() => {
       setPassword(""); setConfirmation(""); trigger.current?.focus();
     }}>
       <div className="auth-heading">
@@ -144,6 +145,6 @@ export function AuthPanel({ locale, auth }: { locale: Locale; auth: ReturnType<t
       </>}
       <div role="alert">{error && <p className="auth-error">{copy[error]}</p>}</div>
       <div role="status" aria-live="polite">{notice && <p className="auth-success">{copy[notice]}</p>}</div>
-    </dialog>
+    </dialog>, document.body)}
   </>;
 }
