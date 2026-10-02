@@ -983,4 +983,64 @@ export const srLatnTips = {
     action: "Zatvori tok objava, napiši sledeću radnu radnju ili radnju van mreže i stavi potreban materijal ispred sebe.",
     whyItWorks: "Izričita sledeća radnja daje pažnji odredište posle pregledanja.",
   },
+  "mark-your-resume-line": {
+    title: "Označi mesto za nastavak",
+    text: "Olakšaj sebi pronalaženje mesta na kom nastavljaš.",
+    action: "Postavi obeleživač ili privremenu oznaku uz tačan red od kog ćeš nastaviti da čitaš ili radiš.",
+  },
+  "transfer-one-known-detail": {
+    title: "Unesi jedan poznat podatak",
+    text: "Poznat podatak može biti lak početak rada na obrascu ili dokumentu.",
+    action: "Popuni jedno prazno polje podatkom koji već imaš pred sobom, poput datuma ili referentnog broja. Zaustavi se posle tog polja.",
+  },
+  "hide-the-rest-of-the-list": {
+    title: "Skloni ostatak liste iz vidokruga",
+    text: "Možeš da sačuvaš sve obaveze, a da ih ne gledaš sve odjednom.",
+    action: "Ostavi jedan zadatak vidljiv, a ostatak liste prekrij ili sklopi, bez brisanja.",
+  },
+  "split-one-combined-checkbox": {
+    title: "Razdvoji jednu spojenu stavku",
+    text: "Iza jedne kućice za potvrdu možda se kriju dva različita posla.",
+    action: "Pronađi zadatak čiji su delovi spojeni sa „i“ i prepiši ga kao dve odvojene stavke sa kućicama. Sada je dovoljno samo da ih razdvojiš.",
+  },
+  "draft-without-a-recipient": {
+    title: "Započni nacrt bez primaoca",
+    text: "Pripremanje poruke ne mora da znači i njeno slanje.",
+    action: "U privatnoj belešci, umesto u prozoru za slanje poruke, napiši prvih nekoliko reči poruke koju odlažeš. Izostavi imena i kontakt podatke.",
+  },
+  "name-the-feeling-read-one-line": {
+    title: "Imenuj osećanje, pročitaj jedan red",
+    text: "Ne moraš da razrešiš svako osećanje pre nego što pogledaš zadatak.",
+    action: "Imenuj svoje osećanje jednom rečju, pa pročitaj samo prvi red uputstva za zadatak. Tu možeš da zastaneš.",
+  },
+  "underline-the-requested-verb": {
+    title: "Pronađi glagol koji traži radnju",
+    text: "Uputstvo može da sadrži koristan trag za početak.",
+    action: "Podvuci ili prepiši glagol iz uputstva, poput uporedi, navedi ili izračunaj, zajedno sa onim na šta se odnosi.",
+  },
+  "locate-the-first-unfinished-field": {
+    title: "Pronađi prvo nedovršeno polje",
+    text: "Potraži početnu tačku u onome što već imaš pred sobom.",
+    action: "Preleti pogledom obrazac, skicu ili kontrolnu listu i pronađi prvo prazno polje ili nedovršenu stavku. Označi to kao mesto za početak.",
+  },
+  "write-without-formatting": {
+    title: "Napiši red bez formatiranja",
+    text: "Izgled može da sačeka dok ne nastane nekoliko reči.",
+    action: "Napiši jedan kratak red u nacrtu koristeći postojeći font i raspored. Za taj red ne diraj opcije za formatiranje.",
+  },
+  "mark-one-part-to-keep": {
+    title: "Označi deo koji ostaje",
+    text: "Pregledanje ne zahteva da menjaš sve što vidiš.",
+    action: "Pronađi jednu rečenicu ili detalj u nacrtu koji već ispunjava svoju svrhu. Stavi privremenu oznaku uz njega i ostavi ga neizmenjenog.",
+  },
+  "read-one-task-line-aloud": {
+    title: "Daj zadatku glas",
+    text: "Probaj malu promenu umesto nemog gledanja u zadatak.",
+    action: "Pročitaj jednu rečenicu iz zadatka naglas ili tiho za sebe, pa postavi prst ili kursor na mesto od kog ćeš nastaviti.",
+  },
+  "finish-one-sentence-fragment": {
+    title: "Dovrši jednu započetu rečenicu",
+    text: "Iskoristi početak koji već postoji.",
+    action: "Pronađi nedovršenu rečenicu ili stavku u beleškama i dodaj samo onoliko reči koliko je potrebno da dovršiš misao. Zaustavi se posle te stavke.",
+  },
 } satisfies Record<TipId, TipTranslation>;

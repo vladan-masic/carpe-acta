@@ -983,4 +983,64 @@ export const enTips = {
     action: "Close the feed, write the next offline or work action, and place its materials in front of you.",
     whyItWorks: "An explicit next action gives attention somewhere to go after browsing.",
   },
+  "mark-your-resume-line": {
+    title: "Mark Your Resume Line",
+    text: "Make the place to return to easy to find.",
+    action: "Put a bookmark or temporary marker beside the exact line where you will resume reading or working.",
+  },
+  "transfer-one-known-detail": {
+    title: "Transfer One Known Detail",
+    text: "A familiar detail can be an easy entry into a form or document.",
+    action: "Fill in one blank field in your task using information already in front of you, such as a date or reference number. Stop after that field.",
+  },
+  "hide-the-rest-of-the-list": {
+    title: "Hide the Rest of the List",
+    text: "You can keep your commitments without looking at all of them at once.",
+    action: "Leave one task visible and cover or collapse the rest of your list without deleting anything.",
+  },
+  "split-one-combined-checkbox": {
+    title: "Split One Combined Checkbox",
+    text: "One checkbox may be hiding two separate jobs.",
+    action: "Find one task joined by “and” and rewrite it as two separate checkboxes. You only need to separate them now.",
+  },
+  "draft-without-a-recipient": {
+    title: "Draft Without a Recipient",
+    text: "Preparing a message does not have to mean sending it.",
+    action: "In a private note rather than a message composer, write the first few words of the message you are avoiding. Leave out names and contact details.",
+  },
+  "name-the-feeling-read-one-line": {
+    title: "Name the Feeling, Read One Line",
+    text: "You do not have to resolve every feeling before looking at the task.",
+    action: "Name your feeling in one word, then read only the first line of the task instructions. You can pause there.",
+  },
+  "underline-the-requested-verb": {
+    title: "Find the Action Verb",
+    text: "An instruction can contain a useful starting clue.",
+    action: "Underline or copy the action verb in your task instructions, such as compare, list, or calculate, together with what it applies to.",
+  },
+  "locate-the-first-unfinished-field": {
+    title: "Locate the First Unfinished Field",
+    text: "Use the work in front of you to find a starting point.",
+    action: "Scan your current form, outline, or checklist and point to the first blank field or unfinished item. Mark it as your starting place.",
+  },
+  "write-without-formatting": {
+    title: "Write Without Formatting",
+    text: "Appearance can wait until a few words exist.",
+    action: "Write one short line in your draft using the current font and layout. Leave the formatting controls alone for this line.",
+  },
+  "mark-one-part-to-keep": {
+    title: "Mark One Part to Keep",
+    text: "Reviewing does not require changing everything you see.",
+    action: "Find one sentence or detail in your draft that already does its job. Put a temporary check beside it and leave it unchanged.",
+  },
+  "read-one-task-line-aloud": {
+    title: "Give the Task a Voice",
+    text: "Try a small change from silently staring at the work.",
+    action: "Read one sentence from the task aloud, or quietly to yourself, and put your finger or cursor where you will continue.",
+  },
+  "finish-one-sentence-fragment": {
+    title: "Finish One Sentence Fragment",
+    text: "Use a beginning that is already there.",
+    action: "Find an unfinished sentence or bullet in your notes and add just enough words to complete its thought. Stop after that one item.",
+  },
 } satisfies Record<TipId, TipTranslation>;

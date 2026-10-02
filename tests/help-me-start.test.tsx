@@ -76,24 +76,30 @@ it.each(startBarrierIds)("%s respects each time budget without substituting long
     expect(pool).toEqual(getStartingTips(tips, barrier).filter((tip) => tip.effortMinutes <= budget));
   }
 });
-it("allows choosing a time first, hides empty matches, and recovers when time or blocker changes", () => {
+it.each(startBarrierIds)("%s offers different one-minute actions and retains the time choice", (barrier) => {
+  const pool = getStartingTips(tips, barrier, 1);
+  expect(pool.length).toBeGreaterThanOrEqual(2);
   const { result } = renderHook(useTipSelection);
   act(() => result.current.start());
   act(() => result.current.selectTimeBudget(1));
   expect(result.current.hasSuggestion).toBe(false);
-  act(() => result.current.selectBarrier("energy"));
-  expect(result.current.hasSuggestion).toBe(false);
-  expect(result.current.canGoSmaller).toBe(false);
-  act(() => result.current.generate());
-  act(() => result.current.smaller());
-  expect(result.current.hasSuggestion).toBe(false);
-  act(() => result.current.selectTimeBudget(2));
-  expect(result.current.hasSuggestion).toBe(true);
-  expect(result.current.activeTip.effortMinutes).toBe(2);
-  act(() => result.current.selectTimeBudget(1));
-  act(() => result.current.selectBarrier("distraction"));
+  act(() => result.current.selectBarrier(barrier));
   expect(result.current.hasSuggestion).toBe(true);
   expect(result.current.activeTip.effortMinutes).toBe(1);
+  expect(result.current.canGoSmaller).toBe(false);
+  const first = result.current.activeTip;
+  act(() => result.current.generate());
+  expect(result.current.activeTip.id).not.toBe(first.id);
+  expect(pool).toContain(result.current.activeTip);
+  act(() => result.current.smaller());
+  expect(result.current.activeTip.effortMinutes).toBe(1);
+  act(() => result.current.selectBarrier("distraction"));
+  expect(result.current.timeBudget).toBe(1);
+  expect(result.current.activeTip.effortMinutes).toBe(1);
+});
+it("returns an empty pool when a supplied catalog has no action within the budget", () => {
+  const longerTips = tips.filter((tip) => tip.effortMinutes > 1);
+  expect(getStartingTips(longerTips, "energy", 1)).toEqual([]);
 });
 it("selects strictly smaller actions, keeps subsequent suggestions short, and stops at the minimum", () => {
   const { result } = renderHook(useTipSelection);
@@ -105,14 +111,18 @@ it("selects strictly smaller actions, keeps subsequent suggestions short, and st
   act(() => result.current.selectBarrier("energy"));
   expect(result.current.activeTip.effortMinutes).toBe(3);
   expect(result.current.canGoSmaller).toBe(true);
+  vi.mocked(Math.random).mockReturnValue(0);
   act(() => result.current.smaller());
   expect(result.current.activeTip.effortMinutes).toBe(2);
+  expect(result.current.canGoSmaller).toBe(true);
+  act(() => result.current.smaller());
+  expect(result.current.activeTip.effortMinutes).toBe(1);
   expect(result.current.canGoSmaller).toBe(false);
   const smallest = result.current.activeTip;
   act(() => result.current.smaller());
   expect(result.current.activeTip).toBe(smallest);
   act(() => result.current.generate());
-  expect(result.current.activeTip.effortMinutes).toBe(2);
+  expect(result.current.activeTip.effortMinutes).toBe(1);
   expect(result.current.activeTip.id).not.toBe(smallest.id);
   act(() => result.current.selectTimeBudget(5));
   expect(result.current.smallerThan).toBeNull();

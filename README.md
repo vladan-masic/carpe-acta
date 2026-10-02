@@ -44,9 +44,11 @@ src/
 
 ## Adding a bilingual tip
 
-The library now contains 165 bilingual tips. See
+The library now contains 177 bilingual tips. See
 [the CA-041–CA-160 expansion notes](docs/tip-library-expansion.md) for the
-12 new batches, editorial ID mapping, category choices, and references.
+12 earlier batches, editorial ID mapping, category choices, and references.
+The additional [one-minute Help Me Start actions](docs/help-me-start.md) ensure
+every blocker has at least two suggestions at the shortest time budget.
 
 1. Add metadata to `src/data/tips.ts`: a unique, stable `id`, an existing
    `categoryId`, positive `effortMinutes`, and `tags` (use `[]` until tags are

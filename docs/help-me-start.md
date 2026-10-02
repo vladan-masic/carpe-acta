@@ -33,10 +33,17 @@ blocker or time clears this additional shorter-action limit. These are estimates
 from the catalog, not a timer or a guarantee of how long an action will take.
 
 Only tips with an estimated effort of five minutes or less are eligible. This is
-transparent category matching, not diagnosis or learned personalization. No new
-categories or tips were added, and existing IDs and catalog order are unchanged.
-Tests ensure each choice has several eligible tips; maintain that invariant when
-editing the catalog or mappings.
+transparent category matching, not diagnosis or learned personalization. The library includes
+12 additional bilingual one-minute actions: two each for energy, overwhelm,
+fear, uncertainty, perfectionism, and motivation. Uncertainty uses one Planning
+and one Overthinking tip. Every blocker now has at least two one-minute options;
+tests protect this coverage and immediate-repeat exclusion. The empty-match
+message remains available if future catalog edits leave a gap.
+
+Existing IDs, content, and ordering are preserved; new tips are appended.
+The first-six preview is unchanged. Because daily selection indexes by the full
+catalog length, expanding the catalog changes its date-to-tip rotation; the
+selection algorithm itself is unchanged.
 
 Back to random tips restores the previously selected category with a fresh tip.
 Opening a favorite leaves guided mode and uses that tip's category. Switching
