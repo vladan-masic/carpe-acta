@@ -155,8 +155,6 @@ and try one relevant action estimated at five minutes or less. Further suggestio
 stay within that choice. Favorites, completion tracking and progress work as usual.
 See [guided-start behavior and mappings](docs/help-me-start.md).
 
-## Action feedback
-
 ## Why this helps
 
 When the selected tip has an explanation, the action card offers a collapsed
