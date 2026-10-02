@@ -927,6 +927,7 @@ h1 {
   margin-bottom: 1.5rem;
 }
 .favorites-sync-controls p { margin-top: 0; }
+.completion-sync-controls { flex-direction: column; }
 .favorite-button:disabled { opacity: 0.55; cursor: wait; }
 
 .progress-view { margin-top: 1.75rem; }

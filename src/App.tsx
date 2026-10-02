@@ -226,7 +226,7 @@ export function App() {
             {completion.guestUnreadable && <p>{completionCopy.unreadable}</p>}
             {completion.imported && <p>{completionCopy.imported}</p>}
           </div>
-          {completion.signedIn && <div className="favorites-sync-controls">
+          {completion.signedIn && <div className="favorites-sync-controls completion-sync-controls">
             <button type="button" className="secondary-button" disabled={completion.busy} onClick={completion.refresh}>{completionCopy.refresh}</button>
             {completion.canImport && <div>
               <p>{completionCopy.importHint}</p>
