@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 type TipCardProps = {
   actionLabel: string;
+  explanationLabel: string;
   buttonLabel: string;
   tip: LocalizedTip;
   onGenerateTip: () => void;
@@ -28,6 +29,7 @@ type TipCardProps = {
 
 export function TipCard({
   actionLabel,
+  explanationLabel,
   buttonLabel,
   tip,
   onGenerateTip,
@@ -77,6 +79,12 @@ export function TipCard({
         )}
       </div>
       {feedback}
+      {tip.whyItWorks?.trim() && (
+        <details className="tip-explanation" key={tip.id}>
+          <summary>{explanationLabel}</summary>
+          <p>{tip.whyItWorks}</p>
+        </details>
+      )}
     </article>
   );
 }

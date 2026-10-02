@@ -56,8 +56,8 @@ every blocker has at least two suggestions at the shortest time budget.
    Preserve existing IDs and ordering; order affects daily quests and library results.
 2. Add the same ID to both `src/i18n/tips/en.ts` and
    `src/i18n/tips/sr-Latn.ts`, with nonempty `title`, `text`, and `action`.
-   `whyItWorks` is optional; add it only when reviewed content exists. It is not
-   displayed yet. Keep tags language-independent and consistently lowercase.
+   `whyItWorks` is optional; add it only when reviewed content exists. It appears
+   in the action card's **Why this helps** disclosure. Keep tags language-independent and consistently lowercase.
 3. Run `npm test` and `npm run build`, then check both languages in the app.
 
 `TipId` is derived from the metadata catalog. TypeScript requires every tip in
@@ -122,6 +122,13 @@ Each saved card shows the advice and immediate action; “Use this tip” opens 
 the main card, selects its category, and starts a fresh completion attempt.
 Saving or removing a favorite does not change completion history.
 
+Search Favorites by title, description, or action in the selected language and
+combine it with a category filter. Matching follows the library's case- and
+accent-insensitive search; results retain newest-saved order. The heading shows
+the full saved count, while a separate result count describes the filtered view.
+Clear search and filters restores the collection. Filters stay local to this view
+and do not alter saved tips or account sync.
+
 Guest favorites persist in this browser as an array of stable tip IDs under
 `carpe-acta-favorites-v1`. They follow the selected language, survive reloads,
 and synchronize across tabs through storage events. Unknown IDs are retained in
@@ -147,6 +154,17 @@ Choose **Help me start** in the generator, select what is getting in the way,
 and try one relevant action estimated at five minutes or less. Further suggestions
 stay within that choice. Favorites, completion tracking and progress work as usual.
 See [guided-start behavior and mappings](docs/help-me-start.md).
+
+## Action feedback
+
+## Why this helps
+
+When the selected tip has an explanation, the action card offers a collapsed
+**Why this helps** section beneath the action controls and feedback. This uses
+the existing translated explanation without changing tip content or selection.
+It works in Random Tip and Help Me Start, and for tips opened from the library,
+favorites, or progress. A different tip starts collapsed; switching languages
+preserves whether the explanation is open. Tips without an explanation omit it.
 
 ## Action feedback
 

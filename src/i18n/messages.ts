@@ -21,6 +21,7 @@ type Messages = {
     moreCategories: string;
     fewerCategories: string;
     actionLabel: string;
+    explanationLabel: string;
     generateButton: string;
   };
   completion: {
@@ -88,6 +89,7 @@ const en = {
     moreCategories: "Show categories",
     fewerCategories: "Hide categories",
     actionLabel: "Do this now",
+    explanationLabel: "Why this helps",
     generateButton: "Generate a New Quest",
   },
   footer: {
@@ -160,6 +162,7 @@ const srLatn = {
     moreCategories: "Prikaži kategorije",
     fewerCategories: "Sakrij kategorije",
     actionLabel: "Uradi ovo sada",
+    explanationLabel: "Zašto ovo pomaže",
     generateButton: "Generiši novu misiju",
   },
   footer: {

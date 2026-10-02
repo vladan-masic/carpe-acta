@@ -198,6 +198,7 @@ export function App() {
 
           {selection.hasSuggestion && <TipCard
             actionLabel={copy.generator.actionLabel}
+            explanationLabel={copy.generator.explanationLabel}
             buttonLabel={selection.helping ? startCopy.another : copy.generator.generateButton}
             tip={localizedActiveTip}
             onGenerateTip={handleGenerateTip}
@@ -249,6 +250,7 @@ export function App() {
         </section>
 
         <FavoriteTips
+          locale={locale}
           title={copy.favorites.title}
           description={favorites.signedIn ? favoritesCopy.account : favorites.persisted ? copy.favorites.description : copy.favorites.unsaved}
           disabled={favorites.disabled}
