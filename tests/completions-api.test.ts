@@ -76,3 +76,19 @@ it("rejects a failed rated-history read rather than displaying false empty resul
   q.range = () => Promise.resolve({ error, data: null });
   await expect(fetchRatedCompletions({ from: () => q } as unknown as SupabaseClient, "alice")).rejects.toBe(error);
 });
+
+it("deletes exactly one owner's event and propagates failures", async () => {
+  const { deleteCompletion } = await import("../src/completions/api");
+  const query: any = { delete: vi.fn(), eq: vi.fn(), then: vi.fn() };
+  query.delete.mockReturnValue(query);
+  query.eq.mockReturnValue(query);
+  query.then.mockImplementation((resolve: (value: unknown) => unknown) => Promise.resolve({ error: null }).then(resolve));
+  const from = vi.fn(() => query);
+  const client = { from } as unknown as SupabaseClient;
+  await deleteCompletion(client, "alice", "event-1");
+  expect(from).toHaveBeenCalledExactlyOnceWith("tip_completions");
+  expect(query.eq.mock.calls).toEqual([["user_id", "alice"], ["id", "event-1"]]);
+  const error = new Error("denied");
+  query.then.mockImplementation((resolve: (value: unknown) => unknown) => Promise.resolve({ error }).then(resolve));
+  await expect(deleteCompletion(client, "alice", "event-1")).rejects.toBe(error);
+});

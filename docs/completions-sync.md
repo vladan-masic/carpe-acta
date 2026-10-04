@@ -16,8 +16,8 @@ Apply `supabase/migrations/202610010002_tip_completions.sql` once before deployi
 this frontend. It creates `tip_completions` with owner-only read/insert policies
 and a primary key of `(user_id, id)`. Existing favorites/authentication are not
 changed. No new environment variables or server secrets are needed. Account
-deletion cascades to its completion records. Updating/deleting individual events
-is not exposed in this increment.
+deletion cascades to its completion records. The optional Undo feature below adds
+owner-only deletion through a separate migration; event updates remain disallowed.
 
 Run `supabase/tests/completions-access.sql` to verify permissions, owner access,
 account isolation, idempotency and timestamp preservation in a rollback-only
@@ -82,3 +82,64 @@ activity. A failed refresh preserves the last snapshot with the existing error
 notice; an initial failure is not presented as an empty history.
 
 No new migration, environment variables or chart dependency is required.
+
+## Undo a recent completion
+
+After a confirmed save, the latest completion offers **Undo** for 15 seconds.
+The offer follows that exact event across tip changes, and includes its localized
+title. Switching languages preserves it. Hovering or focusing the notice, or an
+ongoing completion sync operation, pauses dismissal and grants a fresh 15 seconds
+afterward. A new confirmed completion replaces the previous offer. Dismissal,
+reloading, or switching accounts ends the offer; this is not a history editor.
+
+Undo removes just that event. Guest deletion rereads local storage and removes
+the event plus its embedded feedback, preserving unrelated records and malformed
+history. Account deletion filters by owner and event ID; the existing foreign key
+atomically cascades to the corresponding feedback. Neither deleting feedback nor
+saving late feedback can recreate the parent completion. Feedback controls are
+unmounted during an undo attempt. Other accounts, prior attempts of the same tip,
+favorites, daily quests, and tip selection remain unchanged.
+
+A successful undo re-enables **I did it** for the same active attempt and resets
+its optional timer to idle. Completing it again creates a fresh event ID. Failed
+or uncertain deletion offers **Retry undo** without a timeout; retries use the
+same event ID, including if the first deletion actually succeeded. Retry before
+leaving, dismissing, or saving another completion. Account operations never fall
+back to browser history. Failed saves must first be confirmed with **Retry save**
+before Undo is offered.
+
+Progress, recent history and helpfulness summaries refresh after undo. If that
+read fails after a successful deletion, the undo remains successful and account
+summaries are unavailable until refreshed; stale totals are not presented as
+current. Other devices see the deletion on their normal refresh/focus cycle.
+Guest Undo affects only browser history, not copies already explicitly imported
+into an account by another tab. The feature does not undo older imported history.
+
+### Deployment and verification
+
+Apply `supabase/migrations/202610040001_completion_undo.sql` before using account
+Undo with this frontend. It grants authenticated users DELETE on their own
+`tip_completions` rows under RLS. It grants no event UPDATE or direct feedback
+DELETE permission. The short offer is a UI policy, not a server-side retention
+rule: an authenticated client can delete any of its own events.
+
+Run `supabase/tests/completion-undo-access.sql`, `completions-access.sql`, and
+`feedback-access.sql` after the migration. The new rollback-only test checks
+cross-account denial, owner deletion, feedback cascade, preservation of other
+events, idempotent retries, and rejection of late orphan feedback.
+
+The migration is prepared locally and has not been applied to the live project.
+Without it, signed-in Undo will report a retryable permissions error. No new
+packages, environment variables, or secrets are required.
+
+### Verification on 2026-10-04
+
+- All 203 automated tests passed; production build passed with the existing
+  bundle-size warning. `git diff --check` passed.
+- Applied the completion, feedback and Undo migrations to a temporary local
+  PostgreSQL 16 database with representative Supabase roles and `auth.uid()`.
+  All three rollback-only SQL access tests passed. This checks the SQL behavior,
+  not the deployed Supabase configuration; the live migration is still pending.
+- Verified guest completion, feedback, Undo, updated progress and focus restoration
+  in the browser, with English desktop and Serbian narrow-mobile layouts. Used
+  isolated in-memory history; existing user history was not changed.

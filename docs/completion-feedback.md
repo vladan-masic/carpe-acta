@@ -54,3 +54,13 @@ feedback relation. SQL test records were rolled back, leaving user history intac
 
 Frontend deployment remains pending. After deploying, complete an action, submit
 and change feedback, then refresh on another device to verify end-to-end behavior.
+
+## Undo interaction
+
+Undoing the parent completion also removes its answer: embedded guest feedback is
+removed with the local event, and account feedback uses the existing foreign-key
+cascade. A concurrent answer either saves before deletion and is then removed,
+or arrives after deletion and fails its foreign-key check. Feedback controls
+unmount when Undo starts, so late UI responses cannot restore an answer or a
+completion. See [completion Undo](completions-sync.md#undo-a-recent-completion)
+for setup, retry behavior, and synchronization limits.

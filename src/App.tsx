@@ -17,6 +17,7 @@ import { DailyQuest } from "./components/DailyQuest";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { TipCard } from "./components/TipCard";
 import { ActionTimer } from "./components/ActionTimer";
+import { CompletionUndoNotice } from "./components/CompletionUndoNotice";
 import { tips } from "./data/tips";
 import { getInitialLocale, persistLocale } from "./i18n/locales";
 import { messages } from "./i18n/messages";
@@ -229,6 +230,9 @@ export function App() {
               client={auth.client} locale={locale} onSaved={completion.refresh} disabled={completion.busy}
             />}
           />}
+          <CompletionUndoNotice undo={completion.undo} locale={locale} busy={completion.busy}
+            title={localizedTips.find((tip) => tip.id === completion.undo?.record.tipId)?.title ?? ""}
+            onUndo={completion.undoCompletion} onDismiss={completion.dismissUndo} />
           {selection.helping && selection.hasSuggestion && !selection.canGoSmaller && <p className="help-start-minimum">{startCopy.shortest}</p>}
           <div className="favorites-storage-status" role="status" aria-atomic="true">
             {favorites.busy ? <p>{favoritesCopy.busy}</p> : favorites.error ? <p>{favoritesCopy.error}</p> : !favorites.persisted && <p>{copy.favorites.unsaved}</p>}

@@ -5,6 +5,13 @@ import type { ProgressData } from "../utils/progress";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { TipCompletion } from "../utils/completions";
 
+export async function deleteCompletion(client: SupabaseClient, userId: string, id: string) {
+  // Feedback is deleted atomically by the existing foreign-key cascade.
+  const { error } = await client.from("tip_completions").delete()
+    .eq("user_id", userId).eq("id", id);
+  if (error) throw error;
+}
+
 export async function countCompletions(client: SupabaseClient, userId: string) {
   const { count, error } = await client.from("tip_completions")
     .select("id", { count: "exact", head: true }).eq("user_id", userId);

@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { TipId } from "../types/tip";
 import type { useAuth } from "./useAuth";
-import { completionStorageKey, loadCompletions, saveCompletion, type TipCompletion } from "../utils/completions";
+import { completionStorageKey, loadCompletions, removeCompletion, saveCompletion, type TipCompletion } from "../utils/completions";
 import { summarizeProgress, type ProgressData } from "../utils/progress";
-import { fetchProgress, countCompletions, uploadCompletions } from "../completions/api";
+import { deleteCompletion, fetchProgress, countCompletions, uploadCompletions } from "../completions/api";
 
 export type CompletionStatus = "saving" | "saved" | "unsaved" | "error" | null;
-type Operation = { kind: "refresh" } | { kind: "save"; record: TipCompletion } | { kind: "import" };
+type Operation = { kind: "refresh" } | { kind: "save" | "undo"; record: TipCompletion } | { kind: "import" };
+export type CompletionUndo = { record: TipCompletion; phase: "available" | "undoing" | "error" | "done" };
 type State = { progress: ProgressData | null; owner: string | null; count: number | null; busy: boolean; error: boolean; imported: boolean };
 
 export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client" | "session" | "loading">) {
@@ -17,6 +18,24 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
   const record = useRef<TipCompletion | null>(null);
   const run = useRef<(operation: Operation) => void>(() => {});
   const locked = useRef(false);
+  const [undo, setUndo] = useState<CompletionUndo | null>(null);
+  const undoRef = useRef<CompletionUndo | null>(null);
+  function publishUndo(next: CompletionUndo | null) {
+    undoRef.current = next;
+    setUndo(next);
+  }
+  const dismissUndo = useCallback(() => {
+    if (undoRef.current?.phase === "undoing") return;
+    undoRef.current = null;
+    setUndo(null);
+  }, []);
+  function finishUndo(target: TipCompletion) {
+    if (record.current === target) {
+      record.current = null;
+      setAttempt({ owner, status: null });
+    }
+    publishUndo({ record: target, phase: "done" });
+  }
 
   useEffect(() => {
     const sync = () => setGuest(loadCompletions());
@@ -46,6 +65,7 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
     record.current = null;
     locked.current = false;
     setAttempt({ owner, status: null });
+    publishUndo(null);
     run.current = () => {};
     const client = auth.client;
     if (!client || !owner || auth.loading) return;
@@ -58,11 +78,20 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
       if (!active || locked.current) return;
       locked.current = true;
       publish({ busy: true, error: false });
+      let writeSucceeded = false;
       try {
         if (operation.kind === "save") {
           await uploadCompletions(client!, owner!, [operation.record]);
           if (!active) return;
+          writeSucceeded = true;
           if (record.current === operation.record) setAttempt({ owner, status: "saved" });
+        } else if (operation.kind === "undo") {
+          await deleteCompletion(client!, owner!, operation.record.id);
+          if (!active) return;
+          writeSucceeded = true;
+          finishUndo(operation.record);
+          // Do not display a stale completion/feedback summary if the read fails.
+          publish({ count: null, progress: null });
         } else if (operation.kind === "import") {
           const history = loadCompletions();
           if (!history.readable) throw new Error("Unreadable guest history");
@@ -75,13 +104,18 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
       } catch {
         if (!active) return;
         publish({ error: true });
-        if (operation.kind === "save" && record.current === operation.record) {
+        if (operation.kind === "save" && !writeSucceeded && record.current === operation.record) {
           // The server may have committed despite a lost response. Keep the
-          // original event ID for retries, including after a failed count read.
+          // original event ID for retries. Read failures do not undo a confirmed save.
           setAttempt({ owner, status: "error" });
         }
+        if (operation.kind === "undo" && !writeSucceeded) publishUndo({ record: operation.record, phase: "error" });
       } finally {
-        if (active) { locked.current = false; publish({ busy: false }); }
+        if (active) {
+          if (operation.kind === "save" && writeSucceeded) publishUndo({ record: operation.record, phase: "available" });
+          locked.current = false;
+          publish({ busy: false });
+        }
       }
     }
     run.current = (operation) => { void execute(operation); };
@@ -107,12 +141,28 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
       setAttempt({ owner, status: "saving" });
       run.current({ kind: "save", record: next });
     } else {
-      setAttempt({ owner, status: saveCompletion(next) ? "saved" : "unsaved" });
+      const saved = saveCompletion(next);
+      setAttempt({ owner, status: saved ? "saved" : "unsaved" });
+      if (saved) publishUndo({ record: next, phase: "available" });
       setGuest(loadCompletions());
     }
   }
   return {
-    completedRecord: attempt.owner === owner && status === "saved" ? record.current : null,
+    completedRecord: attempt.owner === owner && status === "saved" &&
+      !(undo?.record === record.current && (undo.phase === "undoing" || undo.phase === "error")) ? record.current : null,
+    undo: attempt.owner === owner ? undo : null,
+    dismissUndo,
+    undoCompletion: () => {
+      const target = undoRef.current;
+      if (busy || locked.current || !target || (target.phase !== "available" && target.phase !== "error")) return;
+      publishUndo({ ...target, phase: "undoing" });
+      if (owner) run.current({ kind: "undo", record: target.record });
+      else {
+        if (removeCompletion(target.record.id)) finishUndo(target.record);
+        else publishUndo({ ...target, phase: "error" });
+        setGuest(loadCompletions());
+      }
+    },
     status, complete, busy, signedIn: !!owner,
     progress: owner ? (state.owner === owner ? state.progress : null) : guest.readable ? summarizeProgress(guest.records) : null,
     count: owner ? (state.owner === owner ? state.count : null) : guest.readable ? guest.records.length : null,

@@ -5,7 +5,7 @@ do $$ begin
   if has_table_privilege('anon','public.tip_completions','SELECT')
     or has_table_privilege('anon','public.tip_completions','INSERT')
     or has_table_privilege('authenticated','public.tip_completions','UPDATE')
-    or has_table_privilege('authenticated','public.tip_completions','DELETE') then
+    or not has_table_privilege('authenticated','public.tip_completions','DELETE') then
     raise exception 'Unexpected privileges';
   end if;
 end $$;

@@ -56,3 +56,16 @@ export function saveCompletionFeedback(id: string, helpful: boolean): boolean {
     return true;
   } catch { return false; }
 }
+
+// Remove only this event (and its embedded feedback), preserving newer writes.
+// Repeating an undo is safe, including after a lost acknowledgement.
+export function removeCompletion(id: string): boolean {
+  try {
+    const raw = window.localStorage.getItem(completionStorageKey);
+    const records: unknown = raw === null ? [] : JSON.parse(raw);
+    if (!Array.isArray(records) || !records.every(isCompletion)) return false;
+    if (!records.some((record) => record.id === id)) return true;
+    window.localStorage.setItem(completionStorageKey, JSON.stringify(records.filter((record) => record.id !== id)));
+    return true;
+  } catch { return false; }
+}
