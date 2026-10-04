@@ -16,6 +16,7 @@ import { BrandEmblem } from "./components/BrandEmblem";
 import { DailyQuest } from "./components/DailyQuest";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { TipCard } from "./components/TipCard";
+import { ActionTimer } from "./components/ActionTimer";
 import { tips } from "./data/tips";
 import { getInitialLocale, persistLocale } from "./i18n/locales";
 import { messages } from "./i18n/messages";
@@ -39,6 +40,7 @@ export function App() {
   );
 
   const [locale, setLocale] = useState(getInitialLocale);
+  const [timerAttempt, setTimerAttempt] = useState(0);
   const [libraryOpen, setLibraryOpen] = useState(false);
   const selection = useTipSelection();
   const { activeTip, category: selectedCategory } = selection;
@@ -90,19 +92,24 @@ export function App() {
 
   function handleGenerateTip() {
     selection.generate();
+    resetAttempt();
+  }
+
+  function resetAttempt() {
     completion.reset();
+    setTimerAttempt((current) => current + 1);
   }
 
   function handleCategoryChange(category: CategoryFilterValue) {
     selection.selectCategory(category);
-    completion.reset();
+    resetAttempt();
   }
 
   function handleOpenTip(tip: LocalizedTip) {
     const original = tips.find((entry) => entry.id === tip.id);
     if (!original) return;
     selection.openTip(original);
-    completion.reset();
+    resetAttempt();
     requestAnimationFrame(() => {
       const heading = document.getElementById("active-tip-title");
       heading?.focus({ preventScroll: true });
@@ -179,14 +186,14 @@ export function App() {
 
           <button type="button" className="secondary-button help-start-toggle" onClick={() => {
             if (selection.helping) selection.leave(); else selection.start();
-            completion.reset();
+            resetAttempt();
           }}>{selection.helping ? startCopy.back : startCopy.title}</button>
 
           {selection.helping ? <HelpMeStart locale={locale} selected={selection.barrier}
             timeBudget={selection.timeBudget} hasSuggestion={selection.hasSuggestion}
-            onTimeSelect={(budget) => { selection.selectTimeBudget(budget); completion.reset(); }} onSelect={(barrier) => {
+            onTimeSelect={(budget) => { selection.selectTimeBudget(budget); resetAttempt(); }} onSelect={(barrier) => {
             selection.selectBarrier(barrier);
-            completion.reset();
+            resetAttempt();
           }} /> : <CategoryFilter
             ariaLabel={copy.generator.categoriesLabel}
             moreLabel={copy.generator.moreCategories}
@@ -211,8 +218,9 @@ export function App() {
             onRetry={completion.retry}
             onComplete={() => completion.complete(activeTip.id)}
             favoriteButton={renderFavoriteButton(localizedActiveTip)}
+            timer={completion.status === null && <ActionTimer key={`${activeTip.id}:${timerAttempt}`} minutes={activeTip.effortMinutes} locale={locale} />}
             extraActions={selection.helping && <button type="button" className="secondary-button"
-              disabled={!selection.canGoSmaller} onClick={() => { selection.smaller(); completion.reset(); }}>
+              disabled={!selection.canGoSmaller} onClick={() => { selection.smaller(); resetAttempt(); }}>
               {startCopy.smaller}
             </button>}
             feedback={completion.completedRecord && <CompletionFeedback

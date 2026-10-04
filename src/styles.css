@@ -1004,3 +1004,9 @@ h1 {
 @media (max-width: 820px) {
   .library-filters { grid-template-columns: 1fr; }
 }
+
+.action-timer { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+.action-timer .timer-readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin: 0 0 12px; }
+.timer-readout [role="timer"] { font-size: 1.75rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); }
+.action-timer [role="status"] p { margin: 12px 0 0; font-size: 0.95rem; }
+.action-timer button:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }

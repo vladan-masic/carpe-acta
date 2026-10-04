@@ -176,3 +176,16 @@ before deploying this version.
 The progress view shows tips marked as helpful, with feedback counts and a
 **Try again** button. It uses all saved feedback and leaves favorites and random
 suggestions unchanged. See [behavior and data rules](docs/what-helps-me.md).
+
+## Optional action timer
+
+The action card offers a timer using the tip's estimated effort. It starts only
+when requested, supports pause/resume and reset, and stops at zero. **Keep going**
+then counts extra time upward. Timer expiry never records a completion; **I did
+it** remains a separate, manual action.
+
+Timers belong to the current action attempt: choosing another action (including
+reopening the same tip), resetting the guided selection, completing the action,
+or reloading the page clears the timer. Switching languages preserves it.
+Elapsed clock time keeps the countdown accurate when browser updates are delayed.
+Timers are not saved or synced to accounts and do not request notification access.

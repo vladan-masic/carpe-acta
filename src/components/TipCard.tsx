@@ -25,6 +25,7 @@ type TipCardProps = {
   favoriteButton: ReactNode;
   feedback?: ReactNode;
   extraActions?: ReactNode;
+  timer?: ReactNode;
 };
 
 export function TipCard({
@@ -37,7 +38,7 @@ export function TipCard({
   completionStatus,
   completionBusy, savingLabel, failedLabel, retryLabel, onRetry,
   onComplete,
-  favoriteButton, feedback, extraActions,
+  favoriteButton, feedback, extraActions, timer,
 }: TipCardProps) {
   return (
     <article className="tip-card">
@@ -70,6 +71,7 @@ export function TipCard({
         {extraActions}
         {completionStatus === "error" && <button type="button" className="secondary-button" disabled={completionBusy} onClick={onRetry}>{retryLabel}</button>}
       </div>
+      {timer}
       <div className="completion-status" role="status" aria-atomic="true">
         {completionStatus === "saving" ? <p>{savingLabel}</p> : completionStatus === "error" ? <p>{failedLabel}</p> : completionStatus && (
           <p>
