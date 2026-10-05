@@ -168,6 +168,7 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
     count: owner ? (state.owner === owner ? state.count : null) : guest.readable ? guest.records.length : null,
     error: !!owner && state.owner === owner && state.error,
     guestUnreadable: !guest.readable,
+    browserCount: guest.readable ? guest.records.length : null,
     canImport: !!owner && guest.readable && guest.records.length > 0,
     imported: !!owner && state.owner === owner && state.imported,
     importGuest: () => { if (!busy) run.current({ kind: "import" }); },

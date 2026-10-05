@@ -32,6 +32,8 @@ import { completionMessages } from "./i18n/completions";
 import { useAuth } from "./hooks/useAuth";
 import { favoritesMessages } from "./i18n/favorites";
 import { AuthPanel } from "./components/AuthPanel";
+import { BrowserImport } from "./components/BrowserImport";
+import { storageMessages } from "./i18n/storage";
 
 export function App() {
   const dailyQuest = useMemo(() => getDailyQuest(tips), []);
@@ -51,6 +53,8 @@ export function App() {
   const completionCopy = completionMessages[locale];
   const favorites = useFavorites(auth);
   const favoritesCopy = favoritesMessages[locale];
+  const storageCopy = storageMessages[locale];
+  const storageLabel = auth.loading ? storageCopy.checking : auth.session ? storageCopy.account : storageCopy.browser;
 
   const copy = messages[locale];
   const localizedTips = useMemo(
@@ -152,7 +156,18 @@ export function App() {
             <a href="#favorites-title">{copy.favorites.title} ({favoriteTips.length})</a>
           </nav>
         }>
-          <AuthPanel locale={locale} auth={auth} />
+          <AuthPanel locale={locale} auth={auth} imports={<>
+            <BrowserImport locale={locale} title={storageCopy.favorites} label={favoritesCopy.import}
+              count={favorites.browserCount} canImport={favorites.canImport}
+              copied={!favorites.canImport && !favorites.disabled && favorites.browserCount !== null && favorites.browserCount > 0}
+              busy={favorites.busy} disabled={favorites.disabled} error={favorites.error}
+              onImport={favorites.importGuest} onRefresh={favorites.refresh} />
+            <BrowserImport locale={locale} title={storageCopy.history} label={completionCopy.import}
+              count={completion.browserCount} canImport={completion.canImport} copied={false}
+              success={completion.imported ? completionCopy.imported : undefined}
+              busy={completion.busy} disabled={completion.busy} error={completion.error}
+              onImport={completion.importGuest} onRefresh={completion.refresh} />
+          </>} />
           <LanguageSelector
             ariaLabel={copy.languageSelectorLabel}
             locale={locale}
@@ -244,7 +259,9 @@ export function App() {
         <section className="favorites-section" aria-labelledby="completed-actions-title">
           <div className="section-heading">
             <h2 id="completed-actions-title" tabIndex={-1}>{completionCopy.title}{completion.count !== null ? ` (${completion.count})` : ""}</h2>
-            <p>{completion.signedIn ? completionCopy.account : completionCopy.guest}</p>
+            <p className="storage-description"><strong className="storage-label">{storageLabel}</strong>
+              {!auth.loading && <span>{completion.signedIn ? storageCopy.accountHint : storageCopy.guestHint}</span>}
+            </p>
           </div>
           <div role="status" aria-atomic="true">
             {completion.error && <p>{completionCopy.unavailable}</p>}
@@ -253,10 +270,6 @@ export function App() {
           </div>
           {completion.signedIn && <div className="favorites-sync-controls completion-sync-controls">
             <button type="button" className="secondary-button" disabled={completion.busy} onClick={completion.refresh}>{completionCopy.refresh}</button>
-            {completion.canImport && <div>
-              <p>{completionCopy.importHint}</p>
-              <button type="button" className="secondary-button" disabled={completion.busy} onClick={completion.importGuest}>{completionCopy.import}</button>
-            </div>}
           </div>}
           <ProgressView progress={completion.progress} locale={locale} tips={localizedTips} busy={completion.busy} onTry={handleOpenTip} />
         </section>
@@ -264,16 +277,15 @@ export function App() {
         <FavoriteTips
           locale={locale}
           title={copy.favorites.title}
-          description={favorites.signedIn ? favoritesCopy.account : favorites.persisted ? copy.favorites.description : copy.favorites.unsaved}
+          description={<span className="storage-description">
+            <strong className="storage-label">{storageLabel}</strong>
+            {!auth.loading && <span>{favorites.signedIn ? storageCopy.accountHint : favorites.persisted ? storageCopy.guestHint : copy.favorites.unsaved}</span>}
+          </span>}
           disabled={favorites.disabled}
           loading={favorites.busy || favorites.error}
           controls={favorites.signedIn && (
             <div className="favorites-sync-controls">
               <button type="button" className="secondary-button" disabled={favorites.busy} onClick={favorites.refresh}>{favoritesCopy.refresh}</button>
-              {favorites.canImport && <div>
-                <p>{favoritesCopy.importHint}</p>
-                <button type="button" className="secondary-button" disabled={favorites.disabled} onClick={favorites.importGuest}>{favoritesCopy.import}</button>
-              </div>}
             </div>
           )}
           emptyMessage={copy.favorites.empty}

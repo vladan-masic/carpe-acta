@@ -16,7 +16,7 @@ type FavoriteTipsProps = {
   disabled?: boolean;
   loading?: boolean;
   controls?: ReactNode;
-  description: string;
+  description: ReactNode;
   emptyMessage: string;
   openLabel: string;
   actionLabel: string;

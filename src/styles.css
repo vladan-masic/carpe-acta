@@ -1018,3 +1018,16 @@ h1 {
   .completion-undo { left: 16px; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom)); width: auto; }
 }
 @media print { .completion-undo { display: none; } }
+
+.storage-description { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.storage-label { display: inline-block; width: fit-content; border: 1px solid var(--line); border-radius: 6px; padding: 4px 9px; color: var(--text); background: var(--surface); font-size: 0.9rem; }
+.account-storage { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 14px; border: 1px solid var(--line); border-radius: 8px; margin: 16px 0; }
+.account-storage p { flex-basis: 100%; margin: 0; font-size: 0.9rem; }
+.account-imports { margin: 20px 0; }
+.account-imports h3 { font-size: 1.05rem; }
+.browser-import { border-top: 1px solid var(--line); padding: 14px 0; }
+.browser-import h4 { margin: 0 0 6px; }
+.browser-import p { margin: 6px 0 10px; font-size: 0.9rem; }
+.browser-import button { max-width: 100%; white-space: normal; margin: 4px 6px 0 0; }
+
+.browser-import button[aria-disabled="true"] { opacity: 0.6; cursor: default; }

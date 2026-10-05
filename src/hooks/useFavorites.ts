@@ -67,6 +67,7 @@ export function useFavorites(auth: Pick<ReturnType<typeof useAuth>, "client" | "
     ids, busy, error, disabled, signedIn: !!userId,
     persisted: userId ? true : guest.persisted,
     canImport: !!userId && importIds.length > 0,
+    browserCount: guest.persisted ? guest.ids.length : null,
     toggle: (id: TipId) => {
       if (disabled) return;
       if (userId) run.current({ kind: "toggle", id });

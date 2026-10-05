@@ -93,3 +93,24 @@ configuration. Before release, use a dedicated test account to check:
 - https://supabase.com/docs/guides/auth/social-login/auth-google
 - https://supabase.com/docs/guides/auth/redirect-urls
 - https://supabase.com/docs/guides/auth/auth-smtp
+
+## Storage and import interface
+
+Favorites and completed actions show a short **This browser only** or **Your
+account** label. While authentication initializes, they show **Checking storage**
+instead of suggesting the guest collection is the active destination. Existing
+save and sync errors remain visible; the label describes the destination, not a
+successful write.
+
+The login panel explains that accounts are optional and signing in does not
+import browser saves. Once signed in, **Account** contains both explicit import
+controls under **Copy browser saves to your account**, with browser counts and
+one shared note about retained browser copies and duplicate-safe imports. Empty,
+unavailable, syncing, failed and already-copied favorites states are distinct.
+History import confirms success and remains repeatable. Counts describe browser
+records, not the number of new account records an import will create.
+
+The sections retain their Refresh controls. Logging out shows the separate browser
+collection again. This changes presentation only: no automatic import, combined
+write, new storage key, dependency or database migration. Both languages use the
+same flow.

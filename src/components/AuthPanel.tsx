@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import type { useAuth } from "../hooks/useAuth";
 import { authErrorKey } from "../auth/config";
@@ -6,11 +6,13 @@ import { performAuthAction, type AuthAction, type AuthNotice } from "../auth/act
 import { authMessages, type AuthMessages } from "../i18n/auth";
 import type { Locale } from "../i18n/locales";
 import { useDialogDismiss } from "../hooks/useDialogDismiss";
+import { storageMessages } from "../i18n/storage";
 
 type FormMode = "login" | "signup" | "link" | "reset" | "password";
 
-export function AuthPanel({ locale, auth }: { locale: Locale; auth: ReturnType<typeof useAuth> }) {
+export function AuthPanel({ locale, auth, imports }: { locale: Locale; auth: ReturnType<typeof useAuth>; imports?: ReactNode }) {
   const copy = authMessages[locale];
+  const storage = storageMessages[locale];
   const dialog = useRef<HTMLDialogElement>(null);
   const dismissDialog = useDialogDismiss();
   const trigger = useRef<HTMLButtonElement>(null);
@@ -107,13 +109,28 @@ export function AuthPanel({ locale, auth }: { locale: Locale; auth: ReturnType<t
       </div>
       {!auth.client ? <p>{copy.unavailable}</p> : accountView ? <>
         <p>{copy.signedIn} <strong className="auth-email">{auth.session?.user.email}</strong></p>
-        <p className="auth-note">{copy.localData}</p>
+        <div className="account-storage">
+          <span>{storage.location}</span>
+          <strong className="storage-label">{storage.account}</strong>
+          <p>{storage.accountHint}</p>
+        </div>
+        {imports && <section className="account-imports" aria-labelledby="account-imports-title">
+          <h3 id="account-imports-title">{storage.importTitle}</h3>
+          <p className="auth-note">{storage.importHint}</p>
+          {imports}
+        </section>}
+        <p className="auth-note">{storage.logout}</p>
         <div className="auth-account-actions">
           <button className="secondary-button" type="button" disabled={busy} onClick={() => changeMode("password")}>{copy.newPassword}</button>
           <button className="primary-button" type="button" disabled={busy} onClick={() => void run("logout")}>{busy ? copy.busy : copy.logout}</button>
         </div>
       </> : <>
         <p className="auth-note">{copy.intro}</p>
+        {["login", "signup", "link"].includes(mode) && <div className="account-storage">
+          <span>{storage.location}</span>
+          <strong className="storage-label">{storage.browser}</strong>
+          <p>{storage.separate}</p>
+        </div>}
         {["login", "signup", "link"].includes(mode) && <>
           <button className="secondary-button auth-google" type="button" disabled={busy} onClick={() => void run("google")}>{copy.google}</button>
           <p className="auth-divider">{copy.or}</p>

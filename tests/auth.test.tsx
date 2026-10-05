@@ -6,6 +6,7 @@ import type { AuthChangeEvent, Session, SupabaseClient } from "@supabase/supabas
 import { authErrorKey, authRedirectUrl, getAuthConfig } from "../src/auth/config";
 import { performAuthAction } from "../src/auth/actions";
 import { authMessages } from "../src/i18n/auth";
+import { storageMessages } from "../src/i18n/storage";
 
 const mock = vi.hoisted(() => ({
   handlers: new Set<(event: AuthChangeEvent, session: Session | null) => void>(),
@@ -255,7 +256,7 @@ describe("login interface", () => {
     await user.click(screen.getByRole("button", { name: "Save password" }));
     expect(await screen.findByText(authMessages.en.passwordSaved)).toBeTruthy();
     expect(screen.getByText("reader@example.com")).toBeTruthy();
-    expect(screen.getByText(authMessages.en.localData)).toBeTruthy();
+    expect(screen.getByText(storageMessages.en.logout)).toBeTruthy();
   });
   it("reports Google failure and restores focus after closing", async () => {
     mock.auth.signInWithOAuth.mockResolvedValue({ error: { code: "provider_disabled" } });

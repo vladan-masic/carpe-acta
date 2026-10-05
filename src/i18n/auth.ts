@@ -3,8 +3,7 @@ import type { Locale } from "./locales";
 const en = {
   login: "Log in", account: "Account", logout: "Log out", close: "Close",
   loading: "Checking your account…", busy: "Please wait…",
-  intro: "Choose how you’d like to sign in. You can also keep using Carpe Acta without an account.",
-  localData: "Favorites and completed actions sync with your account. Browser history can be imported separately.",
+  intro: "Sign in to save favorites and history across devices. An account is optional.",
   unavailable: "Login is not available yet. You can still use the tips and save favorites in this browser.",
   google: "Continue with Google", or: "or use your email",
   email: "Email address", password: "Password", confirmPassword: "Confirm password",
@@ -32,8 +31,7 @@ export type AuthMessages = { [Key in keyof typeof en]: string };
 const sr: AuthMessages = {
   login: "Prijavi se", account: "Nalog", logout: "Odjavi se", close: "Zatvori",
   loading: "Proveravamo tvoj nalog…", busy: "Sačekaj…",
-  intro: "Izaberi način prijave. Carpe Acta možeš da koristiš i bez naloga.",
-  localData: "Omiljeni saveti i završene radnje se sinhronizuju sa tvojim nalogom. Istoriju iz pregledača možeš zasebno da uvezeš.",
+  intro: "Prijavi se da čuvaš omiljene savete i istoriju na više uređaja. Nalog nije obavezan.",
   unavailable: "Prijava još nije dostupna. I dalje možeš da koristiš savete i čuvaš omiljene u ovom pregledaču.",
   google: "Nastavi preko Google-a", or: "ili koristi imejl",
   email: "Imejl adresa", password: "Lozinka", confirmPassword: "Potvrdi lozinku",
