@@ -128,9 +128,9 @@ Run `supabase/tests/completion-undo-access.sql`, `completions-access.sql`, and
 cross-account denial, owner deletion, feedback cascade, preservation of other
 events, idempotent retries, and rejection of late orphan feedback.
 
-The migration is prepared locally and has not been applied to the live project.
-Without it, signed-in Undo will report a retryable permissions error. No new
-packages, environment variables, or secrets are required.
+The migration was applied to the live Carpe Acta project on 2026-10-04 after
+user approval. Do not rerun it there. Apply it once for new environments before
+using account Undo. No new packages, environment variables, or secrets are required.
 
 ### Verification on 2026-10-04
 
@@ -143,3 +143,16 @@ packages, environment variables, or secrets are required.
 - Verified guest completion, feedback, Undo, updated progress and focus restoration
   in the browser, with English desktop and Serbian narrow-mobile layouts. Used
   isolated in-memory history; existing user history was not changed.
+
+### Live repair on 2026-10-04
+
+- Confirmed the live project lacked both the DELETE grant and deletion policy.
+  Applied `202610040001_completion_undo.sql` after explicit user approval.
+- Removed the three specifically approved October 4 One Tiny Step events and
+  their associated feedback. The other 11 account completions were retained.
+- Live rollback-only checks passed for authenticated owner deletion, denial of
+  cross-account deletion, feedback cascade, and idempotent retry. No SQL test
+  records were retained.
+- Verified the actual signed-in browser flow: a temporary completion raised the
+  total from 11 to 12; clicking Undo showed success and restored 11 total and
+  zero for today. The temporary browser test event was removed by Undo.
