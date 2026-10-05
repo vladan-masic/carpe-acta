@@ -32,6 +32,9 @@ npm run dev
 - `npm run preview` - preview the production build locally
 - `npm test` - check tip content integrity, localization, and selection behavior
 
+See the [loading performance investigation](docs/loading-performance.md) for
+production bundle measurements, the tested split, and a local benchmark command.
+
 ## Project Shape
 
 ```text
