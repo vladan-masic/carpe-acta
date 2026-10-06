@@ -192,3 +192,25 @@ reopening the same tip), resetting the guided selection, completing the action,
 or reloading the page clears the timer. Switching languages preserves it.
 Elapsed clock time keeps the countdown accurate when browser updates are delayed.
 Timers are not saved or synced to accounts and do not request notification access.
+
+### Timer alerts
+
+The **Timer alerts** disclosure offers a soft chime with a preview, optional
+browser notifications, and a tab-title indicator. Sound and notifications
+start off; the tab-title indicator starts on and can be disabled. Preferences
+are stored only in this browser (`carpe-acta-timer-alerts-v1`), not in the account.
+Previewing the sound does not enable it. Audio is prepared during a user gesture
+when sound is enabled or a timer starts/resumes.
+
+Expiry alerts happen once per run. Language changes do not replay them.
+**Dismiss alert**, **Keep going**, resetting, switching tips, and completing an
+action clear the title indicator. Clicking a notification attempts to focus the
+window and active action. Notifications are silent so the optional chime is the
+only app-requested sound. They close when acknowledged or the timer is removed.
+
+Permission is requested only when the user enables notifications. Unsupported,
+denied, and failed notification delivery fall back to the in-page timer and
+optional title indicator. This uses page notifications, not push or a service
+worker: keep the page open, and expect delays if the browser suspends it. Mobile
+support varies; see [MDN's Notifications API guidance](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API/Using_the_Notifications_API).
+No alert completes an action or changes account data.
