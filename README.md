@@ -214,3 +214,25 @@ optional title indicator. This uses page notifications, not push or a service
 worker: keep the page open, and expect delays if the browser suspends it. Mobile
 support varies; see [MDN's Notifications API guidance](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API/Using_the_Notifications_API).
 No alert completes an action or changes account data.
+
+## Activity calendar
+
+Progress includes twelve Monday-start week columns: eleven complete weeks and
+this week through today. Squares use five fixed activity levels (0, 1, 2, 3–4,
+5+ completions) in the app's terracotta palette. Future days are blank. Today
+has an outline; a selected day has an inset marker. The seven-day totals remain
+as a compact summary.
+
+Hover or keyboard focus reveals the date and exact count below the calendar.
+Click, tap, Enter or Space selects a day and shows its full completion history,
+including feedback and unknown-tip fallbacks. **Show recent actions** restores
+the usual latest-ten history. Tab enters the calendar once; arrow keys explore
+its dates, Home/End move within a week, and Ctrl+Home/End reach the first/last day.
+Escape dismisses the date preview. Each square has a complete accessible label.
+The calendar can scroll horizontally on very narrow screens.
+
+Calendar dates use local calendar arithmetic through DST and year boundaries.
+Guest and account views share the same aggregation; the existing account read
+now paginates the twelve-week range. Completion saves, Undo, imports and refresh
+update counts and selected-day history. No schema, tip data, or account-write
+changes are required.

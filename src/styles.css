@@ -892,19 +892,11 @@ h1 {
 
 .progress-view { margin-top: 1.75rem; }
 .progress-caption { max-width: 65ch; }
-.progress-totals { display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; }
-.progress-totals dd { margin: 0.35rem 0 0; font-size: 1.75rem; font-weight: 700; }
-.progress-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0.6rem; padding: 0; list-style: none; }
-.progress-day { display: flex; flex-direction: column; justify-content: space-between; gap: 0.6rem; padding: 0.8rem 0.5rem; border: 1px solid #d8cbbd; border-radius: 0.7rem; text-align: center; }
-.progress-day.active { background: #f3e3d6; border-color: #ad674f; }
-.progress-day time { font-size: 0.85rem; }
-.progress-day strong { font-size: 1.25rem; }
 .progress-recent { list-style: none; padding: 0; }
 .progress-recent li { display: flex; justify-content: space-between; gap: 1.5rem; padding: 1rem 0; border-bottom: 1px solid #d8cbbd; }
 .progress-recent h4, .progress-recent p { margin: 0 0 0.4rem; }
 .progress-recent time { flex-shrink: 0; font-size: 0.85rem; }
 @media (max-width: 600px) {
-  .progress-days { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .progress-recent li { flex-direction: column; gap: 0.3rem; }
 }
 
@@ -1040,3 +1032,26 @@ h1 {
 .timer-alert-options input { flex-shrink: 0; }
 .timer-alert-options button { justify-self: start; }
 .timer-alert-options p { margin: 0; font-size: 0.9rem; }
+
+
+.activity-calendar { margin: 1.5rem 0; }
+.calendar-scroll { overflow-x: auto; padding: 4px; }
+.calendar-layout { display: grid; grid-template-columns: 2rem 1fr; grid-template-rows: auto 1fr; gap: 8px; min-width: 296px; max-width: 376px; }
+.calendar-months { grid-column: 2; display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; font-size: 0.75rem; }
+.calendar-weekdays { display: grid; grid-template-rows: repeat(7, 1fr); gap: 4px; font-size: 0.7rem; align-items: center; }
+.calendar-squares { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 1fr); grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 4px; }
+.calendar-square, .calendar-future { aspect-ratio: 1; min-width: 0; padding: 0; border: 1px solid #bbaa99; border-radius: 4px; }
+.calendar-square { cursor: pointer; }
+.calendar-future { border-color: transparent; }
+.activity-level-0 { background: #f1ebe2; }
+.activity-level-1 { background: #f2c5ac; }
+.activity-level-2 { background: #de9773; }
+.activity-level-3 { background: #b75e36; }
+.activity-level-4 { background: #7c351e; }
+.calendar-square[aria-current="date"] { border: 2px solid var(--text); }
+.calendar-square[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--paper, #fff8eb); }
+.calendar-square:focus-visible, .calendar-square:hover { outline: 2px solid var(--text); outline-offset: 1px; }
+.calendar-legend { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin-top: 12px; font-size: 0.8rem; }
+.calendar-swatch { width: 14px; height: 14px; border-radius: 3px; border: 1px solid #bbaa99; }
+.calendar-scale { margin-left: 8px; }
+.calendar-preview { min-height: 3em; margin: 8px 0 0; font-size: 0.9rem; }

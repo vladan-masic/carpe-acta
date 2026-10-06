@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { summarizeProgress } from "../src/utils/progress";
 import { act, cleanup, renderHook, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
@@ -10,7 +11,7 @@ const client = {} as SupabaseClient;
 const auth = (id: string | null) => ({ client, session: id ? { user: { id } } as Session : null, loading: false });
 const guest = { id: "legacy-1", tipId: "retired-tip", completedAt: "2026-09-16T10:00:00.000Z" };
 function deferred<T>() { let resolve!: (value: T) => void; const promise = new Promise<T>((done) => { resolve = done; }); return { promise, resolve }; }
-beforeEach(() => { localStorage.clear(); vi.resetAllMocks(); vi.mocked(fetchProgress).mockResolvedValue({ days: [], recent: [], helpful: [] }); vi.mocked(countCompletions).mockResolvedValue(0); vi.mocked(uploadCompletions).mockResolvedValue(); });
+beforeEach(() => { localStorage.clear(); vi.resetAllMocks(); vi.mocked(fetchProgress).mockResolvedValue(summarizeProgress([])); vi.mocked(countCompletions).mockResolvedValue(0); vi.mocked(uploadCompletions).mockResolvedValue(); });
 afterEach(cleanup);
 
 it("preserves guest history and blocks duplicate clicks while allowing another attempt", () => {

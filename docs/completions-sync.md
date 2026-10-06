@@ -66,16 +66,18 @@ Duplicate handling follows [Supabase upsert semantics](https://supabase.com/docs
 
 ## Simple progress view
 
-The completed-actions section now shows seven local calendar days (today and the
-previous six), the week's completion total, days with activity, and the ten most
-recent completions with localized tip titles, actions and timestamps. Unknown tip
+The completed-actions section shows a 12-week activity calendar (eleven complete
+Monday–Sunday weeks and the current week through today), alongside a compact
+summary of today and the previous six days. Selecting a square shows all actions
+for that day; the default history still shows the ten most recent completions
+with localized tip titles, actions and timestamps. Unknown tip
 IDs retain their history with a translated fallback title. Repeated actions count
 as separate events; duplicate event IDs count once. Future timestamps are excluded
 from the progress view; the existing all-time database total remains unchanged.
 
 Account progress uses the existing owner-only table policies. Recent records are
-limited separately, and weekly records are paginated in batches of 500 so busy
-weeks are not silently truncated. Guests use their readable browser history.
+limited separately, and calendar records are paginated in batches of 500 so busy
+periods are not silently truncated. Guests use their readable browser history.
 Progress refreshes with completion saves/imports, focus, manual refresh and local
 midnight. Dates reflect the current device timezone, so traveling may regroup past
 activity. A failed refresh preserves the last snapshot with the existing error

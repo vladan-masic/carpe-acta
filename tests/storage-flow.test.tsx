@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import { summarizeProgress } from "../src/utils/progress";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
@@ -24,7 +25,7 @@ beforeEach(() => {
   Object.defineProperty(HTMLDialogElement.prototype, "close", { configurable: true, value() { this.removeAttribute("open"); this.dispatchEvent(new Event("close")); } });
   vi.mocked(fetchFavorites).mockResolvedValue([]);
   vi.mocked(countCompletions).mockResolvedValue(0);
-  vi.mocked(fetchProgress).mockResolvedValue({ days: [], recent: [], helpful: [] });
+  vi.mocked(fetchProgress).mockResolvedValue(summarizeProgress([]));
   vi.mocked(addFavorites).mockResolvedValue(); vi.mocked(uploadCompletions).mockResolvedValue();
 });
 afterEach(() => { cleanup(); localStorage.clear(); });
