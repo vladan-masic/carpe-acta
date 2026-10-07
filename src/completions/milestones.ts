@@ -1,29 +1,15 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { localDay, maxMilestoneDays, type MilestoneTotals } from "../utils/milestones";
+import type { MilestoneTotals } from "../utils/milestones";
 
-// Only timestamps cross the wire. Skip the remainder of each oldest local day:
-// even a day with thousands of completions cannot force a full-history download.
-// At most 365 pages of 128 timestamps; normally a single page covers all badges.
+// One aggregate response, regardless of history length. The database enforces
+// the authenticated owner and uses the calendar's device timezone.
 export async function fetchMilestones(client: SupabaseClient, owner: string, now = new Date()): Promise<MilestoneTotals> {
-  const days = new Set<string>();
-  let before: string | null = null;
-  let actions = 0;
-  while (days.size < maxMilestoneDays) {
-    let query = client.from("tip_completions")
-      .select("completed_at", before === null ? { count: "exact" } : undefined)
-      .eq("user_id", owner).lte("completed_at", now.toISOString())
-      .order("completed_at", { ascending: false }).limit(128);
-    if (before !== null) query = query.lt("completed_at", before);
-    const { data, count, error } = await query;
-    if (error) throw error;
-    if (before === null) {
-      if (count === null) throw new Error("Missing action count");
-      actions = count;
-    }
-    const rows = data ?? [];
-    for (const row of rows) days.add(localDay(row.completed_at));
-    if (rows.length < 128) break;
-    before = localDay(rows[rows.length - 1].completed_at);
-  }
-  return { actions, days: Math.min(maxMilestoneDays, days.size) };
+  const { data, error } = await client.rpc("milestone_totals", {
+    p_owner: owner, p_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, p_until: now.toISOString(),
+  });
+  if (error) throw error;
+  const row = data?.[0];
+  if (!row || !Number.isSafeInteger(row.actions) || row.actions < 0 ||
+    !Number.isSafeInteger(row.days) || row.days < 0 || row.days > row.actions) throw new Error("Invalid milestone totals");
+  return { actions: row.actions, days: row.days };
 }

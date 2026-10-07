@@ -275,18 +275,27 @@ in each group are revealed, including inside the expandable collection.
 Distinct active dates use the device timezone, need not be consecutive, and span
 all saved history. Future timestamps are excluded. Undo can make a badge unearned.
 Existing history and imports unlock badges quietly; only a new completion in the
-current visit can show an inline celebration. No badge records, XP, or notifications
-are stored, and no database migration is required.
+current visit can show an inline celebration. No earned-badge records, XP, or
+notifications are stored; account totals use the read-only summary below.
 
-Guest milestones use complete browser history. Account milestones use an exact
-filtered action count and pages of at most 128 timestamps. Each additional page
-skips to before the oldest local date already counted, avoiding downloads of all
-completions from a busy day. Reads stop at 365 distinct dates (the final milestone),
-so the active-day value is capped at 365 and is not a general lifetime total.
-The worst case is 365 small pages; ordinary histories usually need only a few. Owner
-filters and existing RLS remain in effect. Completion writes, Undo, imports,
-refreshes, and local midnight invalidate the summary; failures have a separate
-retry and do not block completions. Late reads from a previous owner are ignored.
+Guest milestones use complete browser history with no active-day cap. After the
+original ladder, new action badges appear every 500 actions (1,500, 2,000, ...)
+and active-day badges every 100 days (465, 565, ...). Existing thresholds and
+badge identities remain unchanged. Only earned badges and the next target show.
+
+Accounts now use a single `milestone_totals` aggregate response, independently of
+history length. It counts lifetime actions and distinct dates in the device's
+timezone, excludes future completions, and preserves completion-table RLS plus
+an explicit authenticated-owner check. Completion writes, Undo, imports, refresh
+and local midnight refresh the totals; failed reads expose retry without blocking
+completions. No fallback to capped or partial counts is used.
+
+Apply `supabase/migrations/202610070002_milestone_totals.sql` before deploying this
+frontend. This read-only summary migration was **applied to hosted Carpe Acta
+Supabase (`ipfjdjuwlnbkchqirxli`) on 2026-10-07 with user approval**. Do not
+rerun it on that project. `supabase/tests/milestone-totals-access.sql` verifies
+uncapped counts, timezone boundaries, future exclusion, cutoffs and account
+isolation in a rollback-only transaction. It passed on local PostgreSQL 16.
 
 
 ## Recorded weekly achievements
@@ -324,3 +333,8 @@ policy, authenticated SELECT-only table access, blocked anonymous access, and
 authenticated RPC execution. The existing completion count remained 23 before
 and after the migration. These hosted checks were read-only; behavioral and
 rollback tests were run against the temporary local PostgreSQL instance.
+
+Live milestone-summary verification on 2026-10-07 passed in a read-only
+transaction: authenticated totals matched direct aggregates, cross-owner reads
+were rejected, anonymous execution was blocked, and the function retained RLS
+through SECURITY INVOKER. All 23 existing completion records remained unchanged.

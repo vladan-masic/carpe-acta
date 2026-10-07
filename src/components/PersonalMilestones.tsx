@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Locale } from "../i18n/locales";
 import { milestoneMessages } from "../i18n/milestones";
-import { actionMilestones, dayMilestones, visibleMilestones, earnedMilestones, type MilestoneTotals } from "../utils/milestones";
+import { milestoneThresholds, visibleMilestones, earnedMilestones, type MilestoneTotals } from "../utils/milestones";
 type Props = { totals: MilestoneTotals | null; error: boolean; retry: () => void; locale: Locale; completionId: string | null };
 export function PersonalMilestones({ totals, error, retry, locale, completionId }: Props) {
   const copy = milestoneMessages[locale];
@@ -28,7 +28,7 @@ export function PersonalMilestones({ totals, error, retry, locale, completionId 
     <p role="status">{totals && celebration.length > 0 ? `${copy.celebration} ${celebration.map(badgeLabel).join(" · ")}` : ""}</p>
     {!totals ? <p>{error ? <>{copy.error} <button type="button" className="secondary-button" onClick={retry}>{copy.retry}</button></> : copy.loading}</p> : <>
       <div className="milestone-groups">{(["actions", "days"] as const).map(kind => {
-        const thresholds = kind === "actions" ? actionMilestones : dayMilestones;
+        const thresholds = milestoneThresholds(kind, totals[kind]);
         const earned = thresholds.filter(n => totals[kind] >= n);
         const latest = earned[earned.length - 1];
         const next = thresholds.find(n => totals[kind] < n);
@@ -38,7 +38,7 @@ export function PersonalMilestones({ totals, error, retry, locale, completionId 
           {next && <progress aria-label={copy[kind]} max={next} value={totals[kind]} />}
         </div>;
       })}</div>
-      <details><summary>{copy.all}</summary><ul className="milestone-collection">{(["actions", "days"] as const).flatMap(kind => visibleMilestones(kind === "actions" ? actionMilestones : dayMilestones, totals[kind]).map(n =>
+      <details><summary>{copy.all}</summary><ul className="milestone-collection">{(["actions", "days"] as const).flatMap(kind => visibleMilestones(milestoneThresholds(kind, totals[kind]), totals[kind]).map(n =>
         <li key={`${kind}-${n}`}><span aria-hidden="true">{totals[kind] >= n ? "✦" : "○"} </span>{copy.badge(kind, n)} — {totals[kind] >= n ? copy.earned : copy.locked}</li>))}</ul></details>
     </>}
   </section>;

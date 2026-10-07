@@ -2,7 +2,7 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, render, screen, fireEvent } from "@testing-library/react";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { summarizeMilestones, earnedMilestones, localDay, visibleMilestones, actionMilestones } from "../src/utils/milestones";
+import { summarizeMilestones, earnedMilestones, localDay, visibleMilestones, actionMilestones, milestoneThresholds } from "../src/utils/milestones";
 import { fetchMilestones } from "../src/completions/milestones";
 import { PersonalMilestones } from "../src/components/PersonalMilestones";
 const now = new Date(2026, 9, 7, 12);
@@ -19,36 +19,15 @@ it("uses local midnight around DST and crosses years without a consecutive-day r
   expect(summarizeMilestones(dates.map((date, i) => record(String(i), date)), now).days).toBe(3);
   expect(localDay(dates[3].toISOString())).toBe(new Date(2026, 2, 29).toISOString());
 });
-function clientFor(pages: { data: { completed_at: string }[] | null; count: number | null; error: Error | null }[]) {
-  const queries: Record<string, ReturnType<typeof vi.fn>>[] = [];
-  const from = vi.fn(() => {
-    const page = pages[queries.length];
-    const query: Record<string, ReturnType<typeof vi.fn>> = {};
-    for (const key of ["select", "eq", "lte", "lt", "order", "limit"]) query[key] = vi.fn(() => query);
-    query.then = vi.fn((resolve) => Promise.resolve(page).then(resolve));
-    queries.push(query); return query;
-  });
-  return { client: { from } as unknown as SupabaseClient, queries, from };
-}
-it("gets an exact action count and skips the rest of a busy day instead of downloading all events", async () => {
-  const rows = Array.from({ length: 128 }, () => ({ completed_at: now.toISOString() }));
-  const mock = clientFor([{ data: rows, count: 10000, error: null }, { data: [{ completed_at: new Date(2024, 1, 1).toISOString() }], count: null, error: null }]);
-  expect(await fetchMilestones(mock.client, "alice", now)).toEqual({ actions: 10000, days: 2 });
-  expect(mock.queries[0].select).toHaveBeenCalledWith("completed_at", { count: "exact" });
-  expect(mock.queries[1].lt).toHaveBeenCalledWith("completed_at", new Date(2026, 9, 7).toISOString());
-  for (const query of mock.queries) {
-    expect(query.eq).toHaveBeenCalledWith("user_id", "alice");
-    expect(query.lte).toHaveBeenCalledWith("completed_at", now.toISOString());
-    expect(query.limit).toHaveBeenCalledWith(128);
-  }
+it("fetches uncapped totals in one owner-bound request", async () => {
+  const rpc = vi.fn().mockResolvedValue({ data: [{ actions: 10000, days: 1500 }], error: null });
+  expect(await fetchMilestones({ rpc } as unknown as SupabaseClient, "alice", now)).toEqual({ actions: 10000, days: 1500 });
+  expect(rpc).toHaveBeenCalledExactlyOnceWith("milestone_totals", { p_owner: "alice", p_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, p_until: now.toISOString() });
 });
-it("stops at the highest active-day milestone and does not silently accept read errors", async () => {
-  const rows = Array.from({ length: 384 }, (_, i) => ({ completed_at: new Date(2026, 9, 7 - i).toISOString() }));
-  const mock = clientFor([0, 128, 256].map(offset => ({ data: rows.slice(offset, offset + 128), count: offset === 0 ? 9999 : null, error: null })));
-  expect(await fetchMilestones(mock.client, "alice", now)).toEqual({ actions: 9999, days: 365 });
-  expect(mock.from).toHaveBeenCalledTimes(3);
-  await expect(fetchMilestones(clientFor([{ data: null, count: null, error: new Error("offline") }]).client, "a", now)).rejects.toThrow("offline");
-  await expect(fetchMilestones(clientFor([{ data: [], count: null, error: null }]).client, "a", now)).rejects.toThrow("Missing");
+it("reports failed or malformed aggregate reads", async () => {
+  for (const response of [{ error: new Error("offline"), data: null }, { data: [], error: null }, { data: [{ actions: 2, days: 3 }], error: null }]) {
+    await expect(fetchMilestones({ rpc: vi.fn().mockResolvedValue(response) } as unknown as SupabaseClient, "alice", now)).rejects.toThrow();
+  }
 });
 it.each(["en", "sr-Latn"] as const)("reveals earned badges and the next targets and removes earned status after Undo in %s", locale => {
   const props = { error: false, retry: vi.fn(), locale, completionId: null };
@@ -84,4 +63,21 @@ it("reveals the extended ladder one target at a time", () => {
   expect(visibleMilestones(actionMilestones, 100)).toEqual([1, 10, 50, 100, 250]);
   expect(visibleMilestones(actionMilestones, 250)).toEqual([1, 10, 50, 100, 250, 500]);
   expect(earnedMilestones({ actions: 999, days: 364 })).toHaveLength(12);
+});
+
+it.each([["actions", 1000, 1500], ["actions", 1500, 2000], ["actions", 12500, 13000], ["days", 365, 465], ["days", 465, 565], ["days", 1665, 1765]] as const)("always offers a next %s badge after %i", (kind, total, next) => {
+  const targets = visibleMilestones(milestoneThresholds(kind, total), total);
+  expect(targets[targets.length - 1]).toBe(next);
+  expect(targets.filter(n => n > total)).toEqual([next]);
+});
+it("counts guest activity beyond a year", () => {
+  const records = Array.from({ length: 600 }, (_, i) => record(String(i), new Date(2024, 0, 1 + i, 12)));
+  expect(summarizeMilestones(records, now)).toEqual({ actions: 600, days: 600 });
+});
+it.each(["en", "sr-Latn"] as const)("shows ongoing targets and revokes an extended badge after Undo in %s", locale => {
+  const props = { locale, error: false, retry: vi.fn(), completionId: null };
+  const { rerender } = render(<PersonalMilestones {...props} totals={{ actions: 1500, days: 465 }} />);
+  expect(screen.getByText(locale === "en" ? "1500 of 2000 toward the next badge" : "1500 od 2000 do sledeće značke")).toBeTruthy();
+  rerender(<PersonalMilestones {...props} totals={{ actions: 1499, days: 464 }} />);
+  expect(screen.getByText(locale === "en" ? "1499 of 1500 toward the next badge" : "1499 od 1500 do sledeće značke")).toBeTruthy();
 });
