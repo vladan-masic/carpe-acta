@@ -96,3 +96,20 @@ it("deletes exactly one owner's event and propagates failures", async () => {
   query.then.mockImplementation((resolve: (value: unknown) => unknown) => Promise.resolve({ error }).then(resolve));
   await expect(deleteCompletion(client, "alice", "event-1")).rejects.toBe(error);
 });
+
+it("fetches only the requested local year with owner scoping and full pagination", async () => {
+  const { fetchCalendarYear } = await import("../src/completions/api");
+  const q: any = {};
+  for (const key of ["select", "eq", "gte", "lt", "lte", "order"]) q[key] = vi.fn(() => q);
+  const row = (id: number) => ({ id: String(id), tip_id: "tip", completed_at: new Date(2024, 1, 29, 12).toISOString() });
+  q.range = vi.fn().mockResolvedValueOnce({ data: Array.from({ length: 500 }, (_, id) => row(id)), error: null })
+    .mockResolvedValueOnce({ data: [row(500)], error: null });
+  const now = new Date(2026, 9, 6);
+  const result = await fetchCalendarYear({ from: () => q } as unknown as SupabaseClient, "alice", 2024, now);
+  expect(result).toHaveLength(501);
+  expect(q.eq).toHaveBeenCalledWith("user_id", "alice");
+  expect(q.gte).toHaveBeenCalledWith("completed_at", new Date(2024, 0, 1).toISOString());
+  expect(q.lt).toHaveBeenCalledWith("completed_at", new Date(2025, 0, 1).toISOString());
+  expect(q.lte).toHaveBeenCalledWith("completed_at", now.toISOString());
+  expect(q.range.mock.calls).toEqual([[0, 499], [500, 999]]);
+});

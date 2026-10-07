@@ -158,3 +158,15 @@ using account Undo. No new packages, environment variables, or secrets are requi
 - Verified the actual signed-in browser flow: a temporary completion raised the
   total from 11 to 12; clicking Undo showed success and restored 11 total and
   zero for today. The temporary browser test event was removed by Undo.
+
+### Annual calendar reads
+
+The optional year view uses a separate paginated `tip_completions` read, scoped
+by `user_id`, inclusive local January 1 and exclusive January 1 of the next year,
+plus the existing no-future-timestamps cutoff. It is requested only while a year
+is selected. It does not replace the weekly summary or latest-ten history query.
+The year-loading hook discards responses from obsolete owner/year/progress
+snapshots, hides old results during writes, and refreshes after completion,
+Undo, import, focus refresh and midnight updates. Failed year reads show retry
+instead of an empty calendar. Changing the selected year never resets the
+completion attempt or Undo state. Guest years are computed from full local history.

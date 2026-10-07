@@ -1,5 +1,7 @@
 import type { Locale } from "./locales";
 type ProgressCopy = {
+  yearHint: string; view: string; weeks: string; year: string; yearTitle: string; previousYear: string; nextYear: string;
+  loadingYear: string; yearError: string; retryYear: string;
   weekSummary: (total: number, active: number) => string;
   dayCount: (count: number) => string;
   calendar: string; calendarHint: string; less: string; more: string;
@@ -17,6 +19,10 @@ function srActions(count: number, completed = false) {
 
 export const progressMessages: Record<Locale, ProgressCopy> = {
   en: {
+    yearHint: "Scroll horizontally to see the whole year on smaller screens.",
+    view: "Calendar view", weeks: "12 weeks", year: "Year", yearTitle: "Your activity",
+    previousYear: "Previous year", nextYear: "Next year", loadingYear: "Loading this year’s activity…",
+    yearError: "This year’s activity could not be loaded.", retryYear: "Retry year",
     weekSummary: (total, active) => `Past seven days: ${total.toLocaleString("en")} ${total === 1 ? "action" : "actions"} · active days: ${active}/7`,
     calendar: "Your activity · 12 weeks", calendarHint: "Weeks start on Monday, in your device’s timezone. Hover, focus, or tap a day for its count; select it to see actions. Use arrow keys to explore.",
     less: "Less", more: "More", clearDay: "Show recent actions", emptyDay: "No completed actions on this day.",
@@ -26,6 +32,10 @@ export const progressMessages: Record<Locale, ProgressCopy> = {
     unknown: "Previously available tip", loading: "Loading your progress…", unavailable: "Progress is unavailable. Try refreshing completed actions.",
   },
   "sr-Latn": {
+    yearHint: "Na manjim ekranima pomeraj kalendar vodoravno da vidiš celu godinu.",
+    view: "Prikaz kalendara", weeks: "12 nedelja", year: "Godina", yearTitle: "Tvoja aktivnost",
+    previousYear: "Prethodna godina", nextYear: "Sledeća godina", loadingYear: "Učitavanje aktivnosti za ovu godinu…",
+    yearError: "Aktivnost za ovu godinu nije mogla da se učita.", retryYear: "Pokušaj ponovo",
     weekSummary: (total, active) => `Prethodnih sedam dana: ${total.toLocaleString("sr-Latn")} ${srActions(total)} · aktivnih dana: ${active}/7`,
     calendar: "Tvoja aktivnost · 12 nedelja", calendarHint: "Nedelje počinju ponedeljkom, u vremenskoj zoni tvog uređaja. Pređi pokazivačem, fokusiraj ili dodirni dan za broj radnji; izaberi ga za pregled. Koristi strelice za kretanje.",
     less: "Manje", more: "Više", clearDay: "Prikaži nedavne radnje", emptyDay: "Nema završenih radnji ovog dana.",

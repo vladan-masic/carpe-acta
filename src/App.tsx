@@ -271,7 +271,7 @@ export function App() {
           {completion.signedIn && <div className="favorites-sync-controls completion-sync-controls">
             <button type="button" className="secondary-button" disabled={completion.busy} onClick={completion.refresh}>{completionCopy.refresh}</button>
           </div>}
-          <ProgressView progress={completion.progress} locale={locale} tips={localizedTips} busy={completion.busy} onTry={handleOpenTip} />
+          <ProgressView calendarHistory={completion.calendarHistory} progress={completion.progress} locale={locale} tips={localizedTips} busy={completion.busy} onTry={handleOpenTip} />
         </section>
 
         <FavoriteTips

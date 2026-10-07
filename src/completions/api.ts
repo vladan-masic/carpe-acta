@@ -1,6 +1,6 @@
 import { summarizeHelpfulTips } from "../utils/helpfulTips";
 import { importCompletionFeedback } from "./feedback";
-import { calendarDays, recentCompletionLimit, summarizeProgress } from "../utils/progress";
+import { yearStart, calendarDays, recentCompletionLimit, summarizeProgress } from "../utils/progress";
 import type { ProgressData } from "../utils/progress";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { TipCompletion } from "../utils/completions";
@@ -68,6 +68,24 @@ export async function fetchRatedCompletions(client: SupabaseClient, userId: stri
     const { data, error } = await client.from("tip_completions")
       .select("id,tip_id,completed_at,completion_feedback!inner(helpful)")
       .eq("user_id", userId).lte("completed_at", now.toISOString())
+      .order("completed_at", { ascending: false }).order("id").range(offset, offset + 499);
+    if (error) throw error;
+    const rows = data ?? [];
+    records.push(...rows.map(toCompletion));
+    if (rows.length < 500) return records;
+  }
+}
+
+// A year is fetched only when opened; retain owner scope and bounded pagination.
+export async function fetchCalendarYear(client: SupabaseClient, userId: string, year: number, now = new Date()): Promise<TipCompletion[]> {
+  const start = yearStart(year).toISOString();
+  const end = yearStart(year + 1).toISOString();
+  const records: TipCompletion[] = [];
+  for (let offset = 0; ; offset += 500) {
+    const { data, error } = await client.from("tip_completions")
+      .select("id,tip_id,completed_at,completion_feedback(helpful)")
+      .eq("user_id", userId).gte("completed_at", start).lt("completed_at", end)
+      .lte("completed_at", now.toISOString())
       .order("completed_at", { ascending: false }).order("id").range(offset, offset + 499);
     if (error) throw error;
     const rows = data ?? [];

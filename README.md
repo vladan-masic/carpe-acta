@@ -236,3 +236,17 @@ Guest and account views share the same aggregation; the existing account read
 now paginates the twelve-week range. Completion saves, Undo, imports and refresh
 update counts and selected-day history. No schema, tip data, or account-write
 changes are required.
+
+Choose **Calendar view → Year** for a full January–December calendar, then use
+**Previous year / Next year** to browse older history. Future years cannot be
+selected; future days in the current year are blank. Leap years and partial
+Monday-start week columns are supported. The year grid scrolls horizontally on
+smaller screens. Switching ranges clears the selected day but never resets the
+current action, timer or Undo.
+
+Guests use their full saved browser history. For accounts, only the selected year
+is fetched, with owner filtering and pagination in batches of 500. Year requests
+are independent of completion writes; stale responses after year/account switches
+are discarded. Saves, Undo, imports and progress refreshes invalidate the year
+view. Loading and failures are explicit, with a separate retry button. Switching
+back to **12 weeks** stops using the year view; no new storage or schema is needed.

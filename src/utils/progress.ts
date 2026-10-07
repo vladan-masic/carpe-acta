@@ -2,7 +2,7 @@ import { summarizeHelpfulTips, type HelpfulTip } from "./helpfulTips";
 import type { TipCompletion } from "./completions";
 
 export const recentCompletionLimit = 10;
-export type CalendarDay = { date: string; count: number; records: TipCompletion[] };
+export type CalendarDay = { future?: boolean; date: string; count: number; records: TipCompletion[] };
 export type ProgressData = {
   calendar: CalendarDay[];
   days: { date: string; count: number }[];
@@ -47,4 +47,28 @@ export function summarizeProgress(records: TipCompletion[], now = new Date()): P
   }
   const recent = unique.slice(0, recentCompletionLimit);
   return { days, calendar, recent, helpful: summarizeHelpfulTips(unique, now) };
+}
+
+export function yearStart(year: number) {
+  const date = new Date(0);
+  date.setFullYear(year, 0, 1);
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+
+export function summarizeYear(records: TipCompletion[], year: number, now = new Date()): CalendarDay[] {
+  const days: CalendarDay[] = [];
+  for (let date = yearStart(year); date.getFullYear() === year; date.setDate(date.getDate() + 1)) {
+    days.push({ date: date.toISOString(), count: 0, records: [], future: date.getTime() > now.getTime() });
+  }
+  const byDate = new Map(days.map(day => [day.date, day]));
+  const unique = [...new Map(records.map(record => [record.id, record])).values()]
+    .filter(record => Number.isFinite(Date.parse(record.completedAt)) && Date.parse(record.completedAt) <= now.getTime())
+    .sort((a, b) => Date.parse(b.completedAt) - Date.parse(a.completedAt) || a.id.localeCompare(b.id));
+  for (const record of unique) {
+    const date = new Date(record.completedAt);
+    const day = byDate.get(new Date(date.getFullYear(), date.getMonth(), date.getDate()).toISOString());
+    if (day) { day.records.push(record); day.count++; }
+  }
+  return days;
 }
