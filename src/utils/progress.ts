@@ -72,3 +72,12 @@ export function summarizeYear(records: TipCompletion[], year: number, now = new 
   }
   return days;
 }
+
+export function weeklyActivity(days: ProgressData["days"], now = new Date()) {
+  const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() + 6) % 7);
+  return Array.from({ length: 7 }, (_, index) => {
+    const date = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + index);
+    const future = date.getTime() > now.getTime();
+    return { date, future, active: !future && days.some(day => day.date === date.toISOString() && day.count > 0) };
+  });
+}

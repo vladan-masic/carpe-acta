@@ -250,3 +250,18 @@ are independent of completion writes; stale responses after year/account switche
 are discarded. Saves, Undo, imports and progress refreshes invalidate the year
 view. Loading and failures are explicit, with a separate retry button. Switching
 back to **12 weeks** stops using the year view; no new storage or schema is needed.
+
+## Optional weekly activity goal
+
+Above the activity calendar, choose 1–7 active days per week (3 suggested), or
+leave the goal off. Weeks run Monday–Sunday in the device timezone; days need not
+be consecutive. Several completions on one day count once. Undoing the last
+completion on a day removes that active day. The target carries into each new
+week; progress starts fresh. Calendar year selection does not affect the goal.
+
+Guests store the preference in `carpe-acta-weekly-goal-v1`. Signed-in users store
+`weekly_goal_days` in Supabase user metadata (0 means off); no migration is needed.
+Account preferences refresh on sign-in and window focus/visibility. Guest targets
+are not automatically imported. Failed preference saves are reported and retain
+the previous target. Activity uses the existing completion sync and local midnight
+refresh. No reminders, streaks, or historical goal snapshots are added.

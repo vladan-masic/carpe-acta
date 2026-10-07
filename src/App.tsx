@@ -1,3 +1,4 @@
+import { WeeklyGoal } from "./components/WeeklyGoal";
 import { CompletionFeedback } from "./components/CompletionFeedback";
 import { HelpMeStart } from "./components/HelpMeStart";
 import { TipLibrary } from "./components/TipLibrary";
@@ -271,6 +272,7 @@ export function App() {
           {completion.signedIn && <div className="favorites-sync-controls completion-sync-controls">
             <button type="button" className="secondary-button" disabled={completion.busy} onClick={completion.refresh}>{completionCopy.refresh}</button>
           </div>}
+          {!auth.loading && completion.progress && <WeeklyGoal key={auth.session?.user.id ?? "guest"} client={auth.client} owner={auth.session?.user.id ?? null} progress={completion.progress} locale={locale} busy={completion.busy} />}
           <ProgressView calendarHistory={completion.calendarHistory} progress={completion.progress} locale={locale} tips={localizedTips} busy={completion.busy} onTry={handleOpenTip} />
         </section>
 

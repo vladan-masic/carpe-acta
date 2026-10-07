@@ -1066,3 +1066,13 @@ h1 {
 .calendar-year-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); width: min(100%, 400px); }
 .calendar-year-controls button { min-width: 0; padding-inline: 10px; }
 .calendar-year-controls button:disabled { opacity: 0.5; cursor: default; }
+
+.weekly-goal { border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-block: 20px; }
+.weekly-goal h3 { margin-top: 0; }
+.weekly-goal label { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.weekly-goal select { font: inherit; max-width: 100%; padding: 8px; border-radius: 6px; }
+.weekly-goal progress { display: block; width: 100%; accent-color: var(--green); }
+.weekly-goal-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; margin-top: 12px; }
+.weekly-goal-days > span { text-align: center; padding: 8px 0; border-radius: 6px; background: #f3eee5; font-size: .85rem; }
+.weekly-goal-days .is-active { background: var(--green); color: #fff; }
+.weekly-goal-storage { font-size: .85rem; }
