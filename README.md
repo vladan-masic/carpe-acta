@@ -265,3 +265,62 @@ Account preferences refresh on sign-in and window focus/visibility. Guest target
 are not automatically imported. Failed preference saves are reported and retain
 the previous target. Activity uses the existing completion sync and local midnight
 refresh. No reminders, streaks, or historical goal snapshots are added.
+
+## Personal milestones
+
+The compact milestone section below the weekly goal shows the highest earned
+badge and progress to the next badge in two groups: 1/10/50/100/250/500/1,000 completed actions
+and 1/7/25/50/100/180/365 active days. Only earned badges and the next target
+in each group are revealed, including inside the expandable collection.
+Distinct active dates use the device timezone, need not be consecutive, and span
+all saved history. Future timestamps are excluded. Undo can make a badge unearned.
+Existing history and imports unlock badges quietly; only a new completion in the
+current visit can show an inline celebration. No badge records, XP, or notifications
+are stored, and no database migration is required.
+
+Guest milestones use complete browser history. Account milestones use an exact
+filtered action count and pages of at most 128 timestamps. Each additional page
+skips to before the oldest local date already counted, avoiding downloads of all
+completions from a busy day. Reads stop at 365 distinct dates (the final milestone),
+so the active-day value is capped at 365 and is not a general lifetime total.
+The worst case is 365 small pages; ordinary histories usually need only a few. Owner
+filters and existing RLS remain in effect. Completion writes, Undo, imports,
+refreshes, and local midnight invalidate the summary; failures have a separate
+retry and do not block completions. Late reads from a previous owner are ignored.
+
+
+## Recorded weekly achievements
+
+**Weeks I met my goal** counts achievements recorded from now on while using the
+app; it does not infer past goals from current settings. Each successful week
+stores its Monday date, original achieved target, timezone and achievement time.
+Changing or disabling the current goal leaves achieved targets unchanged. Weeks
+need not be consecutive. Undo may revoke the current week's achievement if its
+original target is no longer met; completed past weeks remain historical snapshots.
+Guest records use one `carpe-acta-week-achievement-v1:YYYY-MM-DD` storage entry per
+week, independently of account records. Importing browser completion history does
+not import historical guest achievements or invent older account achievements.
+
+Account support requires applying
+`supabase/migrations/202610070001_weekly_achievements.sql` before deploying this
+frontend. **Applied to hosted Carpe Acta Supabase (`ipfjdjuwlnbkchqirxli`) on
+2026-10-07 with user approval.** Do not rerun it on that project. It adds an
+owner-readable table and a narrowly scoped authenticated RPC.
+The RPC reads the current goal and completion dates on the server, freezes the
+first achieved target, and serializes concurrent devices per user. Clients cannot
+directly insert, update or delete award rows. It never touches completion records.
+Run `supabase/tests/weekly-achievements-access.sql` as postgres for rollback-only
+access, idempotency, goal-change, timezone and Undo checks. It passed against a
+temporary PostgreSQL 16 database with a minimal Supabase auth fixture.
+
+Missing migrations, read failures and unsaved achievements display an error and
+retry control; account failures never fall back to guest storage. No achievements
+are claimed as saved before persistence succeeds. Goal/completion writes pause
+achievement synchronization; account changes discard old responses. Window focus,
+visibility, storage events, goal changes and current-week activity trigger refresh.
+
+Live verification on 2026-10-07 confirmed row-level security, the owner-read
+policy, authenticated SELECT-only table access, blocked anonymous access, and
+authenticated RPC execution. The existing completion count remained 23 before
+and after the migration. These hosted checks were read-only; behavioral and
+rollback tests were run against the temporary local PostgreSQL instance.

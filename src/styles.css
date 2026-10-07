@@ -1076,3 +1076,17 @@ h1 {
 .weekly-goal-days > span { text-align: center; padding: 8px 0; border-radius: 6px; background: #f3eee5; font-size: .85rem; }
 .weekly-goal-days .is-active { background: var(--green); color: #fff; }
 .weekly-goal-storage { font-size: .85rem; }
+
+.personal-milestones { margin-block: 20px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; }
+.personal-milestones h3, .personal-milestones h4 { margin-top: 0; }
+.personal-milestones [role="status"]:empty { display: none; }
+.milestone-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.milestone-badge { display: inline-block; background: #e1eee6; color: #20533f; border-radius: 8px; padding: 6px 10px; }
+.personal-milestones progress { width: 100%; accent-color: var(--green); }
+.personal-milestones summary { cursor: pointer; padding-block: 12px; }
+.milestone-collection { display: grid; gap: 8px; padding-left: 20px; }
+@media (max-width: 600px) { .milestone-groups { grid-template-columns: 1fr; gap: 12px; } }
+.weekly-achievements { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 12px; }
+.weekly-achievements h4 { margin: 0; }
+.weekly-achievements summary { padding-block: 8px; cursor: pointer; }
+.weekly-achievements ul { padding-left: 20px; }

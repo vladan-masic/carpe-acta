@@ -1,3 +1,4 @@
+import { useWeeklyAchievements } from "../hooks/useWeeklyAchievements";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Locale } from "../i18n/locales";
 import { weeklyGoalMessages } from "../i18n/weeklyGoal";
@@ -8,6 +9,7 @@ import { weeklyActivity, type ProgressData } from "../utils/progress";
 type Props = { client: SupabaseClient | null; owner: string | null; progress: ProgressData; locale: Locale; busy: boolean };
 export function WeeklyGoal({ client, owner, progress, locale, busy }: Props) {
   const goal = useWeeklyGoal(client, owner);
+  const achievements = useWeeklyAchievements(client, owner, goal.target, !busy && !goal.loading && !goal.saving && !goal.error, progress.calendar);
   const copy = weeklyGoalMessages[locale];
   const days = weeklyActivity(progress.days);
   const active = days.filter(day => day.active).length;
@@ -29,5 +31,18 @@ export function WeeklyGoal({ client, owner, progress, locale, busy }: Props) {
         <span aria-hidden="true">{weekday.format(day.date)}<br />{day.active ? "✓" : "·"}</span>
       </span>)}</div>
     </>}
+    <div className="weekly-achievements">
+      <h4>{copy.achievements}</h4>
+      <p>{copy.achievementHint}</p>
+      {achievements.error ? <p role="alert">{copy.achievementError} <button type="button" className="secondary-button" onClick={achievements.retry}>{copy.retryAchievements}</button></p>
+        : achievements.records === null ? <p>{copy.loadingAchievements}</p> : <>
+          <p>{copy.weeksMet(achievements.records.length)}</p>
+          {achievements.records.length > 0 && <details><summary>{copy.achievementHistory}</summary>
+            <ul>{achievements.records.map(record => <li key={record.week}>
+              {copy.achievedWeek(new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(new Date(`${record.week}T12:00:00`)), record.target)}
+            </li>)}</ul>
+          </details>}
+        </>}
+    </div>
   </section>;
 }

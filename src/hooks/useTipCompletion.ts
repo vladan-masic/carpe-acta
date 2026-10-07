@@ -1,3 +1,4 @@
+import { useMilestones } from "./useMilestones";
 import { useCalendarHistory } from "./useCalendarHistory";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { TipId } from "../types/tip";
@@ -133,6 +134,7 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
   }, [auth.client, owner, auth.loading]);
 
   const busy = auth.loading || (!!owner && (state.owner !== owner || state.busy));
+  const milestones = useMilestones({ client: auth.client, owner, loading: auth.loading, guest, progress: state.progress, busy });
   const calendarHistory = useCalendarHistory({ client: auth.client, owner, loading: auth.loading, guest, progress: state.progress, busy });
   const status = attempt.owner === owner ? attempt.status : null;
   function complete(tipId: TipId) {
@@ -150,7 +152,7 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
     }
   }
   return {
-    calendarHistory,
+    calendarHistory, milestones,
     completedRecord: attempt.owner === owner && status === "saved" &&
       !(undo?.record === record.current && (undo.phase === "undoing" || undo.phase === "error")) ? record.current : null,
     undo: attempt.owner === owner ? undo : null,

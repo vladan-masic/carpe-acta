@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { App } from "../src/App";
 import { CompletionUndoNotice, undoNoticeDuration } from "../src/components/CompletionUndoNotice";
@@ -95,4 +95,18 @@ it("keeps undo for the original tip after moving to a new action", () => {
   expect(original).not.toBe("[]");
   expect(loadCompletions().records).toEqual([]);
   expect(document.getElementById("active-tip-title")!.textContent).toBe(nextTitle);
+});
+
+it("keeps one weekly goal and celebrates then revokes first-action milestones through the real completion flow", () => {
+  localStorage.setItem("carpe-acta-locale", "en");
+  render(<App />);
+  expect(screen.getAllByRole("heading", { name: "Weekly activity goal" })).toHaveLength(1);
+  const milestones = within(screen.getByRole("region", { name: "Personal milestones" }));
+  expect(milestones.getByRole("status").textContent).toBe("");
+  fireEvent.click(screen.getByRole("button", { name: "I did it ✓" }));
+  expect(milestones.getByRole("status").textContent).toContain("First action");
+  expect(milestones.getByRole("status").textContent).toContain("First active day");
+  fireEvent.click(screen.getByRole("button", { name: "Undo", exact: true }));
+  expect(milestones.getByRole("status").textContent).toBe("");
+  expect(milestones.getAllByText("Your first badge is ahead.")).toHaveLength(2);
 });
