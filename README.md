@@ -353,3 +353,30 @@ A browser-local marker per guest/account remembers the latest completion ID, so
 the same gap is welcomed once in that browser; a later completion followed by a
 new gap can trigger another welcome. Blocked storage limits suppression to the
 current visit. This feature uses existing history and needs no backend changes.
+
+## Category exploration
+
+The optional, initially collapsed “Explore categories” section counts categories
+with at least one completed action. Existing history counts quietly, with badges
+at 3, 5, 10 and all available categories (currently 21). Only the next target is
+shown; there are no deadlines or streak requirements. Undo removes a category
+when its last completion is removed. Unknown tip IDs and future records do not
+count. Catalog IDs, content and order are unchanged.
+
+“Find something different” opens the library on the first unexplored category in
+catalog order, clearing search and effort filters and focusing search. It does
+not choose or complete an action. Both English and Serbian Latin are supported.
+
+Guests use full browser history. Accounts lazily request distinct known tip IDs
+when exploration is expanded, avoiding download of the full completion history.
+The SECURITY INVOKER RPC checks the authenticated owner and retains table RLS.
+Read failures show retry; account failures never fall back to guest data.
+
+**Applied to hosted Supabase on 2026-10-07:**
+`supabase/migrations/202610070003_category_exploration.sql`.
+The migration and rollback-only `supabase/tests/category-exploration-access.sql`
+passed against the temporary local PostgreSQL 16 database. Hosted read-only
+verification confirmed authenticated query results, cross-owner rejection,
+blocked anonymous execution and retained row-level security. All 23 completion
+records remained unchanged, verified with a before/after row-content fingerprint.
+The frontend has not been deployed.

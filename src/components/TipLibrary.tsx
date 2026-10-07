@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { CategoryId, LocalizedTip } from "../types/tip";
 import type { Locale } from "../i18n/locales";
 import { messages } from "../i18n/messages";
@@ -6,6 +6,7 @@ import { tipLibraryMessages } from "../i18n/tipLibrary";
 import { filterLibraryTips } from "../utils/tipLibrary";
 
 type TipLibraryProps = {
+  categoryRequest?: { category: CategoryId; id: number } | null;
   tips: LocalizedTip[];
   locale: Locale;
   open: boolean;
@@ -15,11 +16,20 @@ type TipLibraryProps = {
 };
 const PAGE_SIZE = 6;
 
-export function TipLibrary({ tips, locale, open, onOpenChange, renderFavoriteButton, onTry }: TipLibraryProps) {
+export function TipLibrary({ tips, locale, open, onOpenChange, renderFavoriteButton, onTry, categoryRequest }: TipLibraryProps) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"all" | CategoryId>("all");
   const [maxEffort, setMaxEffort] = useState<number | null>(null);
   const [page, setPage] = useState({ key: "", count: PAGE_SIZE });
+  useEffect(() => {
+    if (!categoryRequest) return;
+    setQuery(""); setCategory(categoryRequest.category); setMaxEffort(null);
+    const frame = requestAnimationFrame(() => {
+      document.getElementById("tip-library-search")?.focus({ preventScroll: true });
+      document.getElementById("tip-library-title")?.scrollIntoView({ block: "start" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [categoryRequest]);
   const copy = tipLibraryMessages[locale];
   const common = messages[locale];
   const results = filterLibraryTips(tips, query, category, maxEffort);

@@ -1,0 +1,52 @@
+// @vitest-environment jsdom
+import { afterEach, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { App } from "../src/App";
+import { CategoryExploration } from "../src/components/CategoryExploration";
+import { tips } from "../src/data/tips";
+import { explorationMessages } from "../src/i18n/categoryExploration";
+import { tipLibraryMessages } from "../src/i18n/tipLibrary";
+import { exploredCategories, explorationCategories, explorationTargets } from "../src/utils/categoryExploration";
+vi.mock("../src/auth/client", () => ({ getSupabaseClient: () => null }));
+afterEach(() => { cleanup(); localStorage.clear(); vi.restoreAllMocks(); });
+it("deduplicates categories and ignores unknown IDs without changing catalog order", () => {
+  expect(exploredCategories([...tips.map(t => t.id).reverse(), tips[0].id, "retired"])).toEqual(explorationCategories);
+  expect(exploredCategories([tips[0].id, tips[0].id, "unknown"])).toEqual([tips[0].categoryId]);
+  expect(explorationTargets).toEqual([3, 5, 10, explorationCategories.length]);
+});
+it.each(["en", "sr-Latn"] as const)("shows earned badges, next target and completed exploration in %s", locale => {
+  const copy = explorationMessages[locale];
+  const props = { locale, open: true, onOpenChange: vi.fn(), categories: explorationCategories.slice(0, 5), error: false, retry: vi.fn(), onExplore: vi.fn() };
+  const { rerender } = render(<CategoryExploration {...props} />);
+  expect(screen.getByRole("status").textContent).toContain(copy.next(5));
+  expect(screen.getByText(copy.badge(3, false))).toBeTruthy();
+  expect(screen.queryByText(copy.badge(10, false))).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: copy.discover }));
+  expect(props.onExplore).toHaveBeenCalledWith(explorationCategories[5]);
+  rerender(<CategoryExploration {...props} categories={explorationCategories} />);
+  expect(screen.getByRole("status").textContent).toContain(copy.complete);
+  expect(screen.queryByRole("button", { name: copy.discover })).toBeNull();
+  rerender(<CategoryExploration {...props} categories={explorationCategories.slice(0, 2)} />);
+  expect(screen.queryByText(copy.badge(3, false))).toBeNull();
+});
+it.each(["en", "sr-Latn"] as const)("opens a clean filtered library without changing the action in %s", async locale => {
+  localStorage.setItem("carpe-acta-locale", locale);
+  Element.prototype.scrollIntoView = vi.fn();
+  render(<App />);
+  const copy = explorationMessages[locale];
+  const libraryCopy = tipLibraryMessages[locale];
+  const initial = document.getElementById("active-tip-title")!.textContent;
+  const toggle = screen.getByRole("button", { name: copy.title });
+  expect(toggle.getAttribute("aria-expanded")).toBe("false");
+  fireEvent.click(screen.getByRole("button", { name: libraryCopy.title }));
+  fireEvent.change(screen.getByRole("searchbox"), { target: { value: "no match" } });
+  fireEvent.change(screen.getByRole("combobox", { name: libraryCopy.effort }), { target: { value: "1" } });
+  fireEvent.click(toggle);
+  fireEvent.click(screen.getByRole("button", { name: copy.discover }));
+  const library = within(screen.getByRole("region", { name: libraryCopy.title }));
+  await waitFor(() => expect(document.activeElement).toBe(library.getByRole("searchbox")));
+  expect((library.getByRole("searchbox") as HTMLInputElement).value).toBe("");
+  expect((library.getByRole("combobox", { name: libraryCopy.category }) as HTMLSelectElement).value).toBe(explorationCategories[0]);
+  expect(library.getAllByRole("article").length).toBeGreaterThan(0);
+  expect(document.getElementById("active-tip-title")!.textContent).toBe(initial);
+});

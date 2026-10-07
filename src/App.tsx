@@ -1,3 +1,4 @@
+import { CategoryExploration } from "./components/CategoryExploration";
 import { ReturnMessage } from "./components/ReturnMessage";
 import { PersonalMilestones } from "./components/PersonalMilestones";
 import { WeeklyGoal } from "./components/WeeklyGoal";
@@ -30,7 +31,7 @@ import { useTipCompletion } from "./hooks/useTipCompletion";
 import { useFavorites } from "./hooks/useFavorites";
 import { FavoriteButton } from "./components/FavoriteButton";
 import { FavoriteTips } from "./components/FavoriteTips";
-import type { LocalizedTip } from "./types/tip";
+import type { CategoryId, LocalizedTip } from "./types/tip";
 import { completionMessages } from "./i18n/completions";
 import { useAuth } from "./hooks/useAuth";
 import { favoritesMessages } from "./i18n/favorites";
@@ -47,12 +48,14 @@ export function App() {
 
   const [locale, setLocale] = useState(getInitialLocale);
   const [timerAttempt, setTimerAttempt] = useState(0);
+  const [explorationOpen, setExplorationOpen] = useState(false);
+  const [libraryRequest, setLibraryRequest] = useState<{ category: CategoryId; id: number } | null>(null);
   const [libraryOpen, setLibraryOpen] = useState(false);
   const selection = useTipSelection();
   const { activeTip, category: selectedCategory } = selection;
   const startCopy = helpMeStartMessages[locale];
   const auth = useAuth();
-  const completion = useTipCompletion(auth);
+  const completion = useTipCompletion(auth, explorationOpen);
   const completionCopy = completionMessages[locale];
   const favorites = useFavorites(auth);
   const favoritesCopy = favoritesMessages[locale];
@@ -261,7 +264,7 @@ export function App() {
           </div>
         </section>
 
-        <TipLibrary tips={localizedTips} locale={locale} open={libraryOpen} onOpenChange={setLibraryOpen} renderFavoriteButton={renderFavoriteButton} onTry={handleOpenTip} />
+        <TipLibrary categoryRequest={libraryRequest} tips={localizedTips} locale={locale} open={libraryOpen} onOpenChange={setLibraryOpen} renderFavoriteButton={renderFavoriteButton} onTry={handleOpenTip} />
 
         <section className="favorites-section" aria-labelledby="completed-actions-title">
           <div className="section-heading">
@@ -280,6 +283,10 @@ export function App() {
           </div>}
           {!auth.loading && completion.progress && <WeeklyGoal key={auth.session?.user.id ?? "guest"} client={auth.client} owner={auth.session?.user.id ?? null} progress={completion.progress} locale={locale} busy={completion.busy} />}
           <PersonalMilestones key={`milestones-${auth.session?.user.id ?? "guest"}`} {...completion.milestones} locale={locale} completionId={completion.completedRecord?.id ?? null} />
+          <CategoryExploration locale={locale} open={explorationOpen} onOpenChange={setExplorationOpen} {...completion.exploration} onExplore={category => {
+            setLibraryOpen(true);
+            setLibraryRequest(previous => ({ category, id: (previous?.id ?? 0) + 1 }));
+          }} />
           <ProgressView calendarHistory={completion.calendarHistory} progress={completion.progress} locale={locale} tips={localizedTips} busy={completion.busy} onTry={handleOpenTip} />
         </section>
 

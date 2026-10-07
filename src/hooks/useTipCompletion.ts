@@ -1,3 +1,4 @@
+import { useCategoryExploration } from "./useCategoryExploration";
 import { useMilestones } from "./useMilestones";
 import { useCalendarHistory } from "./useCalendarHistory";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -12,7 +13,7 @@ type Operation = { kind: "refresh" } | { kind: "save" | "undo"; record: TipCompl
 export type CompletionUndo = { record: TipCompletion; phase: "available" | "undoing" | "error" | "done" };
 type State = { progress: ProgressData | null; owner: string | null; count: number | null; busy: boolean; error: boolean; imported: boolean };
 
-export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client" | "session" | "loading">) {
+export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client" | "session" | "loading">, explorationOpen = false) {
   const owner = auth.session?.user.id ?? null;
   const [guest, setGuest] = useState(loadCompletions);
   const [state, setState] = useState<State>({ progress: null, owner: null, count: null, busy: false, error: false, imported: false });
@@ -134,6 +135,7 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
   }, [auth.client, owner, auth.loading]);
 
   const busy = auth.loading || (!!owner && (state.owner !== owner || state.busy));
+  const exploration = useCategoryExploration({ client: auth.client, owner, loading: auth.loading, guest, progress: state.progress, busy, open: explorationOpen });
   const milestones = useMilestones({ client: auth.client, owner, loading: auth.loading, guest, progress: state.progress, busy });
   const calendarHistory = useCalendarHistory({ client: auth.client, owner, loading: auth.loading, guest, progress: state.progress, busy });
   const status = attempt.owner === owner ? attempt.status : null;
@@ -152,7 +154,7 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
     }
   }
   return {
-    calendarHistory, milestones,
+    calendarHistory, milestones, exploration,
     completedRecord: attempt.owner === owner && status === "saved" &&
       !(undo?.record === record.current && (undo.phase === "undoing" || undo.phase === "error")) ? record.current : null,
     undo: attempt.owner === owner ? undo : null,
