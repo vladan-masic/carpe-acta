@@ -1,3 +1,4 @@
+import { ReturnMessage } from "./components/ReturnMessage";
 import { PersonalMilestones } from "./components/PersonalMilestones";
 import { WeeklyGoal } from "./components/WeeklyGoal";
 import { CompletionFeedback } from "./components/CompletionFeedback";
@@ -221,6 +222,10 @@ export function App() {
             onSelectCategory={handleCategoryChange}
           />}
 
+          <ReturnMessage key={`return-${auth.session?.user.id ?? "guest"}`} locale={locale} owner={auth.session?.user.id ?? null}
+            ready={!auth.loading && !completion.busy && !completion.error && completion.progress !== null}
+            latestId={completion.progress?.recent[0]?.id} latestAt={completion.progress?.recent[0]?.completedAt}
+            completed={completion.status === "saved" || completion.status === "unsaved"} />
           {selection.hasSuggestion && <TipCard
             actionLabel={copy.generator.actionLabel}
             explanationLabel={copy.generator.explanationLabel}

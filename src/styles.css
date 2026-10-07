@@ -1090,3 +1090,7 @@ h1 {
 .weekly-achievements h4 { margin: 0; }
 .weekly-achievements summary { padding-block: 8px; cursor: pointer; }
 .weekly-achievements ul { padding-left: 20px; }
+
+.return-message { display: flex; align-items: center; gap: 12px; padding: 12px 16px; margin-block: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.return-message p { flex: 1; margin: 0; }
+.return-message button { flex: 0 0 auto; min-width: 44px; min-height: 44px; padding: 6px 12px; }

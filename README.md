@@ -338,3 +338,18 @@ Live milestone-summary verification on 2026-10-07 passed in a read-only
 transaction: authenticated totals matched direct aggregates, cross-owner reads
 were rejected, anonymous execution was blocked, and the function retained RLS
 through SECURITY INVOKER. All 23 existing completion records remained unchanged.
+
+## Gentle return message
+
+On a return visit after at least three local calendar days without a completed
+action, the action area quietly says “Good to see you. One small action counts.”
+English and Serbian are supported. There are no streak-loss warnings, progress
+changes, popups, sounds, or focus moves. The message can be dismissed and clears
+when an action is completed (including a local save failure).
+
+Eligibility is checked once after the visit's history is available. New users,
+recent activity, failed/loading history and later imports do not trigger a welcome.
+A browser-local marker per guest/account remembers the latest completion ID, so
+the same gap is welcomed once in that browser; a later completion followed by a
+new gap can trigger another welcome. Blocked storage limits suppression to the
+current visit. This feature uses existing history and needs no backend changes.
