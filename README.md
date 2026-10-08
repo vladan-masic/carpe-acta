@@ -96,7 +96,7 @@ On screens up to 1000px wide, the floating **Menu** at the top-right contains th
 four links, followed by account and language controls below a divider. Its panel
 scrolls independently when space is limited. At every screen width, the category picker shows the current selection and expands with
 **Show categories**. These disclosures only change the layout, not tip selection.
-The floating **Back to top** arrow appears after the introduction scrolls out of view. A reserved right-hand margin keeps it clear of page controls. It scrolls smoothly
+The floating **Back to top** arrow appears after the introduction scrolls out of view. It floats over the page without reserving content space, with a larger right inset on wider screens. It scrolls smoothly
 to the top, and returns keyboard focus to the page start. Reduced-motion preferences
 disable the animation. Account dialogs remain available independently
 of the collapsed menu, including login callbacks and password recovery.
