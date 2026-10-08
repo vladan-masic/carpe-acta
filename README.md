@@ -380,3 +380,28 @@ verification confirmed authenticated query results, cross-owner rejection,
 blocked anonymous execution and retained row-level security. All 23 completion
 records remained unchanged, verified with a before/after row-content fingerprint.
 The frontend has not been deployed.
+
+## Personal best
+
+A quiet summary beside milestones shows the most distinct active days in a
+Monday–Sunday week, including the current partial week, and the earliest week
+that reached that count. It uses the device timezone and full saved history.
+Repeated actions on one day count once. Future/invalid guest timestamps are
+excluded. Undo and imports recalculate the record; nothing is stored separately.
+There are no targets, streak comparisons, popups, sounds or competitive prompts.
+English and Serbian Latin include empty, loading and retry states.
+
+Guests use browser history. Accounts use the one-row `personal_best_week` RPC,
+with authenticated owner checks and SECURITY INVOKER retaining completion RLS.
+Account failures never use guest history. Writes hide stale summaries; account
+switches discard outstanding responses.
+
+**Applied to hosted Supabase on 2026-10-08:**
+`supabase/migrations/202610080001_personal_best_week.sql`.
+The migration and rollback-only `supabase/tests/personal-best-access.sql` passed
+against temporary PostgreSQL 16, including week/year boundaries, distinct days,
+ties, Undo, cutoff, timezone grouping and owner isolation. Hosted read-only
+verification confirmed that the authenticated summary matched direct aggregates,
+cross-owner reads were rejected, anonymous execution was blocked, and RLS was
+retained. All 23 completion records were unchanged, verified by a before/after
+row-content fingerprint. The frontend has not been deployed.

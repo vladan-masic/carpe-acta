@@ -1,3 +1,4 @@
+import { usePersonalBest } from "./usePersonalBest";
 import { useCategoryExploration } from "./useCategoryExploration";
 import { useMilestones } from "./useMilestones";
 import { useCalendarHistory } from "./useCalendarHistory";
@@ -136,6 +137,7 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
 
   const busy = auth.loading || (!!owner && (state.owner !== owner || state.busy));
   const exploration = useCategoryExploration({ client: auth.client, owner, loading: auth.loading, guest, progress: state.progress, busy, open: explorationOpen });
+  const personalBest = usePersonalBest({ client: auth.client, owner, loading: auth.loading, guest, progress: state.progress, busy });
   const milestones = useMilestones({ client: auth.client, owner, loading: auth.loading, guest, progress: state.progress, busy });
   const calendarHistory = useCalendarHistory({ client: auth.client, owner, loading: auth.loading, guest, progress: state.progress, busy });
   const status = attempt.owner === owner ? attempt.status : null;
@@ -154,7 +156,7 @@ export function useTipCompletion(auth: Pick<ReturnType<typeof useAuth>, "client"
     }
   }
   return {
-    calendarHistory, milestones, exploration,
+    calendarHistory, milestones, exploration, personalBest,
     completedRecord: attempt.owner === owner && status === "saved" &&
       !(undo?.record === record.current && (undo.phase === "undoing" || undo.phase === "error")) ? record.current : null,
     undo: attempt.owner === owner ? undo : null,

@@ -1,3 +1,4 @@
+import { PersonalBest } from "./components/PersonalBest";
 import { CategoryExploration } from "./components/CategoryExploration";
 import { ReturnMessage } from "./components/ReturnMessage";
 import { PersonalMilestones } from "./components/PersonalMilestones";
@@ -283,6 +284,7 @@ export function App() {
           </div>}
           {!auth.loading && completion.progress && <WeeklyGoal key={auth.session?.user.id ?? "guest"} client={auth.client} owner={auth.session?.user.id ?? null} progress={completion.progress} locale={locale} busy={completion.busy} />}
           <PersonalMilestones key={`milestones-${auth.session?.user.id ?? "guest"}`} {...completion.milestones} locale={locale} completionId={completion.completedRecord?.id ?? null} />
+          <PersonalBest {...completion.personalBest} locale={locale} />
           <CategoryExploration locale={locale} open={explorationOpen} onOpenChange={setExplorationOpen} {...completion.exploration} onExplore={category => {
             setLibraryOpen(true);
             setLibraryRequest(previous => ({ category, id: (previous?.id ?? 0) + 1 }));
