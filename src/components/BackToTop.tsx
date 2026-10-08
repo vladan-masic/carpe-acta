@@ -1,4 +1,18 @@
+import { useEffect, useState } from "react";
+
 export function BackToTop({ label }: { label: string }) {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const update = () => {
+      const hero = document.querySelector(".hero-section");
+      setVisible(hero ? hero.getBoundingClientRect().bottom <= 0 : window.scrollY > window.innerHeight);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => { window.removeEventListener("scroll", update); window.removeEventListener("resize", update); };
+  }, []);
+  if (!visible) return null;
   return (
     <a className="back-to-top" href="#page-top" aria-label={label} title={label} onClick={(event) => {
       event.preventDefault();

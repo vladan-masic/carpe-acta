@@ -94,9 +94,9 @@ preview has been removed because the full library includes those tips.
 
 On screens up to 1000px wide, the floating **Menu** at the top-right contains these
 four links, followed by account and language controls below a divider. Its panel
-scrolls independently when space is limited. On screens up to 600px wide, the category picker shows the current selection and expands with
+scrolls independently when space is limited. At every screen width, the category picker shows the current selection and expands with
 **Show categories**. These disclosures only change the layout, not tip selection.
-The floating **Back to top** arrow stays in the lower-right corner, scrolls smoothly
+The floating **Back to top** arrow appears after the introduction scrolls out of view. A reserved right-hand margin keeps it clear of page controls. It scrolls smoothly
 to the top, and returns keyboard focus to the page start. Reduced-motion preferences
 disable the animation. Account dialogs remain available independently
 of the collapsed menu, including login callbacks and password recovery.
@@ -405,3 +405,14 @@ verification confirmed that the authenticated summary matched direct aggregates,
 cross-owner reads were rejected, anonymous execution was blocked, and RLS was
 retained. All 23 completion records were unchanged, verified by a before/after
 row-content fingerprint. The frontend has not been deployed.
+
+## Page hierarchy
+
+The compact logo/title and daily-quest introduction lead into the action card.
+Categories are collapsed initially on desktop and mobile; expanding them does not
+change the current action. Weekly-goal settings and the explanation of recorded
+weeks are available through disclosures, with save errors still visible.
+Progress shows the weekly goal, calendar and recent actions before a grouped
+Achievements section (milestones, personal best and category exploration).
+Milestones and personal best sit side by side on wider screens and stack on mobile.
+This layout does not change tip selection, completion calculations or account data.

@@ -8,6 +8,7 @@ import { HelpMeStart } from "./components/HelpMeStart";
 import { TipLibrary } from "./components/TipLibrary";
 import { helpMeStartMessages } from "./i18n/helpMeStart";
 import { useTipSelection } from "./hooks/useTipSelection";
+import { progressMessages } from "./i18n/progress";
 import { ProgressView } from "./components/ProgressView";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -188,7 +189,7 @@ export function App() {
             <div className="hero-brand">
               <BrandEmblem variant="hero" />
               <h1>
-                Carpe <br />Acta
+                Carpe Acta
               </h1>
             </div>
             <p className="hero-lede">{copy.hero.lede}</p>
@@ -283,13 +284,19 @@ export function App() {
             <button type="button" className="secondary-button" disabled={completion.busy} onClick={completion.refresh}>{completionCopy.refresh}</button>
           </div>}
           {!auth.loading && completion.progress && <WeeklyGoal key={auth.session?.user.id ?? "guest"} client={auth.client} owner={auth.session?.user.id ?? null} progress={completion.progress} locale={locale} busy={completion.busy} />}
-          <PersonalMilestones key={`milestones-${auth.session?.user.id ?? "guest"}`} {...completion.milestones} locale={locale} completionId={completion.completedRecord?.id ?? null} />
-          <PersonalBest {...completion.personalBest} locale={locale} />
-          <CategoryExploration locale={locale} open={explorationOpen} onOpenChange={setExplorationOpen} {...completion.exploration} onExplore={category => {
-            setLibraryOpen(true);
-            setLibraryRequest(previous => ({ category, id: (previous?.id ?? 0) + 1 }));
-          }} />
-          <ProgressView calendarHistory={completion.calendarHistory} progress={completion.progress} locale={locale} tips={localizedTips} busy={completion.busy} onTry={handleOpenTip} />
+          <ProgressView calendarHistory={completion.calendarHistory} progress={completion.progress} locale={locale} tips={localizedTips} busy={completion.busy} onTry={handleOpenTip} achievements={
+            <section className="progress-achievements" aria-labelledby="achievements-title">
+              <h3 id="achievements-title">{progressMessages[locale].achievements}</h3>
+              <div className="achievement-panels">
+                <PersonalMilestones key={`milestones-${auth.session?.user.id ?? "guest"}`} {...completion.milestones} locale={locale} completionId={completion.completedRecord?.id ?? null} />
+                <PersonalBest {...completion.personalBest} locale={locale} />
+                <CategoryExploration locale={locale} open={explorationOpen} onOpenChange={setExplorationOpen} {...completion.exploration} onExplore={category => {
+                  setLibraryOpen(true);
+                  setLibraryRequest(previous => ({ category, id: (previous?.id ?? 0) + 1 }));
+                }} />
+              </div>
+            </section>
+          } />
         </section>
 
         <FavoriteTips

@@ -55,6 +55,7 @@ it("lets nested controls consume Escape without also closing the toolbar", () =>
 
 it.each(["en", "sr-Latn"] as const)("provides a labeled top link and returns keyboard focus in %s", (locale) => {
   vi.stubGlobal("matchMedia", () => ({ matches: false }));
+  vi.stubGlobal("scrollY", 1000);
   const scroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
   render(<><main id="page-top" tabIndex={-1}>Page</main><BackToTop label={messages[locale].footer.backToTop} /></>);
   const link = screen.getByRole("link", { name: messages[locale].footer.backToTop });
@@ -66,8 +67,21 @@ it.each(["en", "sr-Latn"] as const)("provides a labeled top link and returns key
 
 it("returns to the top without animation when reduced motion is requested", () => {
   vi.stubGlobal("matchMedia", () => ({ matches: true }));
+  vi.stubGlobal("scrollY", 1000);
   const scroll = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
   render(<BackToTop label="Back to top" />);
   fireEvent.click(screen.getByRole("link", { name: "Back to top" }));
   expect(scroll).toHaveBeenCalledWith({ top: 0, left: 0, behavior: "instant" });
+});
+
+it("hides the top link until the introduction has scrolled away", () => {
+  vi.stubGlobal("scrollY", 0);
+  render(<BackToTop label="Back to top" />);
+  expect(screen.queryByRole("link", { name: "Back to top" })).toBeNull();
+  vi.stubGlobal("scrollY", 1000);
+  fireEvent.scroll(window);
+  expect(screen.getByRole("link", { name: "Back to top" })).toBeTruthy();
+  vi.stubGlobal("scrollY", 0);
+  fireEvent.scroll(window);
+  expect(screen.queryByRole("link", { name: "Back to top" })).toBeNull();
 });

@@ -1,5 +1,5 @@
 import type { CalendarHistory } from "../hooks/useCalendarHistory";
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { ActivityCalendar } from "./ActivityCalendar";
 import { WhatHelpsMe } from "./WhatHelpsMe";
 import { feedbackMessages } from "../i18n/feedback";
@@ -8,12 +8,12 @@ import { progressMessages } from "../i18n/progress";
 import type { LocalizedTip } from "../types/tip";
 import type { ProgressData } from "../utils/progress";
 
-type Props = { calendarHistory?: CalendarHistory; progress: ProgressData | null; locale: Locale; tips: LocalizedTip[]; busy: boolean; onTry?: (tip: LocalizedTip) => void };
-export function ProgressView({ progress, locale, tips, busy, onTry, calendarHistory }: Props) {
+type Props = { achievements?: ReactNode; calendarHistory?: CalendarHistory; progress: ProgressData | null; locale: Locale; tips: LocalizedTip[]; busy: boolean; onTry?: (tip: LocalizedTip) => void };
+export function ProgressView({ progress, locale, tips, busy, onTry, calendarHistory, achievements }: Props) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const historyHeading = useRef<HTMLHeadingElement>(null);
   const copy = progressMessages[locale];
-  if (!progress) return <p role="status">{busy ? copy.loading : copy.unavailable}</p>;
+  if (!progress) return <div className="progress-view"><p role="status">{busy ? copy.loading : copy.unavailable}</p>{achievements}</div>;
   const byId = new Map<string, LocalizedTip>(tips.map((tip) => [tip.id, tip]));
   const total = progress.days.reduce((sum, day) => sum + day.count, 0);
   const activeDays = progress.days.filter((day) => day.count > 0).length;
@@ -50,6 +50,7 @@ export function ProgressView({ progress, locale, tips, busy, onTry, calendarHist
           </li>;
         })}
       </ol>}
+      {achievements}
       <WhatHelpsMe entries={progress.helpful} tips={tips} locale={locale} onTry={onTry} />
     </div>
   );

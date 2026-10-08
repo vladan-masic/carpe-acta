@@ -1,5 +1,6 @@
 import type { Locale } from "./locales";
 type ProgressCopy = {
+  achievements: string;
   yearHint: string; view: string; weeks: string; year: string; yearTitle: string; previousYear: string; nextYear: string;
   loadingYear: string; yearError: string; retryYear: string;
   weekSummary: (total: number, active: number) => string;
@@ -19,6 +20,7 @@ function srActions(count: number, completed = false) {
 
 export const progressMessages: Record<Locale, ProgressCopy> = {
   en: {
+    achievements: "Achievements",
     yearHint: "Scroll horizontally to see the whole year on smaller screens.",
     view: "Calendar view", weeks: "12 weeks", year: "Year", yearTitle: "Your activity",
     previousYear: "Previous year", nextYear: "Next year", loadingYear: "Loading this year’s activity…",
@@ -32,6 +34,7 @@ export const progressMessages: Record<Locale, ProgressCopy> = {
     unknown: "Previously available tip", loading: "Loading your progress…", unavailable: "Progress is unavailable. Try refreshing completed actions.",
   },
   "sr-Latn": {
+    achievements: "Dostignuća",
     yearHint: "Na manjim ekranima pomeraj kalendar vodoravno da vidiš celu godinu.",
     view: "Prikaz kalendara", weeks: "12 nedelja", year: "Godina", yearTitle: "Tvoja aktivnost",
     previousYear: "Prethodna godina", nextYear: "Sledeća godina", loadingYear: "Učitavanje aktivnosti za ovu godinu…",

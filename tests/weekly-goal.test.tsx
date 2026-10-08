@@ -2,6 +2,7 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, renderHook, screen, waitFor } from "@testing-library/react";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { weeklyGoalMessages } from "../src/i18n/weeklyGoal";
 import { WeeklyGoal } from "../src/components/WeeklyGoal";
 import { useWeeklyGoal, validGoal, weeklyGoalKey } from "../src/hooks/useWeeklyGoal";
 import { summarizeProgress, weeklyActivity } from "../src/utils/progress";
@@ -31,6 +32,7 @@ it.each(["en", "sr-Latn"] as const)("supports opt-in, change, Undo, and disablin
   const props = { client: null, owner: null, locale, busy: false };
   const { rerender } = render(<WeeklyGoal {...props} progress={summarizeProgress(records, now)} />);
   expect(screen.queryByRole("progressbar")).toBeNull();
+  fireEvent.click(screen.getByText(weeklyGoalMessages[locale].settings));
   fireEvent.change(screen.getByRole("combobox"), { target: { value: "2" } });
   expect(screen.getByRole("progressbar").getAttribute("value")).toBe("2");
   rerender(<WeeklyGoal {...props} progress={summarizeProgress(records.slice(1), now)} />);
@@ -75,13 +77,16 @@ it("isolates account switches and ignores old pending writes", async () => {
   const client = { auth: { getUser: vi.fn().mockResolvedValueOnce(account("a", 3)).mockResolvedValueOnce(account("b", 5)), updateUser } } as unknown as SupabaseClient;
   const props = { client, locale: "en" as const, busy: false, progress: summarizeProgress([], now) };
   const { rerender } = render(<WeeklyGoal key="a" owner="a" {...props} />);
+  fireEvent.click(screen.getByText(weeklyGoalMessages.en.settings));
   await waitFor(() => expect((screen.getByRole("combobox") as HTMLSelectElement).value).toBe("3"));
   fireEvent.change(screen.getByRole("combobox"), { target: { value: "1" } });
   rerender(<WeeklyGoal key="b" owner="b" {...props} />);
+  fireEvent.click(screen.getByText(weeklyGoalMessages.en.settings));
   await waitFor(() => expect((screen.getByRole("combobox") as HTMLSelectElement).value).toBe("5"));
   await act(() => resolve(account("a", 1)));
   expect((screen.getByRole("combobox") as HTMLSelectElement).value).toBe("5");
   rerender(<WeeklyGoal key="guest" owner={null} {...props} />);
+  fireEvent.click(screen.getByText(weeklyGoalMessages.en.settings));
   expect((screen.getByRole("combobox") as HTMLSelectElement).value).toBe("0");
 });
 it("reports a failed account read and recovers on focus", async () => {
