@@ -1,3 +1,4 @@
+import { TipSources } from "./TipSources";
 import { useRef, useState, type ReactNode } from "react";
 import type { CategoryId, LocalizedTip, TipId } from "../types/tip";
 import { FavoriteButton, type FavoriteLabels } from "./FavoriteButton";
@@ -85,6 +86,7 @@ export function FavoriteTips({ title, locale, disabled, loading, controls, descr
                   }}
                 />
               </div>
+                <TipSources tipId={tip.id} locale={locale} />
             </article>
           ))}
         </div>

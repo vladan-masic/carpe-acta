@@ -1185,3 +1185,10 @@ h1 {
 :root[data-theme="dark"] .primary-button { border: 1px solid var(--accent); }
 :root[data-theme="dark"] .category-button[data-active="true"] { border-color: var(--accent); }
 .preference-option:focus-visible { outline: 2px solid var(--blue); outline-offset: -3px; }
+
+.tip-sources { margin-top: 16px; font-size: .88rem; color: var(--muted); }
+.tip-sources details + details { margin-top: 8px; }
+.tip-sources summary { color: var(--accent-dark); cursor: pointer; line-height: 1.5; }
+.tip-sources p { font-size: inherit; line-height: 1.5; }
+.tip-sources .source-note { color: var(--muted); }
+.tip-sources a { color: var(--accent-dark); text-underline-offset: 3px; }

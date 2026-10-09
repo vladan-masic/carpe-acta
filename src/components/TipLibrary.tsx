@@ -1,3 +1,4 @@
+import { TipSources } from "./TipSources";
 import { useEffect, useState, type ReactNode } from "react";
 import type { CategoryId, LocalizedTip } from "../types/tip";
 import type { Locale } from "../i18n/locales";
@@ -82,6 +83,7 @@ export function TipLibrary({ tips, locale, open, onOpenChange, renderFavoriteBut
                   <button className="secondary-button" type="button" aria-label={`${copy.try}: ${tip.title}`} onClick={() => onTry(tip)}>{copy.try}</button>
                   {renderFavoriteButton(tip)}
                 </div>
+                <TipSources tipId={tip.id} locale={locale} />
               </article>
             ))}
           </div>

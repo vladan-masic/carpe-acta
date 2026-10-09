@@ -1075,4 +1075,22 @@ export const tips = [
     effortMinutes: 1,
     tags: ["low-motivation", "writing", "small-step"],
   },
+  {
+    id: "acknowledge-a-small-finish",
+    categoryId: "habits",
+    effortMinutes: 1,
+    tags: ["habits", "celebration", "small-step"],
+  },
+  {
+    id: "practice-one-quality",
+    categoryId: "habits",
+    effortMinutes: 2,
+    tags: ["habits", "identity", "practice"],
+  },
+  {
+    id: "add-enjoyment-to-the-task",
+    categoryId: "low-motivation",
+    effortMinutes: 2,
+    tags: ["low-motivation", "enjoyment", "routine"],
+  },
 ] as const satisfies readonly TipMetadata[];

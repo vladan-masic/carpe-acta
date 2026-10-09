@@ -47,7 +47,7 @@ src/
 
 ## Adding a bilingual tip
 
-The library now contains 177 bilingual tips. See
+The library now contains 180 bilingual tips. See
 [the CA-041–CA-160 expansion notes](docs/tip-library-expansion.md) for the
 12 earlier batches, editorial ID mapping, category choices, and references.
 The additional [one-minute Help Me Start actions](docs/help-me-start.md) ensure
@@ -436,3 +436,24 @@ Try again flow and focuses the action card; it does not record a completion or
 change the daily quest or random-selection algorithm. The picker uses the existing
 feedback summary, so feedback edits, Undo and imports update it without extra reads.
 It stays hidden while history is loading or unavailable.
+
+## Habit-content planning
+
+See the [habit-content review](docs/habit-content-review.md) for the 177-tip
+overlap audit, bilingual draft actions inspired by Atomic Habits and Tiny Habits,
+and the proposed source labels. The review records the pre-change catalog; see the implementation status below.
+
+## Habit sources and new actions
+
+The catalog now contains **180 tips**: the original 177 are unchanged and three
+approved bilingual actions are appended (acknowledge a small finish, practice one
+quality, and add enjoyment to routine work). These display expandable **Inspired
+by** source notes linking to official Atomic Habits or Tiny Habits explanations.
+The existing cue-planning tip has **Related reading** links to both authors; its
+text is unchanged and its historical origin is not asserted. Source information
+appears on action, daily, library and favorite cards. There is no source filter yet.
+
+The catalog-length effect on daily selection was explicitly accepted: daily
+quests now use the existing day-seed calculation modulo 180. The algorithm is
+unchanged, but dates can select different tips than the former 177-tip catalog.
+No database migration is needed. Source notes do not influence selection or account data.

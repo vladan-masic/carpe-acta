@@ -1,8 +1,11 @@
+import type { Locale } from "../i18n/locales";
+import { TipSources } from "./TipSources";
 import type { LocalizedTip } from "../types/tip";
 import type { CompletionStatus } from "../hooks/useTipCompletion";
 import type { ReactNode } from "react";
 
 type TipCardProps = {
+  locale?: Locale;
   actionLabel: string;
   explanationLabel: string;
   buttonLabel: string;
@@ -29,6 +32,7 @@ type TipCardProps = {
 };
 
 export function TipCard({
+  locale = "en",
   actionLabel,
   explanationLabel,
   buttonLabel,
@@ -87,6 +91,7 @@ export function TipCard({
           <p>{tip.whyItWorks}</p>
         </details>
       )}
+      <TipSources tipId={tip.id} locale={locale} />
     </article>
   );
 }

@@ -1043,4 +1043,22 @@ export const srLatnTips = {
     text: "Iskoristi početak koji već postoji.",
     action: "Pronađi nedovršenu rečenicu ili stavku u beleškama i dodaj samo onoliko reči koliko je potrebno da dovršiš misao. Zaustavi se posle te stavke.",
   },
+  "acknowledge-a-small-finish": {
+    title: "Primeti mali uspeh",
+    text: "Odvoji trenutak da primetiš malu završenu radnju.",
+    action: "Stavi jednu belešku na njeno mesto. Odmah primeti da je radnja završena, uz nenametljiv gest ili nekoliko ohrabrujućih reči koje ti prijaju.",
+    whyItWorks: "Kratko priznanje sebi može pomoći da primetiš vrednost malog završenog koraka.",
+  },
+  "practice-one-quality": {
+    title: "Vežbaj jednu osobinu",
+    text: "Pokaži osobinu koju ceniš kroz jednu radnju.",
+    action: "Izaberi osobinu koju danas želiš da vežbaš, poput pažljivosti ili radoznalosti. Posveti joj jedan minut: proveri jedan detalj u svom radu ili napiši jedno pitanje o njemu. Imenuj osobinu koju ta radnja pokazuje.",
+    whyItWorks: "Konkretan primer povezuje nameru o tome kakva osoba želiš da budeš sa nečim što možeš da uradiš sada.",
+  },
+  "add-enjoyment-to-the-task": {
+    title: "Dodaj nešto prijatno zadatku",
+    text: "Probaj da rutinski posao učiniš prijatnijim dok ga radiš.",
+    action: "Pusti poznatu instrumentalnu numeru koju voliš i jedan minut vraćaj razbacani pribor za pisanje na mesto. Primeti da li ti muzika olakšava da pristupiš ovom jednostavnom zadatku; isključi je ako ti odvlači pažnju.",
+    whyItWorks: "Povezivanje rutinskog zadatka sa nečim prijatnim može učiniti rad privlačnijim.",
+  },
 } satisfies Record<TipId, TipTranslation>;

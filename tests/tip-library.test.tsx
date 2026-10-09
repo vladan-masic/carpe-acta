@@ -27,7 +27,7 @@ it.each(["en", "sr-Latn"] as const)("searches every content field in %s and pres
     localized.filter((tip) => tip.categoryId === "low-energy" && tip.effortMinutes <= 1),
   );
   expect(filterLibraryTips(localized, "no-such-text-123", "all", null)).toEqual([]);
-  expect(tips).toHaveLength(177);
+  expect(tips).toHaveLength(180);
 });
 
 it("normalizes Serbian Latin accents and searches only the supplied language", () => {
@@ -73,7 +73,7 @@ it.each(["en", "sr-Latn"] as const)("supports disclosure, filters, favorites, em
   expect(screen.queryByRole("button", { name: copy.more })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: copy.reset }));
   expect(screen.getAllByRole("article")).toHaveLength(6);
-  expect(screen.getByRole("status").textContent).toBe(copy.results(6, 177));
+  expect(screen.getByRole("status").textContent).toBe(copy.results(6, 180));
 });
 
 it("pages through the whole catalog, focuses new results, and resets after criteria or language changes", async () => {
@@ -92,8 +92,8 @@ it("pages through the whole catalog, focuses new results, and resets after crite
   const more = screen.getByRole("button", { name: "Prikaži još" });
   for (let shown = 6; shown < tips.length; shown += 6) fireEvent.click(more);
   expect(screen.queryByRole("button", { name: "Prikaži još" })).toBeNull();
-  expect(screen.getAllByRole("article")).toHaveLength(177);
-  expect(screen.getByRole("status").textContent).toBe("Prikazano 177 od 177 saveta");
+  expect(screen.getAllByRole("article")).toHaveLength(180);
+  expect(screen.getByRole("status").textContent).toBe("Prikazano 180 od 180 saveta");
 });
 
 it("integrates with the action card, completion reset, guided mode, and shared guest favorites", async () => {

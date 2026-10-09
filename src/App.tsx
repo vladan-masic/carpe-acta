@@ -198,7 +198,7 @@ export function App() {
             <p className="hero-lede">{copy.hero.lede}</p>
           </div>
 
-          <DailyQuest
+          <DailyQuest locale={locale}
             label={copy.dailyQuestLabel}
             quest={localizedDailyQuest}
             favoriteButton={renderFavoriteButton(localizedDailyQuest)}
@@ -239,7 +239,7 @@ export function App() {
             ready={!auth.loading && !completion.busy && !completion.error && completion.progress !== null}
             latestId={completion.progress?.recent[0]?.id} latestAt={completion.progress?.recent[0]?.completedAt}
             completed={completion.status === "saved" || completion.status === "unsaved"} />
-          {selection.hasSuggestion && <TipCard
+          {selection.hasSuggestion && <TipCard locale={locale}
             actionLabel={copy.generator.actionLabel}
             explanationLabel={copy.generator.explanationLabel}
             buttonLabel={selection.helping ? startCopy.another : copy.generator.generateButton}

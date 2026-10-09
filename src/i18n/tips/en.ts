@@ -1043,4 +1043,22 @@ export const enTips = {
     text: "Use a beginning that is already there.",
     action: "Find an unfinished sentence or bullet in your notes and add just enough words to complete its thought. Stop after that one item.",
   },
+  "acknowledge-a-small-finish": {
+    title: "Acknowledge a Small Finish",
+    text: "Give a small action a moment of recognition.",
+    action: "Put one loose note where it belongs. Immediately acknowledge the finish with a quiet gesture or a few encouraging words that feel natural to you.",
+    whyItWorks: "A brief acknowledgement can make a small finish feel worth noticing.",
+  },
+  "practice-one-quality": {
+    title: "Practice One Quality",
+    text: "Make a quality you value visible in one action.",
+    action: "Choose a quality you want to practice today, such as care or curiosity. Spend one minute acting on it: check one detail in your work or write one question about it. Name the quality that action expressed.",
+    whyItWorks: "A concrete example connects an intention about who you want to be with something you can do now.",
+  },
+  "add-enjoyment-to-the-task": {
+    title: "Add Enjoyment to the Task",
+    text: "Try making routine work more pleasant while you do it.",
+    action: "Play a familiar instrumental track you enjoy and spend one minute putting loose stationery away. Notice whether the music makes this simple task easier to approach; switch it off if it distracts you.",
+    whyItWorks: "Pairing a routine task with something enjoyable can make the experience more inviting.",
+  },
 } satisfies Record<TipId, TipTranslation>;
