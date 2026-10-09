@@ -20,6 +20,7 @@ import { AppToolbar } from "./components/AppToolbar";
 import { BackToTop } from "./components/BackToTop";
 import { BrandEmblem } from "./components/BrandEmblem";
 import { DailyQuest } from "./components/DailyQuest";
+import { ThemeSelector } from "./components/ThemeSelector";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { TipCard } from "./components/TipCard";
 import { ActionTimer } from "./components/ActionTimer";
@@ -176,6 +177,7 @@ export function App() {
               busy={completion.busy} disabled={completion.busy} error={completion.error}
               onImport={completion.importGuest} onRefresh={completion.refresh} />
           </>} />
+          <ThemeSelector locale={locale} />
           <LanguageSelector
             ariaLabel={copy.languageSelectorLabel}
             locale={locale}

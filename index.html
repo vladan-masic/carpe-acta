@@ -2,6 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Set the palette before styles and React load to avoid a light flash.
+      (() => {
+        let preference = "system";
+        try { preference = localStorage.getItem("carpe-acta-theme-v1") || "system"; } catch {}
+        const dark = preference === "dark" || (preference !== "light" && preference !== "dark" && window.matchMedia?.("(prefers-color-scheme: dark)").matches);
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%favicon-32.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="%BASE_URL%favicon-48.png" />

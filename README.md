@@ -416,3 +416,15 @@ Progress shows the weekly goal, calendar and recent actions before a grouped
 Achievements section (milestones, personal best and category exploration).
 Milestones and personal best sit side by side on wider screens and stack on mobile.
 This layout does not change tip selection, completion calculations or account data.
+
+## Color theme
+
+Choose **System / Light / Dark** beside the language selector, or inside the
+mobile menu (**Sistemski / Svetli / Tamni** in Serbian Latin). System is the
+default and follows changes to the device's color preference. An explicit
+selection overrides the device preference and is stored only in this browser
+under `carpe-acta-theme-v1`; it is not synced to the account. Other tabs follow
+preference changes. If storage is blocked, the selection works for this visit.
+A small script in `index.html` applies the selected palette before React loads.
+Dark mode uses warm charcoal surfaces, ivory text and terracotta accents, with
+separate calendar levels and quieter illustrations. No backend setup is required.
