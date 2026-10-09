@@ -1,3 +1,4 @@
+import { HelpfulActionPicker } from "./components/HelpfulActionPicker";
 import { PersonalBest } from "./components/PersonalBest";
 import { CategoryExploration } from "./components/CategoryExploration";
 import { ReturnMessage } from "./components/ReturnMessage";
@@ -210,10 +211,15 @@ export function App() {
             <h2 id="tip-generator" tabIndex={-1}>{selection.helping ? startCopy.title : copy.generator.title}</h2>
           </div>
 
-          <button type="button" className="secondary-button help-start-toggle" onClick={() => {
+          <div className="action-entry-controls">
+          <button type="button" className="secondary-button" onClick={() => {
             if (selection.helping) selection.leave(); else selection.start();
             resetAttempt();
           }}>{selection.helping ? startCopy.back : startCopy.title}</button>
+          {!auth.loading && !completion.busy && !completion.error && completion.progress && <HelpfulActionPicker
+            key={auth.session?.user.id ?? "guest"} entries={completion.progress.helpful}
+            tips={localizedTips} locale={locale} onTry={handleOpenTip} />}
+          </div>
 
           {selection.helping ? <HelpMeStart locale={locale} selected={selection.barrier}
             timeBudget={selection.timeBudget} hasSuggestion={selection.hasSuggestion}

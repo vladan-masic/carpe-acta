@@ -428,3 +428,11 @@ preference changes. If storage is blocked, the selection works for this visit.
 A small script in `index.html` applies the selected palette before React loads.
 Dark mode uses warm charcoal surfaces, ivory text and terracotta accents, with
 separate calendar levels and quieter illustrations. No backend setup is required.
+
+The action area also offers **Try something that helped before** when saved
+helpful feedback includes a current tip. Its compact picker shows the five most
+recently helpful actions, with an option to show all. Choosing one uses the same
+Try again flow and focuses the action card; it does not record a completion or
+change the daily quest or random-selection algorithm. The picker uses the existing
+feedback summary, so feedback edits, Undo and imports update it without extra reads.
+It stays hidden while history is loading or unavailable.
