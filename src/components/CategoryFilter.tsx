@@ -1,3 +1,4 @@
+import { CategoryIcon } from "./CategoryIcon";
 import { useId, useState } from "react";
 import type { CategoryId } from "../types/tip";
 
@@ -45,7 +46,8 @@ export function CategoryFilter({
           onClick={() => onSelectCategory(category.id)}
           type="button"
         >
-          {category.label}
+          <CategoryIcon category={category.id} />
+          <span>{category.label}</span>
         </button>
       ))}
       </div>

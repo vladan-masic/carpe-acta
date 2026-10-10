@@ -4,7 +4,7 @@ type TimerMessages = {
   alerts: string; sound: string; preview: string; notifications: string; tab: string; dismiss: string;
   finishedTitle: string; notificationBody: string; limitation: string; blocked: string; unavailable: string;
   soundFailed: string; unsaved: string; requesting: string;
-  title: string; start: string; pause: string; resume: string; reset: string; keepGoing: string;
+  optional: string; title: string; start: string; pause: string; resume: string; reset: string; keepGoing: string;
   remaining: string; extra: string; running: string; paused: string; expired: string; continuing: string;
 };
 
@@ -18,7 +18,7 @@ export const timerMessages: Record<Locale, TimerMessages> = {
     unavailable: "Notifications are unavailable in this browser. The timer and tab-title alert still work.",
     soundFailed: "Sound could not play. Try Preview sound, and check your browser’s sound settings.",
     unsaved: "These settings could not be saved. They apply to this timer only.", requesting: "Waiting for notification permission…",
-    title: "Action timer", start: "Start timer", pause: "Pause", resume: "Resume", reset: "Reset timer",
+    optional: "Optional", title: "Action timer", start: "Start timer", pause: "Pause", resume: "Resume", reset: "Reset timer",
     keepGoing: "Keep going", remaining: "Time remaining", extra: "Extra time",
     running: "Timer running. You can pause or stop whenever you need.", paused: "Timer paused.",
     expired: "Time’s up. You can stop here or keep going. Mark the action done only when you’re ready.",
@@ -33,7 +33,7 @@ export const timerMessages: Record<Locale, TimerMessages> = {
     unavailable: "Obaveštenja nisu dostupna u ovom pregledaču. Tajmer i obaveštenje u naslovu kartice i dalje rade.",
     soundFailed: "Zvuk nije mogao da se pusti. Probaj Preslušaj zvuk i proveri podešavanja zvuka u pregledaču.",
     unsaved: "Podešavanja nisu sačuvana. Važe samo za ovaj tajmer.", requesting: "Čeka se dozvola za obaveštenja…",
-    title: "Tajmer za akciju", start: "Pokreni tajmer", pause: "Pauziraj", resume: "Nastavi", reset: "Resetuj tajmer",
+    optional: "Po želji", title: "Tajmer za akciju", start: "Pokreni tajmer", pause: "Pauziraj", resume: "Nastavi", reset: "Resetuj tajmer",
     keepGoing: "Nastavi dalje", remaining: "Preostalo vreme", extra: "Dodatno vreme",
     running: "Tajmer je pokrenut. Možeš da pauziraš ili staneš kad god ti je potrebno.", paused: "Tajmer je pauziran.",
     expired: "Vreme je isteklo. Možeš da staneš ili nastaviš. Označi akciju kao urađenu tek kada budeš spreman/spremna.",
