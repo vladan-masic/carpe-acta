@@ -16,7 +16,8 @@ export function ActionTimer({ minutes, locale }: { minutes: number; locale: Loca
   const alertHint = useId();
   const running = timer.phase === "running";
 
-  return <section className="action-timer" aria-label={copy.title}>
+  return <section className="action-timer" data-phase={timer.phase} aria-label={copy.title}>
+    <p className="timer-heading">{copy.title}<span>{copy.optional}</span></p>
     {!idle && <p className="timer-readout">
       <span>{timer.extra ? copy.extra : copy.remaining}</span>
       <span role="timer" aria-live="off" aria-label={timer.extra ? copy.extra : copy.remaining}>{time}</span>
