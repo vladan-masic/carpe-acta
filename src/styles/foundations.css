@@ -1,0 +1,253 @@
+@import "./fonts.css";
+
+/* Phase 1: shared foundations, opted into by the application entry point.
+   The Phase 0 comparison keeps its original styles and token values.
+   Existing component geometry and responsive breakpoints stay in styles.css. */
+:root[data-design="notebook"] {
+  --font-body: "Carpe Inter", Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Carpe Fraunces", Georgia, serif;
+  --leading-body: 1.6;
+  --leading-heading: 1.18;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-control: 6px;
+  --radius-card: 10px;
+  --radius-overlay: 14px;
+  --radius-pill: 999px;
+  --target-min: 44px;
+  --focus-width: 3px;
+  --focus-offset: 3px;
+  --motion-fast: 160ms;
+
+  --surface-page: #f7f3ea;
+  --surface-paper: #fffaf0;
+  --surface-raised: #fffdf7;
+  --surface-overlay: #fffdf7;
+  --ink: #1f2933;
+  --ink-muted: #625d54;
+  --rule: #d7cebd;
+  --control-border: #908370;
+  --action: #ac3e1c;
+  --action-hover: #923315;
+  --action-pressed: #792b14;
+  --action-ink: #9f351b;
+  --action-tint: #fff0dc;
+  --progress-ink: #2f765d;
+  --discovery-ink: #315f8c;
+  --support-ink: #765616;
+  --support-tint: #f6ebd2;
+  --focus-ring: #315f8c;
+  --focus-inverse: #9ecbfa;
+  --paper-edge: #e8e0d2;
+  --elevation-0: none;
+  --elevation-1: 0 2px 3px rgb(69 48 25 / 4%);
+  --elevation-2: 0 3px 0 var(--paper-edge), 0 8px 20px rgb(69 48 25 / 6%);
+  --elevation-3: 0 12px 36px rgb(31 41 51 / 18%);
+
+  /* Compatibility aliases let existing components consume the new roles. */
+  --bg: var(--surface-page);
+  --surface: var(--surface-paper);
+  --input: var(--surface-raised);
+  --text: var(--ink);
+  --muted: var(--ink-muted);
+  --line: var(--rule);
+  --primary: var(--action);
+  --control-hover: var(--action-hover);
+  --accent-dark: var(--action-ink);
+  --highlight: var(--action-tint);
+  --green: var(--progress-ink);
+  --blue: var(--discovery-ink);
+  --shadow: var(--elevation-1);
+  font-family: var(--font-body);
+  line-height: var(--leading-body);
+}
+
+:root[data-design="notebook"][data-theme="dark"] {
+  --surface-page: #191613;
+  --surface-paper: #27211d;
+  --surface-raised: #302923;
+  --surface-overlay: #302923;
+  --ink: #f5eadb;
+  --ink-muted: #c7b8a7;
+  --rule: #716455;
+  --control-border: #9b8976;
+  --action-ink: #f0ad88;
+  --action-tint: #3c2a1f;
+  --progress-ink: #a2d2b5;
+  --discovery-ink: #9ecbfa;
+  --support-ink: #e8c784;
+  --support-tint: #383021;
+  --focus-ring: #9ecbfa;
+  --paper-edge: #100e0c;
+  --elevation-1: 0 2px 4px rgb(0 0 0 / 12%);
+  --elevation-2: 0 3px 0 var(--paper-edge), 0 8px 20px rgb(0 0 0 / 16%);
+  --elevation-3: 0 12px 36px rgb(0 0 0 / 36%);
+}
+
+/* Expressive headings; instructions, metadata and controls remain sans-serif. */
+:where([data-design="notebook"]) :is(h1, h2, h3, .footer-brand) {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+:where([data-design="notebook"]) :is(h1, .daily-quest h2, .section-heading h2, .tip-card h3, .preview-card h3, .footer-brand) {
+  line-height: var(--leading-heading);
+}
+:where([data-design="notebook"]) :is(button, input, select, textarea) {
+  font-family: var(--font-body);
+  line-height: 1.45;
+}
+:where([data-design="notebook"]) :is(.eyebrow, .panel-label) {
+  letter-spacing: 0.07em;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+:where([data-design="notebook"]) .hero-brand h1 {
+  position: relative;
+  padding-bottom: var(--space-2);
+}
+:where([data-design="notebook"]) .hero-brand h1::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 50%;
+  transform: rotate(-1deg);
+  pointer-events: none;
+}
+
+/* Paper hierarchy: information, current focus, then floating UI. */
+:where([data-design="notebook"]) :is(.daily-quest, .preview-card, .favorites-empty, .weekly-goal, .personal-milestones, .helpful-action-picker, .what-helps-list li) {
+  border-radius: var(--radius-card);
+  background: var(--surface-paper);
+  box-shadow: var(--elevation-1);
+}
+:where([data-design="notebook"]) .tip-card {
+  border-radius: var(--radius-card);
+  background: var(--surface-raised);
+  box-shadow: var(--elevation-2);
+}
+:where([data-design="notebook"]) :is(.auth-dialog, .completion-undo, .preference-options) {
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-overlay);
+  background: var(--surface-overlay);
+  color: var(--text);
+  box-shadow: var(--elevation-3);
+}
+:where([data-design="notebook"]) .app-toolbar {
+  border-radius: var(--radius-card);
+  box-shadow: var(--elevation-1);
+}
+:where([data-design="notebook"]) :is(.daily-quest, .preview-card) { padding: var(--space-5); }
+:where([data-design="notebook"]) :is(.weekly-goal, .personal-milestones, .helpful-action-picker) { padding: var(--space-4); }
+:where([data-design="notebook"]) .tip-card { padding: var(--space-6); gap: var(--space-4); }
+:where([data-design="notebook"]) .tip-actions { gap: var(--space-3); }
+:where([data-design="notebook"]) .section-heading { margin-bottom: var(--space-6); }
+
+/* Shared control vocabulary; no transforms on interactive hit areas. */
+:where([data-design="notebook"]) :is(.primary-button, .secondary-button, .favorite-button, .category-button, .auth-trigger, .preference-select-trigger, .preference-option, .auth-close) {
+  border-radius: var(--radius-control);
+  min-height: var(--target-min);
+  font-weight: 600;
+}
+:where([data-design="notebook"]) :is(.primary-button, .secondary-button) { padding: var(--space-3) var(--space-5); }
+:where([data-design="notebook"]) :is(.secondary-button, .favorite-button, .category-button, .preference-select-trigger) {
+  border: 1px solid var(--control-border);
+  background: var(--surface-paper);
+  color: var(--text);
+  box-shadow: none;
+}
+:where([data-design="notebook"]) .primary-button { background: var(--action); color: white; }
+:where([data-design="notebook"]) .primary-button:not(:disabled):hover { background: var(--action-hover); }
+:where([data-design="notebook"]) .primary-button:not(:disabled):active { background: var(--action-pressed); }
+:where([data-design="notebook"]) :is(.secondary-button, .favorite-button, .category-button, .preference-select-trigger):not(:disabled):hover,
+:where([data-design="notebook"]) .preference-select-trigger[aria-expanded="true"] {
+  background: var(--highlight);
+  border-color: var(--accent-dark);
+  color: var(--text);
+  box-shadow: none;
+  transform: none;
+}
+:where([data-design="notebook"]) :is(.secondary-button, .favorite-button, .category-button):not(:disabled):active { background: var(--quiet); }
+:where([data-design="notebook"]) .favorite-button[aria-pressed="true"] { color: var(--accent-dark); background: var(--highlight); border-color: var(--accent-dark); }
+:where([data-design="notebook"]) .category-button[data-active="true"] { background: var(--surface-strong); color: var(--on-strong); border-color: var(--text); }
+:where([data-design="notebook"]) .category-button[data-active="true"]:hover { background: var(--surface-strong); color: var(--on-strong); border-color: var(--accent-dark); }
+:where([data-design="notebook"]) .category-button[data-active="true"]:active { background: var(--surface-strong); color: var(--on-strong); }
+:where([data-design="notebook"]) .preference-option { color: var(--text); }
+:where([data-design="notebook"]) .preference-option:hover,
+:where([data-design="notebook"]) .preference-option:focus-visible { color: var(--text); background: var(--highlight); }
+:where([data-design="notebook"]) .preference-option[aria-selected="true"] { color: var(--accent-dark); background: var(--highlight); }
+:where([data-design="notebook"]) .preference-option:active { background: var(--quiet); }
+:where([data-design="notebook"]) .primary-button:disabled { background: var(--surface-strong); cursor: default; }
+
+:where([data-design="notebook"]) :is(.library-filters input, .library-filters select, .auth-dialog input, .calendar-controls select, .weekly-goal select) {
+  min-height: var(--target-min);
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-control);
+  color: var(--text);
+  background: var(--input);
+}
+:where([data-design="notebook"]) input[type="checkbox"] { accent-color: var(--primary); }
+:where([data-design="notebook"]) :is(.timer-alerts summary, .tip-sources summary, .goal-settings summary, .achievement-explanation summary) {
+  min-height: var(--target-min);
+  padding-block: var(--space-2);
+}
+
+/* Colour has a role, rather than assigning every category a new hue. */
+:where([data-design="notebook"]) .section-navigation a { color: var(--blue); border-radius: var(--radius-control); }
+:where([data-design="notebook"]) .section-navigation a:active { background: var(--quiet); }
+:where([data-design="notebook"]) .action-entry-controls > .secondary-button { background: var(--support-tint); color: var(--support-ink); }
+
+/* Consistent two-tone focus remains visible on dark/filled controls. */
+:where([data-design="notebook"]) .site-footer { --focus-ring: var(--focus-inverse); }
+:root[data-design="notebook"] :is(button, a, select, input, textarea, summary, [tabindex]):focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  box-shadow: 0 0 0 var(--focus-offset) var(--surface-page);
+}
+:root[data-design="notebook"] .preference-option:focus-visible { outline-offset: -3px; box-shadow: none; }
+:root[data-design="notebook"] .calendar-square:focus-visible { outline-offset: 1px; box-shadow: none; }
+:root[data-design="notebook"] #page-top:focus { outline: none; box-shadow: none; }
+
+/* Motion is opt-in. Geometry and target positions do not move on hover. */
+:where([data-design="notebook"]) :is(.preference-select-trigger, .back-to-top) { transition: none; }
+:where([data-design="notebook"]) .back-to-top:hover { transform: none; }
+:where([data-design="notebook"]) .back-to-top { min-width: var(--target-min); min-height: var(--target-min); }
+@media (prefers-reduced-motion: no-preference) {
+  :where([data-design="notebook"]) :is(.primary-button, .secondary-button, .favorite-button, .category-button, .preference-select-trigger, .section-navigation a) {
+    transition: background-color var(--motion-fast) ease, border-color var(--motion-fast) ease;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-design="notebook"] *,
+  :root[data-design="notebook"] *::before,
+  :root[data-design="notebook"] *::after {
+    animation: none;
+    transition: none;
+    scroll-behavior: auto;
+  }
+}
+@media (max-width: 1000px) {
+  :where([data-design="notebook"]) .app-toolbar { box-shadow: none; }
+  :where([data-design="notebook"]) .toolbar-controls[data-open="true"] {
+    border-radius: var(--radius-overlay);
+    background: var(--surface-overlay);
+    box-shadow: var(--elevation-3);
+  }
+}
+@media (max-width: 820px) {
+  :where([data-design="notebook"]) :is(.daily-quest, .tip-card) { padding: var(--space-4); }
+}
+@media (forced-colors: active) {
+  :where([data-design="notebook"]) .hero-brand h1::after { display: none; }
+  :root[data-design="notebook"] :is(button, a, select, input, summary, [tabindex]):focus-visible { outline-color: Highlight; box-shadow: none; }
+  :root[data-design="notebook"] :is([aria-pressed="true"], [aria-selected="true"], .category-button[data-active="true"]) { border: 2px solid Highlight; }
+}
