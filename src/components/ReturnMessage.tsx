@@ -33,6 +33,7 @@ export function ReturnMessage({ locale, owner, ready, latestId, latestAt, comple
   useEffect(() => { if (completed) setVisible(false); }, [completed]);
   if (!visible || !ready || completed) return null;
   return <div className="return-message">
+    <svg className="return-sprig" viewBox="0 0 36 44" width="32" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d="M17 40c4-11-2-19 8-33M19 29C9 29 5 24 5 18c10 0 15 5 14 11ZM20 20c9 0 13-5 12-11-8 1-12 6-12 11Z" /></svg>
     <p role="status">{copy[locale].message}</p>
     <button type="button" className="secondary-button" aria-label={copy[locale].dismiss} onClick={() => setVisible(false)}><span aria-hidden="true">×</span></button>
   </div>;

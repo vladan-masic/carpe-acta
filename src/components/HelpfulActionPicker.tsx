@@ -35,11 +35,12 @@ export function HelpfulActionPicker({ entries, tips, locale, onTry }: Props) {
           trigger.current?.focus();
         }
       }}>
+      <h3 className="helpful-notes-heading"><span className="notebook-bookmark" aria-hidden="true" />{copy.open}</h3>
       <p>{copy.intro}</p>
       <ul>
         {(showAll ? available : available.slice(0, 5)).map(tip => <li key={tip.id}>
           <button type="button" className="secondary-button" onClick={() => { setOpen(false); setShowAll(false); onTry(tip); }}>
-            {tip.title}
+            <span>{tip.title}</span><span className="helpful-retry-arrow" aria-hidden="true">↗</span>
           </button>
           <p>{tip.action}</p>
         </li>)}
