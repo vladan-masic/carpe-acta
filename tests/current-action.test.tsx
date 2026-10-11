@@ -51,3 +51,23 @@ it.each(["en", "sr-Latn"] as const)("keeps all 21 category names, IDs and access
   }
   expect(within(group).queryByRole("img")).toBeNull();
 });
+
+it.each(["en", "sr-Latn"] as const)("offers every existing category in the compact mobile selector in %s", (locale) => {
+  const copy = messages[locale];
+  const select = vi.fn();
+  const categories = [{ id: "all" as const, label: copy.generator.allCategories },
+    ...Object.entries(copy.categories).map(([id, label]) => ({ id: id as CategoryId, label }))];
+  const props = { ariaLabel: copy.generator.categoriesLabel, moreLabel: copy.generator.moreCategories,
+    lessLabel: copy.generator.fewerCategories, categories, selectedCategory: "focus" as const, onSelectCategory: select };
+  const { rerender } = render(<CategoryFilter {...props} />);
+  const picker = screen.getByRole("combobox", { name: copy.generator.categoriesLabel }) as HTMLSelectElement;
+  expect(within(picker).getAllByRole("option")).toHaveLength(22);
+  expect(picker.value).toBe("focus");
+  for (const category of categories) {
+    expect(within(picker).getByRole("option", { name: category.label, exact: true }).getAttribute("value")).toBe(category.id);
+    fireEvent.change(picker, { target: { value: category.id } });
+    expect(select).toHaveBeenLastCalledWith(category.id);
+  }
+  rerender(<CategoryFilter {...props} selectedCategory="digital-distraction" />);
+  expect(picker.value).toBe("digital-distraction");
+});

@@ -1,5 +1,7 @@
 # Phase 2 — Current Action Experience
 
+**Latest:** [Mobile refinement review, 11 October 2026](MOBILE-REFINEMENTS.md). The original Phase 2 report below records the initial implementation.
+
 Ready for visual review. Work is on `codex/current-action-experience`, based on the approved Phase 1 commit `824e67e`. Nothing has been committed, pushed or deployed. Phase 3 has not started.
 
 ## Preview

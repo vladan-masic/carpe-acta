@@ -31,6 +31,13 @@ export function CategoryFilter({
   const selectedLabel = categories.find((category) => category.id === selectedCategory)?.label;
   return (
     <div className="category-picker">
+      <label className="category-mobile-select">
+        <span>{ariaLabel}</span>
+        <select value={selectedCategory}
+          onChange={(event) => onSelectCategory(event.target.value as CategoryFilterValue)}>
+          {categories.map((category) => <option key={category.id} value={category.id}>{category.label}</option>)}
+        </select>
+      </label>
       <button className="category-toggle secondary-button" type="button" aria-expanded={expanded}
         aria-controls={optionsId} onClick={() => setExpanded(!expanded)}>
         <span>{ariaLabel}: {selectedLabel}</span>
