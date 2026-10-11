@@ -1,0 +1,109 @@
+/* Phase 3: a small illustrated opening and a quiet onward path.
+   Scoped to the application so the original design comparison stays intact. */
+:where([data-design="notebook"]) .app-toolbar {
+  padding: var(--space-2) var(--space-3); border-color: var(--rule);
+  background: var(--surface-raised); box-shadow: var(--elevation-1);
+}
+:where([data-design="notebook"]) .section-navigation { gap: var(--space-1); }
+:where([data-design="notebook"]) .section-navigation a {
+  display: inline-flex; align-items: center; min-height: var(--target-min);
+  padding: var(--space-2) var(--space-3); color: var(--ink);
+  font-weight: 500; text-decoration: none; border-bottom: 2px solid transparent;
+}
+:where([data-design="notebook"]) .section-navigation a:first-child { color: var(--action-ink); border-bottom-color: var(--accent); }
+:where([data-design="notebook"]) .section-navigation a:hover { background: var(--action-tint); color: var(--action-ink); }
+:where([data-design="notebook"]) .section-navigation a:active { background: var(--support-tint); }
+:where([data-design="notebook"]) .toolbar-account-controls { border-left: 1px solid var(--rule); padding-left: var(--space-4); gap: var(--space-2); }
+
+:where([data-design="notebook"]) .hero-section { gap: var(--space-6); align-items: stretch; }
+:where([data-design="notebook"]) .hero-copy {
+  padding: var(--space-6); border-radius: var(--radius-card);
+  background: var(--surface-paper); border: 1px solid var(--rule);
+  justify-content: center;
+}
+:where([data-design="notebook"]) .hero-copy::before {
+  inset: 0; border-radius: inherit; background-position: right bottom; background-size: cover;
+  opacity: 1; mask-image: linear-gradient(110deg, transparent 12%, #000 85%);
+}
+:where([data-design="notebook"]) .hero-brand { gap: var(--space-3); margin: var(--space-3) 0 var(--space-4); }
+:where([data-design="notebook"]) .hero-brand h1 { font-size: clamp(2.2rem, 4vw, 3.6rem); letter-spacing: -0.04em; }
+:where([data-design="notebook"]) .brand-emblem--hero {
+  width: 64px; height: 64px; padding: var(--space-1); border-radius: 50%;
+  border: 1px solid var(--rule); background: #fffaf0; box-shadow: var(--elevation-1);
+}
+:where([data-design="notebook"]) .hero-lede { max-width: 44ch; color: var(--ink); font-size: 1rem; }
+:where([data-design="notebook"]) .hero-start {
+  display: inline-flex; align-items: center; gap: var(--space-2); align-self: flex-start;
+  min-height: var(--target-min); margin-top: var(--space-3); padding-inline: var(--space-2);
+  color: var(--action-ink); font-weight: 600; text-underline-offset: 5px; border-radius: var(--radius-control);
+}
+:where([data-design="notebook"]) .hero-start:hover { background: var(--action-tint); }
+:where([data-design="notebook"]) .hero-start:active { background: var(--support-tint); }
+
+:where([data-design="notebook"]) .daily-quest {
+  position: relative; justify-content: flex-start; min-height: 0; padding: var(--space-5) var(--space-6);
+  border-radius: 2px var(--radius-card) var(--radius-card) 2px;
+  border-left: 3px double var(--progress-ink); box-shadow: var(--elevation-2);
+}
+:where([data-design="notebook"]) .daily-quest-heading { display: flex; align-items: center; gap: var(--space-3); }
+:where([data-design="notebook"]) .daily-stamp { color: var(--progress-ink); flex: 0 0 auto; transform: rotate(-7deg); }
+:where([data-design="notebook"]) .daily-quest-heading .panel-label { color: var(--progress-ink); }
+:where([data-design="notebook"]) .daily-quest h2 { margin: var(--space-3) 0; font-size: clamp(1.5rem, 2.4vw, 2rem); }
+:where([data-design="notebook"]) .daily-quest > p { font-size: 1rem; line-height: 1.6; margin-bottom: var(--space-4); }
+:where([data-design="notebook"]) .daily-quest-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin-top: auto; }
+:where([data-design="notebook"]) .daily-quest .daily-category {
+  display: inline-flex; align-items: center; gap: var(--space-2); max-width: 100%;
+  border: 0; border-radius: 0; padding: 0; font-size: 0.8125rem; font-weight: 600;
+}
+:where([data-design="notebook"]) .daily-quest-meta .favorite-button { margin-left: auto; }
+:where([data-design="notebook"]) .daily-quest .tip-sources { margin-top: var(--space-3); }
+
+:where([data-design="notebook"]) .site-footer {
+  background: #1f2933; color: #f5eadb; border-top: 1px solid var(--control-border);
+}
+:where([data-design="notebook"]) .site-footer::before {
+  inset: 0; background-position: right bottom; background-size: auto 160%;
+  opacity: 1; mix-blend-mode: normal; mask-image: linear-gradient(90deg, transparent 20%, #000 80%);
+}
+:where([data-design="notebook"]) .footer-inner { padding: var(--space-8) 0 76px; }
+:where([data-design="notebook"]) .footer-primary { padding-bottom: var(--space-4); }
+:where([data-design="notebook"]) .brand-emblem--footer { background: #fffaf0; }
+:where([data-design="notebook"]) .footer-brand { color: #f5eadb; font-size: clamp(2rem, 4vw, 3rem); }
+:where([data-design="notebook"]) .footer-motto { color: #e2d4be; font-family: var(--font-display); font-size: 1.2rem; }
+:where([data-design="notebook"]) .footer-meta { color: #d4c8b7; margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid #716455; }
+:where([data-design="notebook"]) .footer-meta a { color: #f5eadb; min-height: var(--target-min); }
+:where([data-design="notebook"]) .footer-meta a:hover { color: #ffb397; }
+
+:root[data-design="notebook"][data-theme="dark"] .hero-copy::before { opacity: 0.14; mix-blend-mode: luminosity; }
+:root[data-design="notebook"][data-theme="dark"] .site-footer::before { opacity: 1; mix-blend-mode: normal; }
+@media (max-width: 1100px) {
+  :where([data-design="notebook"]) .toolbar-controls { gap: var(--space-2); }
+  :where([data-design="notebook"]) .section-navigation a { padding-inline: var(--space-2); }
+}
+@media (max-width: 1000px) {
+  :where([data-design="notebook"]) .app-toolbar { padding: 0; border: 0; background: transparent; box-shadow: none; }
+  :where([data-design="notebook"]) .toolbar-menu-toggle { box-shadow: var(--elevation-1); }
+  :where([data-design="notebook"]) .toolbar-account-controls { border-left: 0; padding-left: 0; }
+  :where([data-design="notebook"]) .section-navigation a:first-child { border-bottom-color: transparent; background: var(--action-tint); }
+}
+@media (max-width: 820px) {
+  :where([data-design="notebook"]) .hero-section { gap: var(--space-3); }
+  :where([data-design="notebook"]) .hero-copy { padding: var(--space-3) var(--space-4); }
+  :where([data-design="notebook"]) .hero-brand { margin: var(--space-2) 0; gap: var(--space-2); }
+  :where([data-design="notebook"]) .hero-brand h1 { font-size: clamp(1.8rem, 7vw, 2.6rem); }
+  :where([data-design="notebook"]) .brand-emblem--hero { width: 40px; height: 40px; }
+  :where([data-design="notebook"]) .hero-lede { font-size: 0.9375rem; line-height: 1.5; max-width: 55ch; }
+  :where([data-design="notebook"]) .hero-start { margin-top: var(--space-1); }
+  :where([data-design="notebook"]) .daily-quest { padding: var(--space-3) var(--space-4); }
+  :where([data-design="notebook"]) .daily-stamp { width: 28px; height: 28px; }
+  :where([data-design="notebook"]) .daily-quest h2 { font-size: 1.375rem; margin: var(--space-2) 0; }
+  :where([data-design="notebook"]) .daily-quest > p { font-size: 0.9375rem; line-height: 1.5; margin-bottom: var(--space-2); }
+  :where([data-design="notebook"]) .daily-quest-meta { gap: var(--space-2); }
+  :where([data-design="notebook"]) .footer-inner { padding-top: var(--space-6); }
+  :where([data-design="notebook"]) .footer-motto { font-size: 1.0625rem; }
+  :where([data-design="notebook"]) .site-footer::before { background-size: auto 100%; mask-image: linear-gradient(90deg, transparent, #000); }
+}
+@media print, (forced-colors: active) {
+  :where([data-design="notebook"]) :is(.hero-copy, .site-footer)::before { display: none; }
+  :where([data-design="notebook"]) .daily-stamp { display: none; }
+}

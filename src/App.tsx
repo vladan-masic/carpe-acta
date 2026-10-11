@@ -186,16 +186,19 @@ export function App() {
           />
         </AppToolbar>
 
-        <section className="hero-section">
+        <section className="hero-section" aria-labelledby="brand-title">
           <div className="hero-copy">
             <p className="eyebrow">{copy.hero.eyebrow}</p>
             <div className="hero-brand">
               <BrandEmblem variant="hero" />
-              <h1>
+              <h1 id="brand-title">
                 Carpe Acta
               </h1>
             </div>
             <p className="hero-lede">{copy.hero.lede}</p>
+            <a className="hero-start" href="#tip-generator" onClick={() => {
+              document.getElementById("tip-generator")?.focus({ preventScroll: true });
+            }}>{copy.navigation.start}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" /></svg></a>
           </div>
 
           <DailyQuest locale={locale}
