@@ -1,5 +1,5 @@
 import type { CalendarHistory } from "../hooks/useCalendarHistory";
-import { useRef, useState, type ReactNode } from "react";
+import { useId, useRef, useState, type ReactNode } from "react";
 import { ActivityCalendar } from "./ActivityCalendar";
 import { WhatHelpsMe } from "./WhatHelpsMe";
 import { feedbackMessages } from "../i18n/feedback";
@@ -11,6 +11,7 @@ import type { ProgressData } from "../utils/progress";
 type Props = { achievements?: ReactNode; calendarHistory?: CalendarHistory; progress: ProgressData | null; locale: Locale; tips: LocalizedTip[]; busy: boolean; onTry?: (tip: LocalizedTip) => void };
 export function ProgressView({ progress, locale, tips, busy, onTry, calendarHistory, achievements }: Props) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const historyId = useId();
   const historyHeading = useRef<HTMLHeadingElement>(null);
   const copy = progressMessages[locale];
   if (!progress) return <div className="progress-view"><p role="status">{busy ? copy.loading : copy.unavailable}</p>{achievements}</div>;
@@ -39,9 +40,10 @@ export function ProgressView({ progress, locale, tips, busy, onTry, calendarHist
       {year !== null && calendarHistory?.loading ? <p role="status">{copy.loadingYear}</p>
         : year !== null && calendarHistory?.error ? <div role="status"><p>{copy.yearError}</p><button type="button" className="secondary-button" onClick={calendarHistory.retry}>{copy.retryYear}</button></div>
         : <ActivityCalendar key={year ?? "weeks"} days={calendar} year={year} today={progress.days[progress.days.length - 1]?.date} locale={locale} selected={selectedDay?.date ?? null} onSelect={setSelectedDate} /> }
-      <h3 ref={historyHeading} tabIndex={-1} aria-live="polite">{selectedDay ? `${dayFormat.format(new Date(selectedDay.date))} — ${copy.dayCount(selectedDay.count)}` : copy.recent}</h3>
+      <section className="history-journal" aria-labelledby={historyId}>
+      <h3 id={historyId} ref={historyHeading} tabIndex={-1} aria-live="polite">{selectedDay ? `${dayFormat.format(new Date(selectedDay.date))} — ${copy.dayCount(selectedDay.count)}` : copy.recent}</h3>
       {selectedDay && <button className="secondary-button" type="button" onClick={() => { setSelectedDate(null); historyHeading.current?.focus(); }}>{copy.clearDay}</button>}
-      {records.length === 0 ? <p>{selectedDay ? copy.emptyDay : copy.empty}</p> : <ol className="progress-recent">
+      {records.length === 0 ? <p className="history-empty">{selectedDay ? copy.emptyDay : copy.empty}</p> : <ol className="progress-recent">
         {records.map((record) => {
           const tip = byId.get(record.tipId);
           return <li key={record.id}>
@@ -50,6 +52,7 @@ export function ProgressView({ progress, locale, tips, busy, onTry, calendarHist
           </li>;
         })}
       </ol>}
+      </section>
       {achievements}
       <WhatHelpsMe entries={progress.helpful} tips={tips} locale={locale} onTry={onTry} />
     </div>

@@ -16,6 +16,7 @@ export function WeeklyGoal({ client, owner, progress, locale, busy }: Props) {
   const fullDate = new Intl.DateTimeFormat(locale, { dateStyle: "full" });
   const weekday = new Intl.DateTimeFormat(locale, { weekday: "short" });
   return <section className="weekly-goal" aria-labelledby="weekly-goal-title" aria-busy={goal.loading || goal.saving || busy}>
+    <div className="weekly-goal-entry"><div className="weekly-goal-content">
     <h3 id="weekly-goal-title">{copy.title}</h3>
     <details className="goal-settings"><summary>{copy.settings}</summary>
     <p>{copy.hint}</p>
@@ -27,12 +28,14 @@ export function WeeklyGoal({ client, owner, progress, locale, busy }: Props) {
     </details>
     {goal.error && <p role="alert">{copy.error}</p>}
     {goal.target > 0 && <>
+      <div className="weekly-goal-number" aria-hidden="true"><strong>{active}</strong><span>/ {goal.target}</span></div>
       <p role="status">{copy.progress(active, goal.target)} {active >= goal.target && copy.reached}</p>
       <progress max={goal.target} value={Math.min(active, goal.target)} aria-label={copy.title} />
       <div className="weekly-goal-days">{days.map(day => <span role="img" key={day.date.toISOString()} className={day.active ? "is-active" : ""} aria-label={`${fullDate.format(day.date)} — ${day.active ? copy.active : day.future ? copy.future : copy.inactive}`} title={`${fullDate.format(day.date)} — ${day.active ? copy.active : day.future ? copy.future : copy.inactive}`}>
         <span aria-hidden="true">{weekday.format(day.date)}<br />{day.active ? "✓" : "·"}</span>
       </span>)}</div>
     </>}
+    </div><div className="weekly-growth-art" aria-hidden="true" /></div>
     <div className="weekly-achievements">
       <h4>{copy.achievements}</h4>
       <details className="achievement-explanation"><summary>{copy.aboutAchievements}</summary><p>{copy.achievementHint}</p></details>

@@ -117,3 +117,15 @@ it("ignores an in-flight response after account switching or a write starts", as
   await act(async () => resolve[2]([]));
   expect(result.current.days?.reduce((sum, day) => sum + day.count, 0)).toBe(0);
 });
+
+it.each(["en", "sr-Latn"] as const)("shows local date numbers without replacing full count labels in %s", locale => {
+  const leapRecord = { id: "leap", tipId: "retired", completedAt: new Date(2024, 1, 29, 12).toISOString() };
+  const days = summarizeYear([leapRecord], 2024, now);
+  render(<ActivityCalendar days={days} year={2024} locale={locale} selected={null} onSelect={() => {}} />);
+  const day = days.find(day => day.count === 1)!;
+  const label = `${new Intl.DateTimeFormat(locale, { dateStyle: "full" }).format(new Date(day.date))} — ${progressMessages[locale].dayCount(1)}`;
+  const button = screen.getByRole("button", { name: label, exact: true });
+  expect(button.textContent).toBe("29");
+  expect(button.querySelector("span")?.getAttribute("aria-hidden")).toBe("true");
+  expect(screen.getAllByRole("button")).toHaveLength(366);
+});
