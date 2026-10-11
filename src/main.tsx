@@ -4,6 +4,7 @@ import { App } from "./App";
 import "./styles.css";
 import "./styles/foundations.css";
 import "./styles/current-action.css";
+import "./styles/introduction.css";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
