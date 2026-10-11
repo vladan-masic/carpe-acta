@@ -39,7 +39,7 @@ export function ActivityCalendar({ days, locale, selected, onSelect, year = null
   }
   return <section className="activity-calendar" aria-labelledby={`${id}-title`} onMouseLeave={() => setPreview(null)}>
     <h3 id={`${id}-title`}>{title}</h3>
-    <p className="progress-caption" id={`${id}-hint`}>{copy.calendarHint}{year !== null && ` ${copy.yearHint}`}</p>
+    <p className="progress-caption" id={`${id}-hint`}>{copy.calendarHint} {year !== null ? copy.yearHint : copy.scrollHint}</p>
     <div className="calendar-scroll">
       <div className={`calendar-layout${year === null ? "" : " calendar-layout-year"}`} style={{ "--calendar-weeks": weeks } as CSSProperties}>
         <div className="calendar-months" aria-hidden="true">
@@ -63,7 +63,7 @@ export function ActivityCalendar({ days, locale, selected, onSelect, year = null
             onFocus={() => { setFocused(day.date); setPreview(day.date); }} onBlur={() => setPreview(null)}
             onMouseEnter={() => setPreview(day.date)}
             onKeyDown={event => navigate(event, index)}
-            onClick={() => { setPreview(day.date); onSelect(day.date); }} />)}
+            onClick={() => { setPreview(day.date); onSelect(day.date); }}><span aria-hidden="true">{new Date(day.date).getDate()}</span></button>)}
           {Array.from({ length: weeks * 7 - leading - days.length }, (_, index) => <span key={`future-${index}`} className="calendar-future" aria-hidden="true" />)}
         </div>
       </div>
