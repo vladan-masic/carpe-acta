@@ -143,3 +143,23 @@ it.each(["en", "sr-Latn"] as const)("offers optional time choices and explains e
   fireEvent.click(screen.getByRole("button", { name: copy.noPreference }));
   expect(onTimeSelect).toHaveBeenLastCalledWith(null);
 });
+
+it.each(["en", "sr-Latn"] as const)("keeps every barrier and optional budget keyboard reachable in %s", async locale => {
+  const user = (await import("@testing-library/user-event")).default.setup();
+  const onSelect = vi.fn();
+  const onTimeSelect = vi.fn();
+  const copy = helpMeStartMessages[locale];
+  render(<HelpMeStart locale={locale} selected={null} onSelect={onSelect} timeBudget={null} onTimeSelect={onTimeSelect} hasSuggestion={false} />);
+  for (const barrier of startBarrierIds) {
+    await user.tab();
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: copy.choices[barrier], exact: true }));
+    await user.keyboard("{Enter}");
+    expect(onSelect).toHaveBeenLastCalledWith(barrier);
+  }
+  for (const budget of [null, 1, 2, 5] as const) {
+    await user.tab();
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: budget === null ? copy.noPreference : copy.minutes[budget], exact: true }));
+    await user.keyboard(" ");
+    expect(onTimeSelect).toHaveBeenLastCalledWith(budget);
+  }
+});

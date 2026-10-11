@@ -5,11 +5,18 @@ import "./styles.css";
 import "./styles/foundations.css";
 import "./styles/current-action.css";
 import "./styles/introduction.css";
+import "./styles/guided-support.css";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
 // Vite removes this branch and its assets from production builds.
-if (import.meta.env.DEV && window.location.pathname === "/__design") {
+if (import.meta.env.DEV && window.location.pathname === "/__support") {
+  document.documentElement.dataset.design = "notebook";
+  document.documentElement.dataset.theme = "light";
+  import("./dev/SupportPreview").then(({ SupportPreview }) => {
+    root.render(<StrictMode><SupportPreview /></StrictMode>);
+  });
+} else if (import.meta.env.DEV && window.location.pathname === "/__design") {
   import("./dev/design/DesignPreview").then(({ DesignPreview }) => {
     root.render(<StrictMode><DesignPreview /></StrictMode>);
   });
