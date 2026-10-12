@@ -7,11 +7,18 @@ import "./styles/current-action.css";
 import "./styles/introduction.css";
 import "./styles/guided-support.css";
 import "./styles/activity-history.css";
+import "./styles/achievements.css";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
 // Vite removes this branch and its assets from production builds.
-if (import.meta.env.DEV && window.location.pathname === "/__progress") {
+if (import.meta.env.DEV && window.location.pathname === "/__achievements") {
+  document.documentElement.dataset.design = "notebook";
+  document.documentElement.dataset.theme = "light";
+  import("./dev/AchievementsPreview").then(({ AchievementsPreview }) => {
+    root.render(<StrictMode><AchievementsPreview /></StrictMode>);
+  });
+} else if (import.meta.env.DEV && window.location.pathname === "/__progress") {
   document.documentElement.dataset.design = "notebook";
   document.documentElement.dataset.theme = "light";
   import("./dev/ProgressPreview").then(({ ProgressPreview }) => {
