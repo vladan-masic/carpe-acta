@@ -1,3 +1,4 @@
+import { AchievementStamp } from "./AchievementStamp";
 import { useEffect, useRef, useState } from "react";
 import type { Locale } from "../i18n/locales";
 import { milestoneMessages } from "../i18n/milestones";
@@ -22,7 +23,7 @@ export function PersonalMilestones({ totals, error, retry, locale, completionId 
     const [kind, n] = id.split("-");
     return copy.badge(kind as "actions" | "days", Number(n));
   }
-  return <section className="personal-milestones" aria-labelledby="milestones-title">
+  return <section className="personal-milestones milestone-notebook" aria-labelledby="milestones-title">
     <h3 id="milestones-title">{copy.title}</h3>
     <p>{copy.hint}</p>
     <p role="status">{totals && celebration.length > 0 ? `${copy.celebration} ${celebration.map(badgeLabel).join(" · ")}` : ""}</p>
@@ -32,14 +33,20 @@ export function PersonalMilestones({ totals, error, retry, locale, completionId 
         const earned = thresholds.filter(n => totals[kind] >= n);
         const latest = earned[earned.length - 1];
         const next = thresholds.find(n => totals[kind] < n);
-        return <div key={kind}><h4>{copy[kind]}</h4>
-          <p>{latest ? <span className="milestone-badge"><span aria-hidden="true">✦ </span>{copy.badge(kind, latest)} · {copy.earned}</span> : copy.none}</p>
+        return <div className={`milestone-entry milestone-${kind}`} key={kind}>
+          <AchievementStamp kind={kind} earned={!!latest} />
+          <div className="milestone-entry-copy"><h4>{copy[kind]}</h4>
+          <p>{latest ? <span className="milestone-badge">{copy.badge(kind, latest)} · {copy.earned}</span> : copy.none}</p>
           <p>{next ? copy.next(totals[kind], next) : copy.complete}</p>
           {next && <progress aria-label={copy[kind]} max={next} value={totals[kind]} />}
+          </div>
         </div>;
       })}</div>
-      <details><summary>{copy.all}</summary><ul className="milestone-collection">{(["actions", "days"] as const).flatMap(kind => visibleMilestones(milestoneThresholds(kind, totals[kind]), totals[kind]).map(n =>
-        <li key={`${kind}-${n}`}><span aria-hidden="true">{totals[kind] >= n ? "✦" : "○"} </span>{copy.badge(kind, n)} — {totals[kind] >= n ? copy.earned : copy.locked}</li>))}</ul></details>
+      <details><summary>{copy.all}</summary><ul role="list" className="milestone-collection">{(["actions", "days"] as const).flatMap(kind => visibleMilestones(milestoneThresholds(kind, totals[kind]), totals[kind]).map(n =>
+        <li className={`collected-stamp ${totals[kind] >= n ? "is-earned" : "is-ahead"}`} key={`${kind}-${n}`}>
+          <AchievementStamp kind={kind} earned={totals[kind] >= n} />
+          <span>{copy.badge(kind, n)} — {totals[kind] >= n ? copy.earned : copy.locked}</span>
+        </li>))}</ul></details>
     </>}
   </section>;
 }

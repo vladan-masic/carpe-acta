@@ -1,3 +1,5 @@
+import { AchievementStamp } from "./AchievementStamp";
+import { CategoryIcon } from "./CategoryIcon";
 import type { CategoryId } from "../types/tip";
 import type { Locale } from "../i18n/locales";
 import { messages } from "../i18n/messages";
@@ -15,11 +17,11 @@ export function CategoryExploration({ locale, open, onOpenChange, categories, er
     <div id="exploration-content" hidden={!open}>
       <p>{copy.intro}</p>
       {categories === null ? <p role="status">{error ? <>{copy.error} <button type="button" className="secondary-button" onClick={retry}>{copy.retry}</button></> : copy.loading}</p> : <>
-        <p role="status">{copy.count(count, explorationCategories.length)} {next ? copy.next(next - count) : copy.complete}</p>
-        {next && <progress aria-label={copy.title} max={next} value={count} />}
-        {earned.length > 0 && <ul className="exploration-badges">{earned.map(n => <li className="milestone-badge" key={n}><span aria-hidden="true">✦ </span>{copy.badge(n, n === explorationCategories.length)}</li>)}</ul>}
-        {unexplored && <button type="button" className="secondary-button" onClick={() => onExplore(unexplored)}>{copy.discover}</button>}
-        {count > 0 && <details><summary>{copy.categories}</summary><ul>{categories.map(category => <li key={category}>{messages[locale].categories[category]}</li>)}</ul></details>}
+        <div className="exploration-overview"><AchievementStamp kind="exploration" earned={count > 0} /><div><p role="status">{copy.count(count, explorationCategories.length)} {next ? copy.next(next - count) : copy.complete}</p>
+        {next && <progress aria-label={copy.title} max={next} value={count} />}</div></div>
+        {earned.length > 0 && <ul role="list" className="exploration-badges">{earned.map(n => <li className="exploration-keepsake" key={n}><AchievementStamp kind="exploration" /><span>{copy.badge(n, n === explorationCategories.length)}</span></li>)}</ul>}
+        {unexplored && <div className="exploration-next"><span className="category-marker is-ahead"><CategoryIcon category={unexplored} />{messages[locale].categories[unexplored]}</span><button type="button" className="secondary-button" onClick={() => onExplore(unexplored)}>{copy.discover}</button></div>}
+        {count > 0 && <details><summary>{copy.categories}</summary><ul role="list" className="exploration-categories">{categories.map(category => <li className="category-marker is-discovered" key={category}><CategoryIcon category={category} />{messages[locale].categories[category]}</li>)}</ul></details>}
       </>}
     </div>
   </section>;
