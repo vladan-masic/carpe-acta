@@ -1,0 +1,242 @@
+[
+  {
+    "stage": "before",
+    "w": 1440,
+    "lang": "en",
+    "theme": "light",
+    "generator": 468.765625,
+    "hero": 305.15625,
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "stage": "before",
+    "w": 1440,
+    "lang": "en",
+    "theme": "dark",
+    "generator": 468.765625,
+    "hero": 305.15625,
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "stage": "before",
+    "w": 1440,
+    "lang": "sr-Latn",
+    "theme": "light",
+    "generator": 468.765625,
+    "hero": 305.15625,
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "stage": "before",
+    "w": 1440,
+    "lang": "sr-Latn",
+    "theme": "dark",
+    "generator": 468.765625,
+    "hero": 305.15625,
+    "scroll": 1425,
+    "width": 1440
+  },
+  {
+    "stage": "before",
+    "w": 390,
+    "lang": "en",
+    "theme": "light",
+    "generator": 582.625,
+    "hero": 457.015625,
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "stage": "before",
+    "w": 390,
+    "lang": "en",
+    "theme": "dark",
+    "generator": 582.625,
+    "hero": 457.015625,
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "stage": "before",
+    "w": 390,
+    "lang": "sr-Latn",
+    "theme": "light",
+    "generator": 608.578125,
+    "hero": 482.96875,
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "stage": "before",
+    "w": 390,
+    "lang": "sr-Latn",
+    "theme": "dark",
+    "generator": 608.578125,
+    "hero": 482.96875,
+    "scroll": 375,
+    "width": 390
+  },
+  {
+    "stage": "before",
+    "w": 320,
+    "lang": "en",
+    "theme": "light",
+    "generator": 657.46875,
+    "hero": 531.859375,
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "stage": "before",
+    "w": 320,
+    "lang": "en",
+    "theme": "dark",
+    "generator": 657.46875,
+    "hero": 531.859375,
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "stage": "before",
+    "w": 320,
+    "lang": "sr-Latn",
+    "theme": "light",
+    "generator": 657.46875,
+    "hero": 531.859375,
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "stage": "before",
+    "w": 320,
+    "lang": "sr-Latn",
+    "theme": "dark",
+    "generator": 657.46875,
+    "hero": 531.859375,
+    "scroll": 305,
+    "width": 320
+  },
+  {
+    "stage": "after",
+    "w": 1440,
+    "lang": "en",
+    "theme": "light",
+    "generator": 488.93463134765625,
+    "hero": 325.7528381347656,
+    "scroll": 1426,
+    "width": 1440
+  },
+  {
+    "stage": "after",
+    "w": 1440,
+    "lang": "en",
+    "theme": "dark",
+    "generator": 488.93463134765625,
+    "hero": 325.7528381347656,
+    "scroll": 1426,
+    "width": 1440
+  },
+  {
+    "stage": "after",
+    "w": 1440,
+    "lang": "sr-Latn",
+    "theme": "light",
+    "generator": 488.93463134765625,
+    "hero": 325.7528381347656,
+    "scroll": 1426,
+    "width": 1440
+  },
+  {
+    "stage": "after",
+    "w": 1440,
+    "lang": "sr-Latn",
+    "theme": "dark",
+    "generator": 488.93463134765625,
+    "hero": 325.7528381347656,
+    "scroll": 1426,
+    "width": 1440
+  },
+  {
+    "stage": "after",
+    "w": 390,
+    "lang": "en",
+    "theme": "light",
+    "generator": 606.2926025390625,
+    "hero": 480.92327880859375,
+    "scroll": 376,
+    "width": 390
+  },
+  {
+    "stage": "after",
+    "w": 390,
+    "lang": "en",
+    "theme": "dark",
+    "generator": 606.2926025390625,
+    "hero": 480.92327880859375,
+    "scroll": 376,
+    "width": 390
+  },
+  {
+    "stage": "after",
+    "w": 390,
+    "lang": "sr-Latn",
+    "theme": "light",
+    "generator": 632.2443237304688,
+    "hero": 506.8749694824219,
+    "scroll": 376,
+    "width": 390
+  },
+  {
+    "stage": "after",
+    "w": 390,
+    "lang": "sr-Latn",
+    "theme": "dark",
+    "generator": 632.2443237304688,
+    "hero": 506.8749694824219,
+    "scroll": 376,
+    "width": 390
+  },
+  {
+    "stage": "after",
+    "w": 320,
+    "lang": "en",
+    "theme": "light",
+    "generator": 681.1363525390625,
+    "hero": 555.7670288085938,
+    "scroll": 306,
+    "width": 320
+  },
+  {
+    "stage": "after",
+    "w": 320,
+    "lang": "en",
+    "theme": "dark",
+    "generator": 681.1363525390625,
+    "hero": 555.7670288085938,
+    "scroll": 306,
+    "width": 320
+  },
+  {
+    "stage": "after",
+    "w": 320,
+    "lang": "sr-Latn",
+    "theme": "light",
+    "generator": 681.1363525390625,
+    "hero": 555.7670288085938,
+    "scroll": 306,
+    "width": 320
+  },
+  {
+    "stage": "after",
+    "w": 320,
+    "lang": "sr-Latn",
+    "theme": "dark",
+    "generator": 681.1363525390625,
+    "hero": 555.7670288085938,
+    "scroll": 306,
+    "width": 320
+  }
+]
