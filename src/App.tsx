@@ -318,7 +318,7 @@ export function App() {
             {!auth.loading && <span>{favorites.signedIn ? storageCopy.accountHint : favorites.persisted ? storageCopy.guestHint : copy.favorites.unsaved}</span>}
           </span>}
           disabled={favorites.disabled}
-          loading={favorites.busy || favorites.error}
+          loading={favorites.busy || favorites.error || (!favorites.persisted && favoriteTips.length === 0)}
           controls={favorites.signedIn && (
             <div className="favorites-sync-controls">
               <button type="button" className="secondary-button" disabled={favorites.busy} onClick={favorites.refresh}>{favoritesCopy.refresh}</button>

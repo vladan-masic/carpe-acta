@@ -5,6 +5,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-li
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 import { App } from "../src/App";
 import { BrowserImport } from "../src/components/BrowserImport";
+import { messages } from "../src/i18n/messages";
 import { storageMessages } from "../src/i18n/storage";
 import { favoritesMessages } from "../src/i18n/favorites";
 import { completionMessages } from "../src/i18n/completions";
@@ -92,4 +93,16 @@ it("shows import errors and refresh, disables busy actions, and keeps unavailabl
   rerender(<BrowserImport {...props} count={null} copied={false} canImport={false} error={false} />);
   expect(screen.getByText(storageMessages.en.unreadable)).toBeTruthy();
   expect(screen.queryByText(storageMessages.en.empty)).toBeNull();
+});
+
+
+it.each(["en", "sr-Latn"] as const)("does not present unreadable guest favorites as an empty collection in %s", locale => {
+  localStorage.setItem("carpe-acta-locale", locale);
+  localStorage.setItem(favoritesStorageKey, "malformed");
+  render(<App />);
+  const copy = messages[locale];
+  const favorites = within(screen.getByRole("region", { name: `${copy.favorites.title} (0)` }));
+  expect(favorites.getByText(copy.favorites.unsaved)).toBeTruthy();
+  expect(favorites.queryByText(copy.favorites.empty)).toBeNull();
+  expect(localStorage.getItem(favoritesStorageKey)).toBe("malformed");
 });

@@ -1,3 +1,4 @@
+import { BrandEmblem } from "./BrandEmblem";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import type { useAuth } from "../hooks/useAuth";
@@ -104,7 +105,7 @@ export function AuthPanel({ locale, auth, imports }: { locale: Locale; auth: Ret
       setPassword(""); setConfirmation(""); trigger.current?.focus();
     }}>
       <div className="auth-heading">
-        <h2 id="auth-title">{title}</h2>
+        <div className="auth-heading-title"><BrandEmblem variant="dialog" /><h2 id="auth-title">{title}</h2></div>
         <button className="auth-close" type="button" onClick={close} aria-label={copy.close}>×</button>
       </div>
       {!auth.client ? <p>{copy.unavailable}</p> : accountView ? <>

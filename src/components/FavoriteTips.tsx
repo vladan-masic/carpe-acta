@@ -1,3 +1,5 @@
+import { CategoryIcon } from "./CategoryIcon";
+import { NotebookEmptyState } from "./NotebookEmptyState";
 import { TipSources } from "./TipSources";
 import { useRef, useState, type ReactNode } from "react";
 import type { CategoryId, LocalizedTip, TipId } from "../types/tip";
@@ -42,7 +44,7 @@ export function FavoriteTips({ title, locale, disabled, loading, controls, descr
       </div>
       {controls}
       {(tips.length > 0 || hasFilters) && <>
-        <div className="library-filters favorites-filters">
+        <div className="library-filters favorites-filters" data-filtered={hasFilters}>
           <label>{copy.search}
             <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} />
           </label>
@@ -58,12 +60,12 @@ export function FavoriteTips({ title, locale, disabled, loading, controls, descr
           {!loading && copy.results(filteredTips.length, tips.length)}
         </p>
       </>}
-      {tips.length === 0 ? !loading && <p className="favorites-empty">{emptyMessage}</p> : (
-        filteredTips.length === 0 ? !loading && <p className="favorites-empty">{copy.empty}</p> :
+      {tips.length === 0 ? !loading && <NotebookEmptyState motif="bookmark" message={emptyMessage} /> : (
+        filteredTips.length === 0 ? !loading && <NotebookEmptyState motif="page" message={copy.empty} /> :
         <div className="tips-grid">
           {filteredTips.map((tip) => (
-            <article className="preview-card favorite-card" key={tip.id}>
-              <span>{tip.category}</span>
+            <article className="preview-card favorite-card collection-card" key={tip.id}>
+              <div className="library-tip-meta"><span className="collection-category"><CategoryIcon category={tip.categoryId} />{tip.category}</span><span className="collection-effort">{tip.effort}</span></div>
               <h3>{tip.title}</h3>
               <p>{tip.text}</p>
               <div className="favorite-card-action">

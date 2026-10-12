@@ -1,3 +1,4 @@
+import { NotebookEmptyState } from "./NotebookEmptyState";
 import type { CalendarHistory } from "../hooks/useCalendarHistory";
 import { useId, useRef, useState, type ReactNode } from "react";
 import { ActivityCalendar } from "./ActivityCalendar";
@@ -43,7 +44,7 @@ export function ProgressView({ progress, locale, tips, busy, onTry, calendarHist
       <section className="history-journal" aria-labelledby={historyId}>
       <h3 id={historyId} ref={historyHeading} tabIndex={-1} aria-live="polite">{selectedDay ? `${dayFormat.format(new Date(selectedDay.date))} — ${copy.dayCount(selectedDay.count)}` : copy.recent}</h3>
       {selectedDay && <button className="secondary-button" type="button" onClick={() => { setSelectedDate(null); historyHeading.current?.focus(); }}>{copy.clearDay}</button>}
-      {records.length === 0 ? <p className="history-empty">{selectedDay ? copy.emptyDay : copy.empty}</p> : <ol className="progress-recent">
+      {records.length === 0 ? <NotebookEmptyState className="history-empty" motif="path" message={selectedDay ? copy.emptyDay : copy.empty} /> : <ol className="progress-recent">
         {records.map((record) => {
           const tip = byId.get(record.tipId);
           return <li key={record.id}>

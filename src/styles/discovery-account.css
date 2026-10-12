@@ -1,0 +1,112 @@
+/* Phase 7: a collection of practical notebook entries, not a second dashboard. */
+:where([data-design="notebook"]) .notebook-illustration {
+  width: 140px; height: auto; flex: none; color: var(--discovery-ink); pointer-events: none;
+}
+.notebook-illustration .sketch-wash { fill: currentColor; opacity: .07; }
+.notebook-illustration .sketch-paper { fill: var(--surface-raised); }
+.notebook-illustration .sketch-ink { stroke: currentColor; stroke-width: 1.3; }
+.notebook-illustration .sketch-pencil { stroke: currentColor; stroke-width: .8; opacity: .65; }
+.notebook-illustration .sketch-leaf { fill: color-mix(in srgb, var(--progress-ink) 23%, var(--surface-paper)); }
+.notebook-illustration .sketch-ribbon { fill: color-mix(in srgb, var(--action-ink) 27%, var(--surface-paper)); }
+.notebook-illustration .sketch-sun { fill: color-mix(in srgb, #d6a548 55%, var(--surface-paper)); }
+:where([data-design="notebook"]) .sketch-bookmark { color: var(--action-ink); }
+:where([data-design="notebook"]) .sketch-path { color: var(--progress-ink); }
+:where([data-design="notebook"]) .notebook-empty {
+  display: flex; align-items: center; gap: var(--space-5); padding: var(--space-5);
+  border: 1px dashed var(--rule); border-radius: var(--radius-card); background: var(--surface-paper);
+  color: var(--ink-muted); margin-block: var(--space-4);
+}
+:where([data-design="notebook"]) .notebook-empty p { margin: 0; max-width: 60ch; }
+:where([data-design="notebook"]) .history-empty.notebook-empty { border-left: 2px solid var(--progress-ink); }
+
+:where([data-design="notebook"]) .tip-library { margin-block: var(--space-8); }
+:where([data-design="notebook"]) .tip-library h2 { margin: 0; }
+:where([data-design="notebook"]) .tip-library h2 > button {
+  font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 1.9rem); text-align: start;
+  color: var(--discovery-ink); border: 0; border-bottom: 2px solid var(--discovery-ink);
+  border-radius: 0; background: transparent; padding: var(--space-3) var(--space-2);
+}
+:where([data-design="notebook"]) .tip-library h2 > button[aria-expanded="true"] { background: var(--surface-paper); }
+:where([data-design="notebook"]) .collection-intro { display: flex; justify-content: space-between; align-items: center; gap: var(--space-5); margin-block: var(--space-3); }
+:where([data-design="notebook"]) .collection-intro p { max-width: 68ch; color: var(--ink-muted); }
+:where([data-design="notebook"]) .collection-intro .notebook-illustration { width: 112px; }
+:where([data-design="notebook"]) :is(.tip-library, .favorites-section) .library-filters {
+  padding: var(--space-4); gap: var(--space-4); background: var(--surface-paper);
+  border: 1px solid var(--rule); border-left: 3px solid var(--rule); border-radius: var(--radius-card);
+}
+:where([data-design="notebook"]) :is(.tip-library, .favorites-section) .library-filters[data-filtered="true"] { border-left-color: var(--discovery-ink); }
+:where([data-design="notebook"]) .library-filters label { font-size: .85rem; }
+:where([data-design="notebook"]) .library-filters :is(input, select) { background: var(--surface-raised); font-size: .95rem; }
+:where([data-design="notebook"]) .library-result-count { margin-block: var(--space-4); font-size: .875rem; color: var(--discovery-ink); }
+:where([data-design="notebook"]) :is(.tip-library, .favorites-section) .tips-grid { gap: var(--space-5); }
+:where([data-design="notebook"]) .collection-card {
+  position: relative; min-width: 0; min-height: 0; padding: var(--space-5);
+  border: 1px solid var(--rule); border-top: 3px solid var(--discovery-ink);
+  border-radius: 2px var(--radius-card) var(--radius-card) 2px;
+  box-shadow: var(--elevation-2);
+}
+:where([data-design="notebook"]) .collection-card .library-tip-meta { gap: var(--space-2); align-items: center; width: 100%; }
+:where([data-design="notebook"]) .collection-card .collection-category {
+  display: inline-flex; align-items: center; gap: var(--space-2); width: auto;
+  max-width: 100%; padding: 0; border: 0; border-radius: 0; color: var(--discovery-ink);
+  font-size: .78rem; line-height: 1.5; font-weight: 600;
+}
+:where([data-design="notebook"]) .collection-category .category-icon { flex: none; width: 18px; height: 18px; }
+:where([data-design="notebook"]) .collection-card .collection-effort { border: 0; padding: 2px 6px; background: var(--surface-page); color: var(--ink-muted); font-size: .75rem; font-weight: 500; }
+:where([data-design="notebook"]) .collection-card h3 { margin: var(--space-4) 0 var(--space-2); font-size: 1.35rem; line-height: 1.25; }
+:where([data-design="notebook"]) .collection-card > p { margin: 0; font-size: .9rem; line-height: 1.55; }
+:where([data-design="notebook"]) .collection-card .favorite-card-action { margin: var(--space-4) 0; padding: var(--space-3) 0 0; border-left: 0; border-top: 1px dashed var(--rule); }
+:where([data-design="notebook"]) .collection-card .favorite-card-action strong { font-size: .68rem; letter-spacing: .065em; color: var(--action-ink); }
+:where([data-design="notebook"]) .collection-card .favorite-card-action p { margin: var(--space-2) 0 0; font-size: .95rem; color: var(--ink); line-height: 1.55; }
+:where([data-design="notebook"]) .collection-card .tip-actions { margin-top: auto; gap: var(--space-2); width: 100%; }
+:where([data-design="notebook"]) .collection-card .tip-actions button { font-size: .85rem; padding: var(--space-2) var(--space-3); min-height: var(--target-min); }
+:where([data-design="notebook"]) .collection-card .tip-actions > .secondary-button { color: var(--discovery-ink); background: color-mix(in srgb, var(--discovery-ink) 6%, var(--surface-paper)); }
+:where([data-design="notebook"]) .favorites-section .collection-card { border-top-color: var(--progress-ink); }
+:where([data-design="notebook"]) .favorites-section .collection-category { color: var(--progress-ink); }
+:where([data-design="notebook"]) .favorites-section .collection-card::before {
+  content: ""; position: absolute; top: -3px; right: 18px; width: 12px; height: 12px;
+  background: var(--progress-ink); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%); pointer-events: none;
+}
+:where([data-design="notebook"]) .favorites-section .storage-description { padding-block: var(--space-3); color: var(--ink-muted); font-size: .9rem; }
+
+/* Native dialog, form semantics and account operations remain unchanged. */
+:where([data-design="notebook"]) .auth-dialog { padding: var(--space-6); border-top: 3px solid var(--discovery-ink); width: min(500px, calc(100% - 32px)); }
+:where([data-design="notebook"]) .auth-heading { padding-bottom: var(--space-4); border-bottom: 1px solid var(--rule); align-items: center; }
+:where([data-design="notebook"]) .auth-heading-title { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+:where([data-design="notebook"]) .brand-emblem--dialog { width: 38px; height: 38px; flex: none; object-fit: contain; }
+:where([data-design="notebook"]) .auth-heading h2 { font-size: 1.6rem; line-height: 1.2; }
+:where([data-design="notebook"]) .account-storage { padding: var(--space-4); border: 1px solid var(--rule); border-left: 3px solid var(--discovery-ink); border-radius: var(--radius-control); background: var(--surface-raised); margin-block: var(--space-4); }
+:where([data-design="notebook"]) .account-storage > span { display: block; margin-bottom: var(--space-2); font-size: .8rem; color: var(--ink-muted); }
+:where([data-design="notebook"]) .account-storage p { font-size: .85rem; color: var(--ink-muted); margin-bottom: 0; }
+:where([data-design="notebook"]) .auth-divider { display: flex; gap: var(--space-3); align-items: center; }
+:where([data-design="notebook"]) .auth-divider::before,
+:where([data-design="notebook"]) .auth-divider::after { content: ""; flex: 1; border-bottom: 1px solid var(--rule); }
+:where([data-design="notebook"]) .auth-dialog label { font-size: .9rem; }
+:where([data-design="notebook"]) .auth-dialog input { font-size: 1rem; }
+:where([data-design="notebook"]) .auth-links { padding-top: var(--space-3); border-top: 1px dashed var(--rule); }
+:where([data-design="notebook"]) .account-imports h3 { font-size: 1.25rem; line-height: 1.3; }
+:where([data-design="notebook"]) .browser-import { background: var(--surface-raised); border: 1px solid var(--rule); border-radius: var(--radius-control); padding: var(--space-4); margin-block: var(--space-3); }
+:where([data-design="notebook"]) .browser-import[data-state="error"] { border-left: 3px solid var(--error-text); }
+:where([data-design="notebook"]) .browser-import[data-state="error"] [role="status"] { color: var(--error-text); }
+:where([data-design="notebook"]) .browser-import[data-state="copied"] { border-left: 3px solid var(--progress-ink); }
+:where([data-design="notebook"]) .browser-import[data-state="unavailable"] { border-left: 3px solid var(--support-ink); }
+:where([data-design="notebook"]) .browser-import button { margin-inline: 0; }
+:where([data-design="notebook"]) .auth-account-actions { padding-top: var(--space-3); }
+@media (min-width: 821px) and (max-width: 1100px) {
+  :where([data-design="notebook"]) :is(.tip-library, .favorites-section) .tips-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  :where([data-design="notebook"]) .collection-intro { gap: var(--space-2); }
+  :where([data-design="notebook"]) .collection-intro .notebook-illustration { width: 68px; }
+  :where([data-design="notebook"]) .notebook-empty { flex-direction: column; align-items: flex-start; gap: var(--space-2); padding: var(--space-4); }
+  :where([data-design="notebook"]) .notebook-empty .notebook-illustration { width: 96px; }
+  :where([data-design="notebook"]) :is(.tip-library, .favorites-section) .library-filters { padding: var(--space-3); gap: var(--space-3); }
+  :where([data-design="notebook"]) .collection-card { padding: var(--space-4); }
+  :where([data-design="notebook"]) .auth-dialog { padding: var(--space-4); width: calc(100% - 24px); max-height: calc(100dvh - 24px); }
+  :where([data-design="notebook"]) .auth-heading-title { gap: var(--space-2); }
+  :where([data-design="notebook"]) .brand-emblem--dialog { width: 30px; height: 30px; }
+}
+:where([data-design="notebook"]) .collection-card .tip-actions > .secondary-button:not(:disabled):hover { background: color-mix(in srgb, var(--discovery-ink) 12%, var(--surface-paper)); border-color: var(--discovery-ink); }
+:where([data-design="notebook"]) .collection-card .tip-actions > .secondary-button:not(:disabled):active { background: color-mix(in srgb, var(--discovery-ink) 18%, var(--surface-paper)); }
+:where([data-design="notebook"]) .collection-card .tip-sources summary { min-height: var(--target-min); padding-block: var(--space-3); }
+:root[data-design="notebook"][data-theme="dark"] .brand-emblem--dialog { background: #fffaf0; border-radius: 50%; padding: 3px; }

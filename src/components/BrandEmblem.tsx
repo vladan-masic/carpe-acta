@@ -1,10 +1,10 @@
 import emblem from "../assets/branding/emblem.png";
 
 type BrandEmblemProps = {
-  variant: "hero" | "footer";
+  variant: "hero" | "footer" | "dialog";
 };
 
-// The adjacent brand name supplies the accessible text in both placements.
+// The emblem is decorative; adjacent headings supply the accessible context.
 export function BrandEmblem({ variant }: BrandEmblemProps) {
   return (
     <img

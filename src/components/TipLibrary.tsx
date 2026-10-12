@@ -1,3 +1,6 @@
+import { CategoryIcon } from "./CategoryIcon";
+import { NotebookEmptyState } from "./NotebookEmptyState";
+import { NotebookIllustration } from "./NotebookIllustration";
 import { TipSources } from "./TipSources";
 import { useEffect, useState, type ReactNode } from "react";
 import type { CategoryId, LocalizedTip } from "../types/tip";
@@ -49,8 +52,8 @@ export function TipLibrary({ tips, locale, open, onOpenChange, renderFavoriteBut
           aria-controls="tip-library-content" onClick={() => onOpenChange(!open)}>{copy.title}</button>
       </h2>
       <div id="tip-library-content" hidden={!open}>
-        <p>{copy.intro}</p>
-        <div className="library-filters">
+        <div className="collection-intro"><p>{copy.intro}</p><NotebookIllustration /></div>
+        <div className="library-filters" data-filtered={query !== "" || category !== "all" || maxEffort !== null}>
           <label>{copy.search}
             <input id="tip-library-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} />
           </label>
@@ -71,11 +74,11 @@ export function TipLibrary({ tips, locale, open, onOpenChange, renderFavoriteBut
           setQuery(""); setCategory("all"); setMaxEffort(null); setPage({ key: "", count: PAGE_SIZE });
         }}>{copy.reset}</button>
         <p className="library-result-count" role="status" aria-atomic="true">{copy.results(visible.length, results.length)}</p>
-        {results.length === 0 ? <p className="favorites-empty">{copy.empty}</p> : (
+        {results.length === 0 ? <NotebookEmptyState motif="page" message={copy.empty} /> : (
           <div className="tips-grid">
             {visible.map((tip) => (
-              <article className="preview-card favorite-card" key={tip.id} aria-labelledby={`library-${tip.id}`}>
-                <div className="library-tip-meta"><span>{tip.category}</span><span>{tip.effort}</span></div>
+              <article className="preview-card favorite-card collection-card" key={tip.id} aria-labelledby={`library-${tip.id}`}>
+                <div className="library-tip-meta"><span className="collection-category"><CategoryIcon category={tip.categoryId} />{tip.category}</span><span className="collection-effort">{tip.effort}</span></div>
                 <h3 id={`library-${tip.id}`} tabIndex={-1}>{tip.title}</h3>
                 <p>{tip.text}</p>
                 <div className="favorite-card-action"><strong>{common.generator.actionLabel}</strong><p>{tip.action}</p></div>
