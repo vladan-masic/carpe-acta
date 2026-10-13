@@ -5,6 +5,7 @@ import { activityLevel, calendarDays, progressDays, summarizeProgress } from "..
 import { ProgressView } from "../src/components/ProgressView";
 import { tips } from "../src/data/tips";
 import { localizeTip } from "../src/i18n/localizeTip";
+import { progressMessages } from "../src/i18n/progress";
 const now = new Date(2026, 9, 1, 12);
 const record = (id: string, date: Date, tipId = "two-minute-start") => ({ id, tipId, completedAt: date.toISOString() });
 afterEach(cleanup);
@@ -89,7 +90,7 @@ it.each(["en", "sr-Latn"] as const)("supports focus, hover, keyboard and day sel
   const localized = tips.map(tip => localizeTip(tip, locale));
   const props = { locale, tips: localized, busy: false };
   const { rerender } = render(<ProgressView {...props} progress={summarizeProgress(records, now)} />);
-  const group = screen.getByRole("group");
+  const group = screen.getByRole("group", { name: progressMessages[locale].calendar });
   const squares = within(group).getAllByRole("button");
   expect(squares.filter(button => button.tabIndex === 0)).toHaveLength(1);
   expect(squares.at(-1)!.getAttribute("aria-current")).toBe("date");
@@ -103,6 +104,7 @@ it.each(["en", "sr-Latn"] as const)("supports focus, hover, keyboard and day sel
   fireEvent.keyDown(squares[0], { key: "Escape" });
   expect(screen.getByRole("tooltip").textContent?.trim()).toBe("");
   fireEvent.click(squares[0]);
+  expect(document.querySelector<HTMLDetailsElement>(".history-disclosure")?.open).toBe(true);
   expect(squares[0].getAttribute("aria-pressed")).toBe("true");
   expect(screen.getAllByRole("listitem")).toHaveLength(12);
   rerender(<ProgressView {...props} progress={summarizeProgress(records.slice(1), now)} />);

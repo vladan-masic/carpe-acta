@@ -14,6 +14,7 @@ export function CategoryExploration({ locale, open, onOpenChange, categories, er
   const unexplored = explorationCategories.find(category => !categories?.includes(category));
   return <section className="category-exploration" aria-labelledby="exploration-title">
     <h3 id="exploration-title"><button type="button" className="secondary-button" aria-expanded={open} aria-controls="exploration-content" onClick={() => onOpenChange(!open)}>{copy.title}</button></h3>
+    {!open && <div className="exploration-peek"><AchievementStamp kind="exploration" earned={count > 0} /><p>{categories === null ? copy.intro : <>{copy.count(count, explorationCategories.length)} <span>{next ? copy.next(next - count) : copy.complete}</span></>}</p></div>}
     <div id="exploration-content" hidden={!open}>
       <p>{copy.intro}</p>
       {categories === null ? <p role="status">{error ? <>{copy.error} <button type="button" className="secondary-button" onClick={retry}>{copy.retry}</button></> : copy.loading}</p> : <>

@@ -9,6 +9,8 @@ import "./styles/guided-support.css";
 import "./styles/activity-history.css";
 import "./styles/achievements.css";
 import "./styles/discovery-account.css";
+import "./styles/homepage-reconstruction.css";
+import "./styles/journey-reconstruction.css";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 

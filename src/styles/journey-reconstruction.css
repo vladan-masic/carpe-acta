@@ -1,0 +1,166 @@
+/* Stage C1: actual journal entries composed together. The desktop grid is a
+   presentation of existing data, never a second progress calculation. */
+:where([data-design="notebook"]) .achievement-stamp { border-radius: 16px; mask-image: radial-gradient(ellipse at center, #000 50%, transparent 74%); }
+:where([data-design="notebook"]) .weekly-growth-art--painted {
+  background: none; mix-blend-mode: normal; height: auto;
+  mask-image: radial-gradient(ellipse at 50% 62%, #000 42%, transparent 73%);
+}
+:where([data-design="notebook"]) .weekly-growth-art--painted img { display: block; width: 100%; height: auto; }
+:root[data-design="notebook"][data-theme="dark"] .weekly-growth-art--painted { filter: none; mix-blend-mode: normal; opacity: 1; }
+:where([data-design="notebook"]) :is(.calendar-help, .saved-tip-details) > summary { cursor: pointer; color: var(--action-ink); padding-block: 8px; }
+:where([data-design="notebook"]) .journal-details > details { border-block: 1px solid var(--rule); margin-block: 12px; }
+:where([data-design="notebook"]) .journal-details > details > summary { padding: 16px 8px; cursor: pointer; font-family: var(--font-display); font-size: 18px; }
+:where([data-design="notebook"]) .saved-empty { display: flex; gap: 24px; align-items: center; padding: 16px; background: var(--surface-paper); border-radius: 12px; }
+:where([data-design="notebook"]) .saved-empty > img { width: 30%; max-width: 260px; height: auto; border-radius: 8px; }
+:where([data-design="notebook"]) .saved-empty-title { font-family: var(--font-display); font-size: 24px; }
+:where([data-design="notebook"]) .saved-tip-art { width: 112px; height: 100px; }
+:where([data-design="notebook"]) .saved-tip-art img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+:where([data-design="notebook"]) .saved-tip-art > svg { width: 48px; height: 48px; color: var(--progress-ink); }
+:where([data-design="notebook"]) .exploration-peek { display: flex; gap: 16px; align-items: center; }
+:where([data-design="notebook"]) .exploration-peek img { width: 80px; }
+:where([data-design="notebook"]) .exploration-peek p { color: var(--discovery-ink); }
+:where([data-design="notebook"]) .exploration-peek span { color: var(--ink-muted); }
+
+@media (min-width: 1100px) {
+  :where([data-design="notebook"]) .tip-art--scene { align-self: stretch; }
+  :where([data-design="notebook"]) .tip-art--scene img { height: 100%; object-fit: cover; mask-image: none; }
+  :where([data-design="notebook"]) .journey-section { margin-top: 32px; }
+  :where([data-design="notebook"]) .journey-section > .section-heading,
+  :where([data-design="notebook"]) #favorites > .section-heading {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; margin-bottom: 16px;
+  }
+  :where([data-design="notebook"]) :is(.journey-section, #favorites) > .section-heading h2 { font-size: 28px; margin: 0; }
+  :where([data-design="notebook"]) :is(.journey-section, #favorites) > .section-heading p { margin: 0; font-size: 12px; color: var(--ink-muted); }
+  :where([data-design="notebook"]) .journey-section .storage-description { margin-left: auto; }
+  :where([data-design="notebook"]) :is(.journey-section, #favorites) .storage-label { border: 0; padding: 0; font-size: inherit; }
+  :where([data-design="notebook"]) .progress-overview {
+    display: grid; grid-template-columns: 1fr 1.35fr 1.1fr .85fr; gap: 0; align-items: stretch;
+    background: var(--surface-raised); border: 1px solid var(--paper-edge); border-radius: 16px; overflow: hidden;
+  }
+  :where([data-design="notebook"]) .progress-overview > * { min-width: 0; }
+  :where([data-design="notebook"]) .progress-overview :is(h3, .weekly-goal h3) { font-size: 18px; margin: 0 0 10px; line-height: 1.3; }
+  :where([data-design="notebook"]) .progress-overview :is(p, summary, label) { font-size: 12px; line-height: 1.55; }
+  :where([data-design="notebook"]) .progress-overview :is(.weekly-goal, .personal-milestones, .calendar-journal) {
+    margin: 0; padding: 20px 16px; border: 0; box-shadow: none;
+  }
+  :where([data-design="notebook"]) .weekly-goal {
+    display: flex; flex-direction: column; background: color-mix(in srgb, var(--progress-ink) 6%, var(--surface-paper));
+    border-radius: 16px 6px 6px 16px;
+  }
+  :where([data-design="notebook"]) .weekly-goal-entry { display: flex; flex-direction: column; gap: 0; flex: 1; }
+  :where([data-design="notebook"]) .weekly-goal-content { width: 100%; }
+  :where([data-design="notebook"]) .goal-settings { margin-bottom: 4px; }
+  :where([data-design="notebook"]) .goal-settings summary { min-height: 32px; padding: 4px 0; }
+  :where([data-design="notebook"]) .weekly-goal-empty { color: var(--ink-muted); max-width: 30ch; }
+  :where([data-design="notebook"]) .weekly-growth-art--painted { width: 100%; margin-top: auto; height: 140px; }
+  :where([data-design="notebook"]) .weekly-growth-art--painted img { width: 100%; height: 100%; object-fit: cover; object-position: center 65%; }
+  :where([data-design="notebook"]) .weekly-goal-number { margin-top: 4px; }
+  :where([data-design="notebook"]) .weekly-goal-number strong { font-size: 40px; }
+  :where([data-design="notebook"]) .weekly-goal-days { gap: 3px; margin-top: 8px; }
+  :where([data-design="notebook"]) .weekly-goal-days > span { font-size: 10px; padding: 3px 0; }
+  :where([data-design="notebook"]) .weekly-achievements { margin-top: 8px; padding-top: 10px; }
+  :where([data-design="notebook"]) .weekly-achievements h4 { font-size: 12px; margin-bottom: 0; }
+  :where([data-design="notebook"]) .weekly-achievements summary { min-height: 28px; padding-block: 4px; font-size: 11px; }
+  :where([data-design="notebook"]) .weekly-achievements > p { margin-top: 6px; color: var(--progress-ink); }
+
+  :where([data-design="notebook"]) .calendar-journal { background: var(--surface-raised); border-radius: 8px; display: flex; flex-direction: column; }
+  :where([data-design="notebook"]) .progress-week-summary { margin: 0 0 8px; padding-bottom: 8px; font-size: 11px; font-weight: 500; }
+  :where([data-design="notebook"]) .calendar-controls { margin: 0 0 12px; gap: 8px; }
+  :where([data-design="notebook"]) .calendar-controls select { min-height: 32px; padding: 3px 8px; font-size: 12px; }
+  :where([data-design="notebook"]) .calendar-year-controls { width: 100%; font-size: 12px; }
+  :where([data-design="notebook"]) .calendar-year-controls button { min-height: 32px; font-size: 11px; padding: 4px; }
+  :where([data-design="notebook"]) .calendar-journal .activity-calendar { padding: 0; border: 0; background: none; box-shadow: none; margin: 0; }
+  :where([data-design="notebook"]) .activity-calendar h3::after { display: none; }
+  :where([data-design="notebook"]) .calendar-help { margin-bottom: 8px; }
+  :where([data-design="notebook"]) .calendar-help summary { font-size: 11px; padding: 0; }
+  :where([data-design="notebook"]) .calendar-scroll { padding: 4px 2px; }
+  :where([data-design="notebook"]) .calendar-layout { grid-template-columns: 24px auto; gap: 6px; }
+  :where([data-design="notebook"]) .calendar-layout .calendar-months,
+  :where([data-design="notebook"]) .calendar-layout .calendar-squares { grid-template-columns: repeat(var(--calendar-weeks, 12), 24px); gap: 2px; }
+  :where([data-design="notebook"]) .calendar-layout .calendar-square,
+  :where([data-design="notebook"]) .calendar-layout .calendar-future { width: 24px; height: 24px; font-size: 9px; }
+  :where([data-design="notebook"]) .calendar-weekdays { gap: 2px; font-size: 9px; }
+  :where([data-design="notebook"]) .calendar-months { font-size: 10px; }
+  :where([data-design="notebook"]) .calendar-legend { gap: 4px; font-size: 10px; margin-top: 8px; }
+  :where([data-design="notebook"]) .calendar-swatch { width: 10px; height: 10px; }
+  :where([data-design="notebook"]) .calendar-preview { padding-top: 8px; min-height: 36px; font-size: 10px; }
+  :where([data-design="notebook"]) .calendar-square[aria-pressed="true"]::after { font-size: 8px; right: 1px; }
+
+  :where([data-design="notebook"]) .progress-overview .milestone-notebook { background: none; border-radius: 0; border-left: 1px dashed var(--rule); }
+  :where([data-design="notebook"]) .milestone-notebook > p { font-size: 11px; margin: 4px 0 12px; }
+  :where([data-design="notebook"]) .milestone-entry { grid-template-columns: 70px minmax(0, 1fr); gap: 10px; padding: 12px 0; }
+  :where([data-design="notebook"]) .milestone-entry .achievement-stamp { width: 70px; border-radius: 12px; }
+  :where([data-design="notebook"]) .milestone-entry h4 { font-size: 11px; }
+  :where([data-design="notebook"]) .milestone-entry p { margin: 4px 0; font-size: 11px; }
+  :where([data-design="notebook"]) .milestone-entry .milestone-badge { font-size: 15px; }
+  :where([data-design="notebook"]) .milestone-notebook summary { font-size: 11px; padding: 8px 0; min-height: 32px; }
+  :where([data-design="notebook"]) .milestone-collection { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  :where([data-design="notebook"]) .collected-stamp { font-size: 10px; }
+  :where([data-design="notebook"]) .collected-stamp .achievement-stamp { width: 64px; }
+  :where([data-design="notebook"]) .personal-best { align-self: stretch; border-radius: 8px 16px 16px 8px; background: color-mix(in srgb, var(--support-tint) 35%, var(--surface-paper)); }
+  :where([data-design="notebook"]) .personal-best .achievement-stamp { width: 128px; margin: 16px auto; }
+  :where([data-design="notebook"]) .personal-best-label { font-size: 11px; }
+  :where([data-design="notebook"]) .personal-best-hint { font-size: 10px; padding-top: 10px; }
+  :where([data-design="notebook"]) .personal-best-record { font-size: 26px; }
+
+  /* A slim discovery entry and two expandable journal folds keep all detailed
+     records available without making them the default homepage composition. */
+  :where([data-design="notebook"]) .progress-view > .category-exploration {
+    display: grid; grid-template-columns: 230px minmax(0, 1fr); align-items: center;
+    padding: 4px 20px; margin-top: 12px; border: 0; border-block: 1px solid var(--rule);
+    border-radius: 0; background: transparent; box-shadow: none;
+  }
+  :where([data-design="notebook"]) .progress-view > .category-exploration h3 button { border: 0; padding: 8px 0; font-size: 18px; background: none; }
+  :where([data-design="notebook"]) .exploration-peek { gap: 20px; }
+  :where([data-design="notebook"]) .exploration-peek img { width: 68px; }
+  :where([data-design="notebook"]) .exploration-peek p { font-size: 12px; }
+  :where([data-design="notebook"]) #exploration-content { grid-column: 1 / -1; padding-bottom: 12px; }
+  :where([data-design="notebook"]) .journal-details { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  :where([data-design="notebook"]) .journal-details > details { border-top: 0; margin: 0; }
+  :where([data-design="notebook"]) .journal-details > details > summary { padding: 14px 12px; font-size: 16px; }
+  :where([data-design="notebook"]) .journal-details .history-journal { margin: 0 0 16px; padding: 16px; box-shadow: none; }
+  :where([data-design="notebook"]) .journal-details :is(.history-journal > h3, .what-helps > h3) { font-size: 18px; }
+  :where([data-design="notebook"]) .journal-details .what-helps { padding: 0 16px 16px; }
+  :where([data-design="notebook"]) .journal-details .what-helps p { font-size: 12px; }
+  :where([data-design="notebook"]) .journal-details .what-helps-list { grid-template-columns: 1fr; }
+  :where([data-design="notebook"]) .journal-details .progress-recent li { flex-direction: column; gap: 4px; }
+  :where([data-design="notebook"]) .journal-details .notebook-empty { border: 0; padding: 8px 0; font-size: 12px; }
+  :where([data-design="notebook"]) .journal-details .notebook-illustration { width: 80px; }
+
+  :where([data-design="notebook"]) #favorites { margin-top: 28px; }
+  :where([data-design="notebook"]) .saved-empty { padding: 0; gap: 32px; border: 1px solid var(--paper-edge); overflow: hidden; background: var(--surface-raised); }
+  :where([data-design="notebook"]) .saved-empty > img { width: 260px; height: 172px; max-width: none; object-fit: cover; border-radius: 0; }
+  :where([data-design="notebook"]) .saved-empty > div { padding: 16px 24px 16px 0; }
+  :where([data-design="notebook"]) .saved-empty p { font-size: 13px; margin: 6px 0 12px; }
+  :where([data-design="notebook"]) .saved-empty .saved-empty-title { font-size: 25px; color: var(--ink); }
+  :where([data-design="notebook"]) .saved-empty button { border: 0; border-radius: 999px; background: var(--support-tint); padding: 8px 18px; font-size: 12px; min-height: 40px; }
+  :where([data-design="notebook"]) #favorites .favorites-filters { display: inline-grid; width: min(680px, 70%); padding: 0; border: 0; background: none; margin: 0 12px 8px 0; grid-template-columns: 1.4fr 1fr; }
+  :where([data-design="notebook"]) #favorites .favorites-filters :is(input, select) { min-height: 36px; font-size: 12px; padding: 6px 10px; }
+  :where([data-design="notebook"]) #favorites > .secondary-button { font-size: 11px; padding: 8px 12px; min-height: 36px; }
+  :where([data-design="notebook"]) #favorites .library-result-count { margin: 4px 0 12px; font-size: 11px; }
+  :where([data-design="notebook"]) #favorites .saved-tip-shelf { display: grid; grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: minmax(320px, calc((100% - 36px) / 4)); gap: 12px; overflow-x: auto; align-items: start; padding: 4px 3px 16px; scroll-snap-type: x proximity; }
+  :where([data-design="notebook"]) .saved-tip-shelf .collection-card {
+    display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 8px 12px; padding: 12px;
+    border: 1px solid var(--paper-edge); border-radius: 10px; box-shadow: none; scroll-snap-align: start;
+  }
+  :where([data-design="notebook"]) .saved-tip-shelf .collection-card::before { display: none; }
+  :where([data-design="notebook"]) .saved-tip-shelf .saved-tip-art { grid-column: 1; grid-row: 1 / 5; width: 88px; height: 116px; background: var(--support-tint); border-radius: 8px; display: grid; place-items: center; }
+  :where([data-design="notebook"]) .saved-tip-shelf .library-tip-meta { grid-column: 2; gap: 4px; }
+  :where([data-design="notebook"]) .saved-tip-shelf .collection-category { font-size: 10px; padding: 0; border: 0; background: none; }
+  :where([data-design="notebook"]) .saved-tip-shelf .collection-effort { font-size: 10px; padding: 0; background: none; }
+  :where([data-design="notebook"]) .saved-tip-shelf h3 { grid-column: 2; margin: 0; font-size: 17px; }
+  :where([data-design="notebook"]) .saved-tip-details { grid-column: 2; font-size: 12px; }
+  :where([data-design="notebook"]) .saved-tip-details summary { padding: 2px 0; font-size: 11px; }
+  :where([data-design="notebook"]) .saved-tip-shelf .tip-actions { grid-column: 2; gap: 4px; }
+  :where([data-design="notebook"]) .saved-tip-shelf .tip-actions button { font-size: 10px; min-height: 34px; padding: 5px 7px; border-radius: 6px; }
+  :where([data-design="notebook"]) .saved-tip-shelf .favorite-button svg { width: 14px; height: 14px; }
+  :where([data-design="notebook"]) .tip-library { margin-block: 16px 28px; border-bottom: 1px solid var(--rule); }
+  :where([data-design="notebook"]) .tip-library h2 > button { font-size: 19px; border: 0; width: 100%; display: flex; justify-content: space-between; }
+  :where([data-design="notebook"]) .tip-library h2 > button::after { content: "↗"; }
+  :where([data-design="notebook"]) .tip-library h2 > button[aria-expanded="true"]::after { content: "−"; }
+  :where([data-design="notebook"]) .footer-inner { padding-top: 24px; padding-bottom: 32px; }
+  :where([data-design="notebook"]) .footer-primary { padding-bottom: 8px; }
+  :where([data-design="notebook"]) .footer-brand { font-size: 30px; }
+  :where([data-design="notebook"]) .footer-motto { font-size: 16px; }
+  :where([data-design="notebook"]) .footer-meta { padding-top: 12px; margin-top: 12px; }
+}

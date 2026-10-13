@@ -199,6 +199,7 @@ export function App() {
                   Carpe Acta
                 </h1>
               </div>
+              <p className="hero-promise">{copy.hero.promise}<br /><em>{copy.hero.promiseAccent}</em></p>
               <p className="hero-lede">{copy.hero.lede}</p>
             </div>
             <a className="hero-start" href="#tip-generator" onClick={() => {
@@ -207,7 +208,7 @@ export function App() {
             <picture className="hero-art" aria-hidden="true">
               <source media="(max-width: 820px)" srcSet={heroPathDetail} width="336" height="216" />
               <img src={heroPath} srcSet={`${heroPath} 720w, ${heroPathLarge} 1200w`}
-                sizes="(min-width: 1180px) 340px, (min-width: 821px) 190px, 112px"
+                sizes="(min-width: 1100px) 1320px, (min-width: 821px) 190px, 112px"
                 width="720" height="360" alt="" loading="eager" decoding="async" />
             </picture>
           </div>
@@ -288,11 +289,10 @@ export function App() {
           </div>
         </section>
 
-        <TipLibrary categoryRequest={libraryRequest} tips={localizedTips} locale={locale} open={libraryOpen} onOpenChange={setLibraryOpen} renderFavoriteButton={renderFavoriteButton} onTry={handleOpenTip} />
-
-        <section className="favorites-section" aria-labelledby="completed-actions-title">
+        <section className="favorites-section journey-section" aria-labelledby="completed-actions-title">
           <div className="section-heading">
-            <h2 id="completed-actions-title" tabIndex={-1}>{completionCopy.title}{completion.count !== null ? ` (${completion.count})` : ""}</h2>
+            <h2 id="completed-actions-title" tabIndex={-1}>{progressMessages[locale].journey}</h2>
+            <p className="journey-count">{completionCopy.title}{completion.count !== null ? ` (${completion.count})` : ""}</p>
             <p className="storage-description"><strong className="storage-label">{storageLabel}</strong>
               {!auth.loading && <span>{completion.signedIn ? storageCopy.accountHint : storageCopy.guestHint}</span>}
             </p>
@@ -305,25 +305,31 @@ export function App() {
           {completion.signedIn && <div className="favorites-sync-controls completion-sync-controls">
             <button type="button" className="secondary-button" disabled={completion.busy} onClick={completion.refresh}>{completionCopy.refresh}</button>
           </div>}
-          {!auth.loading && completion.progress && <WeeklyGoal key={auth.session?.user.id ?? "guest"} client={auth.client} owner={auth.session?.user.id ?? null} progress={completion.progress} locale={locale} busy={completion.busy} />}
-          <ProgressView calendarHistory={completion.calendarHistory} progress={completion.progress} locale={locale} tips={localizedTips} busy={completion.busy} onTry={handleOpenTip} achievements={
-            <section className="progress-achievements" aria-labelledby="achievements-title">
-              <h3 id="achievements-title">{progressMessages[locale].achievements}</h3>
-              <div className="achievement-panels">
+          <ProgressView calendarHistory={completion.calendarHistory} progress={completion.progress} locale={locale} tips={localizedTips} busy={completion.busy} onTry={handleOpenTip} weeklyGoal={
+            !auth.loading && completion.progress && <WeeklyGoal key={auth.session?.user.id ?? "guest"} client={auth.client} owner={auth.session?.user.id ?? null} progress={completion.progress} locale={locale} busy={completion.busy} />
+          } exploration={
+            <CategoryExploration locale={locale} open={explorationOpen} onOpenChange={setExplorationOpen} {...completion.exploration} onExplore={category => {
+              setLibraryOpen(true);
+              setLibraryRequest(previous => ({ category, id: (previous?.id ?? 0) + 1 }));
+            }} />
+          } achievements={
+            <>
                 <PersonalMilestones key={`milestones-${auth.session?.user.id ?? "guest"}`} {...completion.milestones} locale={locale} completionId={completion.completedRecord?.id ?? null} />
                 <PersonalBest {...completion.personalBest} locale={locale} />
-                <CategoryExploration locale={locale} open={explorationOpen} onOpenChange={setExplorationOpen} {...completion.exploration} onExplore={category => {
-                  setLibraryOpen(true);
-                  setLibraryRequest(previous => ({ category, id: (previous?.id ?? 0) + 1 }));
-                }} />
-              </div>
-            </section>
+            </>
           } />
         </section>
 
         <FavoriteTips
           locale={locale}
           title={copy.favorites.title}
+          onBrowse={() => {
+            setLibraryOpen(true);
+            requestAnimationFrame(() => {
+              document.getElementById("tip-library-search")?.focus({ preventScroll: true });
+              document.getElementById("tip-library-title")?.scrollIntoView({ block: "start" });
+            });
+          }}
           description={<span className="storage-description">
             <strong className="storage-label">{storageLabel}</strong>
             {!auth.loading && <span>{favorites.signedIn ? storageCopy.accountHint : favorites.persisted ? storageCopy.guestHint : copy.favorites.unsaved}</span>}
@@ -343,6 +349,8 @@ export function App() {
           onToggle={favorites.toggle}
           onOpen={handleOpenTip}
         />
+
+        <TipLibrary categoryRequest={libraryRequest} tips={localizedTips} locale={locale} open={libraryOpen} onOpenChange={setLibraryOpen} renderFavoriteButton={renderFavoriteButton} onTry={handleOpenTip} />
 
       </main>
 

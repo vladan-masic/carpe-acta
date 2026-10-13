@@ -1,7 +1,8 @@
 import type { Locale } from "./locales";
-type Copy = { settings: string; aboutAchievements: string; achievements: string; achievementHint: string; achievementError: string; retryAchievements: string; loadingAchievements: string; achievementHistory: string; weeksMet: (n: number) => string; achievedWeek: (date: string, target: number) => string; title: string; hint: string; target: string; off: string; suggested: string; days: (n: number) => string; progress: (n: number, target: number) => string; reached: string; active: string; inactive: string; future: string; browser: string; account: string; loading: string; saving: string; error: string };
+type Copy = { empty: string; settings: string; aboutAchievements: string; achievements: string; achievementHint: string; achievementError: string; retryAchievements: string; loadingAchievements: string; achievementHistory: string; weeksMet: (n: number) => string; achievedWeek: (date: string, target: number) => string; title: string; hint: string; target: string; off: string; suggested: string; days: (n: number) => string; progress: (n: number, target: number) => string; reached: string; active: string; inactive: string; future: string; browser: string; account: string; loading: string; saving: string; error: string };
 export const weeklyGoalMessages: Record<Locale, Copy> = {
   en: {
+    empty: "No weekly goal set. Choose a few active days and make room for small beginnings.",
     settings: "Set or change weekly goal", aboutAchievements: "How weeks are recorded",
     achievements: "Weeks I met my goal", achievementHint: "Recorded from now on when you reach your goal in the app. Each week keeps its original achieved target; weeks don’t need to be consecutive.",
     achievementError: "Weekly achievements could not be saved or loaded.", retryAchievements: "Retry achievements", loadingAchievements: "Loading weekly achievements…", achievementHistory: "View achieved weeks",
@@ -14,6 +15,7 @@ export const weeklyGoalMessages: Record<Locale, Copy> = {
     browser: "Goal saved in this browser.", account: "Goal saved to your account.", loading: "Loading weekly goal…", saving: "Saving goal…", error: "Could not load or save your goal. Try choosing it again or refresh the page.",
   },
   "sr-Latn": {
+    empty: "Nedeljni cilj nije podešen. Izaberi nekoliko aktivnih dana i napravi mesta za male početke.",
     settings: "Podesi ili promeni nedeljni cilj", aboutAchievements: "Kako se beleže ostvarene nedelje",
     achievements: "Nedelje u kojima je cilj ostvaren", achievementHint: "Beleži se od sada, kada ostvariš cilj u aplikaciji. Svaka nedelja čuva cilj sa kojim je ostvarena; nedelje ne moraju biti uzastopne.",
     achievementError: "Nedeljna dostignuća nisu mogla da se sačuvaju ili učitaju.", retryAchievements: "Pokušaj ponovo", loadingAchievements: "Učitavanje nedeljnih dostignuća…", achievementHistory: "Prikaži ostvarene nedelje",
