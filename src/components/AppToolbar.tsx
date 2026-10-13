@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { BrandEmblem } from "./BrandEmblem";
 
 type AppToolbarProps = {
   label: string;
@@ -47,6 +48,7 @@ export function AppToolbar({ label, children, navigation }: AppToolbarProps) {
           if (!event.defaultPrevented) document.getElementById(link.hash.slice(1))?.focus({ preventScroll: true });
         }
       }}>
+        <a className="toolbar-brand" href="#page-top"><BrandEmblem variant="hero" /><span>Carpe Acta</span></a>
         {navigation}
         <div className="toolbar-account-controls">{children}</div>
       </div>

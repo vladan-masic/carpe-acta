@@ -4,6 +4,7 @@ import type { Locale } from "../i18n/locales";
 import { weeklyGoalMessages } from "../i18n/weeklyGoal";
 import { useWeeklyGoal } from "../hooks/useWeeklyGoal";
 import { weeklyActivity, type ProgressData } from "../utils/progress";
+import growth from "../assets/illustrations/progress-growth-remains.webp";
 
 
 type Props = { client: SupabaseClient | null; owner: string | null; progress: ProgressData; locale: Locale; busy: boolean };
@@ -27,6 +28,7 @@ export function WeeklyGoal({ client, owner, progress, locale, busy }: Props) {
     <p className="weekly-goal-storage">{goal.loading ? copy.loading : goal.saving ? copy.saving : goal.error ? "" : owner ? copy.account : copy.browser}</p>
     </details>
     {goal.error && <p role="alert">{copy.error}</p>}
+    {!goal.loading && !goal.error && goal.target === 0 && <p className="weekly-goal-empty">{copy.empty}</p>}
     {goal.target > 0 && <>
       <div className="weekly-goal-number" aria-hidden="true"><strong>{active}</strong><span>/ {goal.target}</span></div>
       <p role="status">{copy.progress(active, goal.target)} {active >= goal.target && copy.reached}</p>
@@ -35,7 +37,7 @@ export function WeeklyGoal({ client, owner, progress, locale, busy }: Props) {
         <span aria-hidden="true">{weekday.format(day.date)}<br />{day.active ? "✓" : "·"}</span>
       </span>)}</div>
     </>}
-    </div><div className="weekly-growth-art" aria-hidden="true" /></div>
+    </div><div className="weekly-growth-art weekly-growth-art--painted" aria-hidden="true"><img src={growth} width="640" height="480" alt="" loading="lazy" decoding="async" /></div></div>
     <div className="weekly-achievements">
       <h4>{copy.achievements}</h4>
       <details className="achievement-explanation"><summary>{copy.aboutAchievements}</summary><p>{copy.achievementHint}</p></details>

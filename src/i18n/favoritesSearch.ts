@@ -1,6 +1,7 @@
 import type { Locale } from "./locales";
 
 type FavoritesSearchMessages = {
+  invitation: string;
   search: string;
   category: string;
   all: string;
@@ -11,6 +12,7 @@ type FavoritesSearchMessages = {
 
 export const favoritesSearchMessages: Record<Locale, FavoritesSearchMessages> = {
   en: {
+    invitation: "A little collection for the days ahead.",
     search: "Search favorites",
     category: "Favorite category",
     all: "All categories",
@@ -19,6 +21,7 @@ export const favoritesSearchMessages: Record<Locale, FavoritesSearchMessages> = 
     results: (shown, total) => `Showing ${shown} of ${total} favorites`,
   },
   "sr-Latn": {
+    invitation: "Mala zbirka za dane koji dolaze.",
     search: "Pretraži omiljene savete",
     category: "Kategorija omiljenih saveta",
     all: "Sve kategorije",

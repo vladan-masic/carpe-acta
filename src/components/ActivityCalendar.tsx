@@ -39,7 +39,7 @@ export function ActivityCalendar({ days, locale, selected, onSelect, year = null
   }
   return <section className="activity-calendar" aria-labelledby={`${id}-title`} onMouseLeave={() => setPreview(null)}>
     <h3 id={`${id}-title`}>{title}</h3>
-    <p className="progress-caption" id={`${id}-hint`}>{copy.calendarHint} {year !== null ? copy.yearHint : copy.scrollHint}</p>
+    <details className="calendar-help"><summary>{copy.calendarHelp}</summary><p className="progress-caption" id={`${id}-hint`}>{copy.calendarHint} {year !== null ? copy.yearHint : copy.scrollHint}</p></details>
     <div className="calendar-scroll">
       <div className={`calendar-layout${year === null ? "" : " calendar-layout-year"}`} style={{ "--calendar-weeks": weeks } as CSSProperties}>
         <div className="calendar-months" aria-hidden="true">

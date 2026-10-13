@@ -4,6 +4,7 @@ import { TipSources } from "./TipSources";
 import type { LocalizedTip } from "../types/tip";
 import type { CompletionStatus } from "../hooks/useTipCompletion";
 import type { ReactNode } from "react";
+import { ActionArtwork } from "./ActionArtwork";
 
 type TipCardProps = {
   locale?: Locale;
@@ -47,6 +48,7 @@ export function TipCard({
 }: TipCardProps) {
   return (
     <article className="tip-card" aria-labelledby="active-tip-title" data-completion={completionStatus ?? "ready"}>
+      <div className="tip-art tip-art--scene" aria-hidden="true"><ActionArtwork category={tip.categoryId} /></div>
       <div className="tip-card-header">
         <span className="tip-category"><CategoryIcon category={tip.categoryId} />{tip.category}</span>
         <span className="tip-effort"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 6v6l4 2" /></svg>{tip.effort}</span>

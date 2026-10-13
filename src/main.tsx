@@ -8,11 +8,20 @@ import "./styles/introduction.css";
 import "./styles/guided-support.css";
 import "./styles/activity-history.css";
 import "./styles/achievements.css";
+import "./styles/discovery-account.css";
+import "./styles/homepage-reconstruction.css";
+import "./styles/journey-reconstruction.css";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
 // Vite removes this branch and its assets from production builds.
-if (import.meta.env.DEV && window.location.pathname === "/__achievements") {
+if (import.meta.env.DEV && window.location.pathname === "/__discovery") {
+  document.documentElement.dataset.design = "notebook";
+  document.documentElement.dataset.theme = "light";
+  import("./dev/DiscoveryPreview").then(({ DiscoveryPreview }) => {
+    root.render(<StrictMode><DiscoveryPreview /></StrictMode>);
+  });
+} else if (import.meta.env.DEV && window.location.pathname === "/__achievements") {
   document.documentElement.dataset.design = "notebook";
   document.documentElement.dataset.theme = "light";
   import("./dev/AchievementsPreview").then(({ AchievementsPreview }) => {

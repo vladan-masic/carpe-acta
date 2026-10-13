@@ -94,7 +94,7 @@ it.each(["en", "sr-Latn"] as const)("switches ranges, limits future navigation a
   expect((screen.getByRole("button", { name: copy.nextYear }) as HTMLButtonElement).disabled).toBe(true);
   fireEvent.click(screen.getByRole("button", { name: copy.previousYear }));
   expect((screen.getByRole("button", { name: copy.nextYear }) as HTMLButtonElement).disabled).toBe(false);
-  const group = screen.getByRole("group");
+  const group = screen.getByRole("group", { name: `${copy.yearTitle} · 2025` });
   fireEvent.click(within(group).getAllByRole("button")[0]);
   expect(screen.getByRole("button", { name: copy.clearDay })).toBeTruthy();
   fireEvent.change(screen.getByLabelText(copy.view), { target: { value: "weeks" } });

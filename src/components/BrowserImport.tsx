@@ -13,7 +13,7 @@ export function BrowserImport({ locale, title, label, count, canImport, copied, 
   const copy = storageMessages[locale];
   const titleId = useId();
   const descriptionId = useId();
-  return <section className="browser-import" aria-labelledby={titleId}>
+  return <section className="browser-import" data-state={busy ? "busy" : error ? "error" : count === null ? "unavailable" : copied ? "copied" : "ready"} aria-labelledby={titleId}>
     <h4 id={titleId}>{title}</h4>
     <p id={descriptionId}>{count === null ? copy.unreadable : copy.count(count)}</p>
     <div role="status" aria-atomic="true">

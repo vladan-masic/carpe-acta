@@ -10,6 +10,8 @@ type Messages = {
   navigation: { label: string; start: string; browse: string; progress: string };
   hero: {
     eyebrow: string;
+    promise: string;
+    promiseAccent: string;
     lede: string;
   };
   dailyQuestLabel: string;
@@ -77,6 +79,8 @@ const en = {
   navigation: { label: "Main navigation", start: "Start", browse: "Browse tips", progress: "Progress" },
   hero: {
     eyebrow: "Anti-procrastination quests",
+    promise: "Small steps.",
+    promiseAccent: "Brighter days.",
     lede:
       "Stop waiting for motivation. Draw one practical action, do the next small thing, and build momentum one quest at a time.",
   },
@@ -150,6 +154,8 @@ const srLatn = {
   navigation: { label: "Glavna navigacija", start: "Počni", browse: "Pregledaj savete", progress: "Napredak" },
   hero: {
     eyebrow: "Misije protiv odlaganja",
+    promise: "Mali koraci.",
+    promiseAccent: "Vedriji dani.",
     lede:
       "Prestani da čekaš motivaciju. Izaberi jednu praktičnu akciju, uradi sledeću malu stvar i gradi zamah, misiju po misiju.",
   },

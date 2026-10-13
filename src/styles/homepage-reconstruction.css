@@ -1,0 +1,147 @@
+/* Desktop composition checkpoint. The existing compact layouts remain the
+   fallback until the illustrated direction has been reviewed. */
+:where([data-design="notebook"]) .toolbar-brand { display: none; }
+:where([data-design="notebook"]) .hero-promise,
+:where([data-design="notebook"]) .tip-art { display: none; }
+
+@media (min-width: 1100px) {
+  :root[data-design="notebook"] { --surface-page: #faf5eb; }
+  :root[data-design="notebook"][data-theme="dark"] { --surface-page: #191613; }
+  :where([data-design="notebook"]) .app-shell { width: min(1344px, calc(100% - 64px)); padding-top: 0; }
+  :where([data-design="notebook"]) .app-toolbar {
+    position: relative; top: auto; margin: 0; padding: 12px 0;
+    border: 0; border-radius: 0; background: transparent; box-shadow: none;
+  }
+  :where([data-design="notebook"]) .toolbar-controls { gap: 24px; }
+  :where([data-design="notebook"]) .toolbar-brand {
+    display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    color: var(--ink); text-decoration: none; font-family: var(--font-display);
+    font-size: 25px; font-weight: 600; letter-spacing: -.05em;
+  }
+  :where([data-design="notebook"]) .toolbar-brand .brand-emblem { width: 40px; height: 40px; padding: 2px; }
+  :where([data-design="notebook"]) .section-navigation { margin-right: auto; flex-wrap: nowrap; gap: 4px; }
+  :where([data-design="notebook"]) .section-navigation a { font-size: 13px; padding: 8px 12px; white-space: nowrap; }
+  :where([data-design="notebook"]) .section-navigation a:first-child { border: 0; background: var(--action-tint); }
+  :where([data-design="notebook"]) .toolbar-account-controls { padding-left: 12px; }
+  :where([data-design="notebook"]) .toolbar-account-controls button { font-size: 12px; }
+
+  /* One landscape spans the entire introduction. Paper protects the reading
+     areas while the path, sunrise and foreground remain at full pigment. */
+  :where([data-design="notebook"]) .hero-section {
+    position: relative; isolation: isolate; min-height: 450px;
+    grid-template-columns: minmax(0, 1fr) 330px; gap: 32px;
+    padding: 24px 24px 48px; margin-inline: -8px;
+  }
+  :where([data-design="notebook"]) .hero-copy {
+    position: static; isolation: auto; display: flex; align-items: flex-start;
+    justify-content: center; padding: 0; gap: 0;
+  }
+  :where([data-design="notebook"]) .hero-message { align-self: auto; width: 340px; }
+  :where([data-design="notebook"]) .hero-message > .eyebrow { font-size: 10px; letter-spacing: .15em; }
+  :where([data-design="notebook"]) .hero-brand { margin: 10px 0 12px; }
+  :where([data-design="notebook"]) .hero-brand .brand-emblem { display: none; }
+  :where([data-design="notebook"]) .hero-brand h1 { font-size: 22px; letter-spacing: -.02em; padding: 0; }
+  :where([data-design="notebook"]) .hero-brand h1::after { display: none; }
+  :where([data-design="notebook"]) .hero-promise {
+    display: block; font-family: var(--font-display); font-size: 49px; font-weight: 600;
+    letter-spacing: -.055em; line-height: 1.06; margin: 0 0 18px;
+  }
+  :where([data-design="notebook"]) .hero-promise em { font-style: normal; color: var(--action-ink); }
+  :where([data-design="notebook"]) .hero-lede { max-width: 34ch; font-size: 14px; line-height: 1.65; margin: 0; }
+  :where([data-design="notebook"]) .hero-start {
+    align-self: auto; border-radius: 999px; padding: 11px 24px; margin-top: 20px;
+    background: var(--action); color: #fffaf0; text-decoration: none; box-shadow: 0 5px 14px #7c391a20;
+  }
+  :where([data-design="notebook"]) .hero-start:hover { background: var(--action-hover); }
+  :where([data-design="notebook"]) .hero-art {
+    position: absolute; z-index: -2; inset: 0 -24px; padding: 0;
+    grid-column: auto; grid-row: auto;
+    background: none; border-radius: 0; transform: none; box-shadow: none;
+    mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 88%, transparent);
+  }
+  :where([data-design="notebook"]) .hero-art img { width: 100%; height: 100%; object-fit: cover; object-position: center 55%; }
+  :where([data-design="notebook"]) .hero-copy::before {
+    content: ""; position: absolute; z-index: -1; inset: 0;
+    background: linear-gradient(90deg, var(--surface-page) 0%, color-mix(in srgb, var(--surface-page) 96%, transparent) 20%, transparent 49%);
+    pointer-events: none;
+  }
+  :where([data-design="notebook"]) .daily-quest {
+    align-self: center; padding: 24px; border: 1px solid var(--paper-edge);
+    border-radius: 18px 18px 24px 8px; background: var(--surface-raised);
+    box-shadow: 0 10px 32px #4b39271c; min-height: 290px;
+  }
+  :where([data-design="notebook"]) .daily-quest h2 { font-size: 27px; margin: 20px 0 12px; }
+  :where([data-design="notebook"]) .daily-quest > p { font-size: 14px; }
+  :where([data-design="notebook"]) .daily-quest-heading { gap: 10px; }
+  :where([data-design="notebook"]) .daily-stamp { color: var(--action-ink); }
+  :where([data-design="notebook"]) .daily-quest-meta { padding-top: 12px; border-top: 1px solid var(--rule); }
+  :where([data-design="notebook"]) .daily-quest .favorite-button { font-size: 12px; border-color: transparent; background: var(--support-tint); border-radius: 999px; }
+
+  /* The generator reads as one open notebook, with an illustrated margin and
+     a clear working column. All 21 category choices are immediately visible. */
+  :where([data-design="notebook"]) .generator-section {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 24px;
+    margin-top: -28px; padding: 24px; border: 1px solid var(--paper-edge);
+    border-radius: 20px 20px 12px 12px; background: var(--surface-raised);
+    box-shadow: 0 8px 24px #6445260a;
+  }
+  :where([data-design="notebook"]) .generator-section::before { display: none; }
+  :where([data-design="notebook"]) .generator-section > .section-heading { grid-column: 1; margin: 0 0 16px; }
+  :where([data-design="notebook"]) .generator-section > .section-heading h2 { font-size: 28px; }
+  :where([data-design="notebook"]) .generator-section > .section-heading .eyebrow { font-size: 10px; letter-spacing: .13em; }
+  :where([data-design="notebook"]) .action-entry-controls { grid-column: 2; grid-row: 1; align-self: center; margin: 0 0 16px; }
+  :where([data-design="notebook"]) .action-entry-controls > button { border-radius: 999px; background: var(--support-tint); border-color: transparent; }
+  :where([data-design="notebook"]) .generator-section > :not(.section-heading, .action-entry-controls) { grid-column: 1 / -1; }
+  :where([data-design="notebook"]) .category-picker { margin-bottom: 20px; }
+  :where([data-design="notebook"]) .category-picker > .category-toggle { display: none; }
+  :where([data-design="notebook"]) .category-filter[data-expanded] { display: flex; padding: 0; gap: 7px; }
+  :where([data-design="notebook"]) .category-picker .category-button {
+    min-height: 36px; font-size: 12px; padding: 6px 12px;
+    background: var(--surface-page); border: 1px solid var(--paper-edge); color: var(--ink);
+  }
+  :where([data-design="notebook"]) .category-picker .category-icon { width: 16px; height: 16px; color: var(--progress-ink); }
+  :where([data-design="notebook"]) .category-picker .category-button[data-active="true"] {
+    color: #fffaf0; background: var(--action); border-color: var(--action); box-shadow: none;
+  }
+  :where([data-design="notebook"]) .category-button[data-active="true"] .category-icon { color: inherit; }
+  :where([data-design="notebook"]) .tip-card {
+    grid-template-columns: 260px minmax(0, 1fr) 245px; grid-template-rows: auto 1fr auto;
+    gap: 14px 26px; padding: 20px; border: 1px solid var(--paper-edge); border-radius: 14px;
+    background: var(--surface-paper); box-shadow: 0 3px 14px #72583208;
+  }
+  :where([data-design="notebook"]) .tip-art {
+    display: flex; align-items: center; grid-column: 1; grid-row: 1 / 4;
+    overflow: hidden; border-radius: 9px;
+  }
+  :where([data-design="notebook"]) .tip-art img {
+    display: block; width: 100%; height: auto;
+    mask-image: radial-gradient(ellipse at center, #000 52%, transparent 73%);
+  }
+  :where([data-design="notebook"]) .tip-card > .tip-card-header {
+    grid-column: 2; grid-row: 1; padding: 0; border: 0; gap: 8px;
+  }
+  :where([data-design="notebook"]) .tip-card-header .tip-category { font-size: 12px; color: var(--progress-ink); }
+  :where([data-design="notebook"]) .tip-card-header .tip-effort { font-size: 12px; }
+  :where([data-design="notebook"]) .tip-card-header .favorite-button { font-size: 12px; min-height: 34px; padding: 5px 9px; border: 0; background: var(--support-tint); border-radius: 999px; }
+  :where([data-design="notebook"]) .tip-story { grid-column: 2; grid-row: 2; }
+  :where([data-design="notebook"]) .tip-story h3 { font-size: 28px; line-height: 1.16; text-wrap: initial; }
+  :where([data-design="notebook"]) .tip-introduction { font-size: 14px; margin-bottom: 16px; }
+  :where([data-design="notebook"]) .tip-card .quest-box { padding: 10px 14px; }
+  :where([data-design="notebook"]) .tip-card .quest-box p:last-child { font-size: 14px; line-height: 1.6; }
+  :where([data-design="notebook"]) .tip-workflow { grid-column: 3; grid-row: 1 / 3; padding-left: 20px; }
+  :where([data-design="notebook"]) .tip-workflow button { font-size: 13px; border-radius: 999px; }
+  :where([data-design="notebook"]) .tip-workflow .timer-heading { font-size: 12px; }
+  :where([data-design="notebook"]) .tip-workflow .action-timer > .tip-actions button { width: 100%; background: var(--support-tint); border-color: transparent; }
+  :where([data-design="notebook"]) .tip-workflow .timer-alerts summary { font-size: 11px; }
+  :where([data-design="notebook"]) .tip-card .action-timer { margin-bottom: 12px; padding-bottom: 8px; }
+  :where([data-design="notebook"]) .tip-workflow .timer-alerts { margin: 8px 0; }
+  :where([data-design="notebook"]) .tip-workflow .timer-alerts summary { min-height: 32px; padding-block: 4px; }
+  :where([data-design="notebook"]) .completion-status:empty { min-height: 0; }
+  :where([data-design="notebook"]) .tip-card > :is(.tip-explanation, .tip-sources, .completion-feedback) { grid-column: 2 / -1; font-size: 12px; }
+  :where([data-design="notebook"]) .tip-card > .tip-sources:empty,
+  :where([data-design="notebook"]) .favorites-storage-status:empty { display: none; }
+  :where([data-design="notebook"]) .footer-inner { width: min(1344px, calc(100% - 64px)); }
+}
+@media print, (forced-colors: active) {
+  :where([data-design="notebook"]) .tip-art { display: none; }
+}
