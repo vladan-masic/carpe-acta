@@ -44,7 +44,6 @@ import { BrowserImport } from "./components/BrowserImport";
 import { storageMessages } from "./i18n/storage";
 import heroPath from "./assets/illustrations/hero-path-720.webp";
 import heroPathLarge from "./assets/illustrations/hero-path-1200.webp";
-import heroPathDetail from "./assets/illustrations/hero-path-detail.webp";
 
 export function App() {
   const dailyQuest = useMemo(() => getDailyQuest(tips), []);
@@ -206,9 +205,8 @@ export function App() {
               document.getElementById("tip-generator")?.focus({ preventScroll: true });
             }}>{copy.navigation.start}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" /></svg></a>
             <picture className="hero-art" aria-hidden="true">
-              <source media="(max-width: 820px)" srcSet={heroPathDetail} width="336" height="216" />
               <img src={heroPath} srcSet={`${heroPath} 720w, ${heroPathLarge} 1200w`}
-                sizes="(min-width: 1100px) 1320px, (min-width: 821px) 190px, 112px"
+                sizes="(min-width: 1100px) 1320px, (min-width: 700px) 65vw, 100vw"
                 width="720" height="360" alt="" loading="eager" decoding="async" />
             </picture>
           </div>

@@ -1,4 +1,4 @@
-import { useId, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import type { Locale } from "../i18n/locales";
 import { progressMessages } from "../i18n/progress";
 import { activityLevel, type CalendarDay } from "../utils/progress";
@@ -8,6 +8,7 @@ export function ActivityCalendar({ days, locale, selected, onSelect, year = null
   const copy = progressMessages[locale];
   const id = useId();
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
+  const scroll = useRef<HTMLDivElement>(null);
   const [focused, setFocused] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const leading = days.length ? (new Date(days[0].date).getDay() + 6) % 7 : 0;
@@ -22,6 +23,17 @@ export function ActivityCalendar({ days, locale, selected, onSelect, year = null
   const weekday = new Intl.DateTimeFormat(locale, { weekday: "short" });
   const label = (day: CalendarDay) => `${fullDate.format(new Date(day.date))} — ${copy.dayCount(day.count)}`;
   const previewDay = days.find(day => day.date === preview);
+  useLayoutEffect(() => {
+    const container = scroll.current;
+    if (!container) return;
+    // Start the short journal at its recent weeks without moving the page.
+    // The annual view starts in January. Keyboard focus scrolls dates normally.
+    const position = () => { container.scrollLeft = year === null ? container.scrollWidth - container.clientWidth : 0; };
+    position();
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(position);
+    observer?.observe(container);
+    return () => observer?.disconnect();
+  }, [year, days.length]);
   function navigate(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     let next: number;
     switch (event.key) {
@@ -40,7 +52,8 @@ export function ActivityCalendar({ days, locale, selected, onSelect, year = null
   return <section className="activity-calendar" aria-labelledby={`${id}-title`} onMouseLeave={() => setPreview(null)}>
     <h3 id={`${id}-title`}>{title}</h3>
     <details className="calendar-help"><summary>{copy.calendarHelp}</summary><p className="progress-caption" id={`${id}-hint`}>{copy.calendarHint} {year !== null ? copy.yearHint : copy.scrollHint}</p></details>
-    <div className="calendar-scroll">
+    <p className="calendar-scroll-hint">{copy.scrollHint}</p>
+    <div className="calendar-scroll" ref={scroll} tabIndex={0} role="region" aria-label={copy.scrollRegion}>
       <div className={`calendar-layout${year === null ? "" : " calendar-layout-year"}`} style={{ "--calendar-weeks": weeks } as CSSProperties}>
         <div className="calendar-months" aria-hidden="true">
           {Array.from({ length: weeks }, (_, week) => {

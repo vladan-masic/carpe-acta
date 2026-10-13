@@ -3,6 +3,7 @@ type ProgressCopy = {
   achievements: string;
   journey: string;
   calendarHelp: string;
+  scrollRegion: string;
   scrollHint: string; yearHint: string; view: string; weeks: string; year: string; yearTitle: string; previousYear: string; nextYear: string;
   loadingYear: string; yearError: string; retryYear: string;
   weekSummary: (total: number, active: number) => string;
@@ -25,6 +26,7 @@ export const progressMessages: Record<Locale, ProgressCopy> = {
     achievements: "Achievements",
     journey: "Your journey",
     calendarHelp: "How to read your calendar",
+    scrollRegion: "Scrollable calendar dates",
     scrollHint: "Scroll horizontally to explore all dates on smaller screens.",
     yearHint: "Scroll horizontally to see the whole year on smaller screens.",
     view: "Calendar view", weeks: "12 weeks", year: "Year", yearTitle: "Your activity",
@@ -42,6 +44,7 @@ export const progressMessages: Record<Locale, ProgressCopy> = {
     achievements: "Dostignuća",
     journey: "Tvoj put",
     calendarHelp: "Kako da čitaš svoj kalendar",
+    scrollRegion: "Datumi kalendara koji se pomeraju vodoravno",
     scrollHint: "Na manjim ekranima pomeraj kalendar vodoravno da istražiš sve datume.",
     yearHint: "Na manjim ekranima pomeraj kalendar vodoravno da vidiš celu godinu.",
     view: "Prikaz kalendara", weeks: "12 nedelja", year: "Godina", yearTitle: "Tvoja aktivnost",
