@@ -34,6 +34,7 @@ export function AppToolbar({ label, children, navigation }: AppToolbarProps) {
       const next = event.relatedTarget as Element | null;
       if (next && !event.currentTarget.contains(next) && !next.closest("dialog")) setOpen(false);
     }}>
+      <a className="toolbar-brand" href="#page-top" onClick={() => document.getElementById("page-top")?.focus({ preventScroll: true })}><BrandEmblem variant="hero" /><span>Carpe Acta</span></a>
       <button className="toolbar-menu-toggle secondary-button" type="button" ref={trigger}
         aria-expanded={open} aria-controls={controlsId} onClick={() => setOpen(!open)}>
         <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
@@ -48,7 +49,6 @@ export function AppToolbar({ label, children, navigation }: AppToolbarProps) {
           if (!event.defaultPrevented) document.getElementById(link.hash.slice(1))?.focus({ preventScroll: true });
         }
       }}>
-        <a className="toolbar-brand" href="#page-top"><BrandEmblem variant="hero" /><span>Carpe Acta</span></a>
         {navigation}
         <div className="toolbar-account-controls">{children}</div>
       </div>

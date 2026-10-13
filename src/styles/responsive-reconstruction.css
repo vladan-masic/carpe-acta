@@ -1,0 +1,286 @@
+/* Stage C2: keep the desktop composition; give its illustrated journal a
+   deliberate small-screen reading order and comfortable controls. */
+:where([data-design="notebook"]) .app-toolbar { gap: 24px; }
+:where([data-design="notebook"]) .toolbar-controls { flex: 1; width: auto; min-width: 0; }
+:where([data-design="notebook"]) .calendar-scroll-hint { display: none; }
+:where([data-design="notebook"]) .calendar-scroll { overscroll-behavior-x: contain; scrollbar-width: thin; scroll-padding-inline-start: 48px; }
+:where([data-design="notebook"]) .calendar-scroll:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+:where([data-design="notebook"]) .calendar-weekdays { position: sticky; left: 0; z-index: 1; background: var(--surface-raised); box-shadow: -6px 0 var(--surface-raised), 6px 0 var(--surface-raised); }
+:where([data-design="notebook"]) :is(.saved-tip-details, .calendar-help) > summary { min-height: 44px; }
+:where([data-design="notebook"]) .saved-tip-shelf .tip-actions button { min-height: 44px; font-size: 12px; }
+:where([data-design="notebook"]) .saved-tip-shelf .saved-tip-details summary { min-height: 44px; display: list-item; padding-block: 10px; font-size: 12px; }
+:where([data-design="notebook"]) .exploration-peek { min-width: 0; }
+:where([data-design="notebook"]) .exploration-peek p { min-width: 0; }
+:where([data-design="notebook"]) .exploration-peek img { flex: 0 0 auto; }
+:where([data-design="notebook"]) .saved-tip-shelf .tip-actions { flex-wrap: wrap; }
+:where([data-design="notebook"]) .saved-tip-art { flex-shrink: 0; }
+
+/* Warm dark paper protects text while the paintings retain their pigment.
+   These surfaces also keep native controls and focus indicators legible. */
+:root[data-design="notebook"][data-theme="dark"] {
+  color-scheme: dark;
+  --surface-page: #1c201d;
+  --surface-paper: #282b25;
+  --surface-raised: #30332c;
+  --surface-overlay: #30332c;
+  --paper-edge: #484c40;
+  --rule: #6f7363;
+  --support-tint: #3d3929;
+  --action-tint: #423027;
+}
+:root[data-design="notebook"][data-theme="light"] { color-scheme: light; }
+:root[data-design="notebook"][data-theme="dark"] :is(.hero-art, .action-scene, .achievement-stamp, .weekly-growth-art--painted) { filter: none; opacity: 1; mix-blend-mode: normal; }
+:root[data-design="notebook"][data-theme="dark"] .achievement-stamp {
+  /* Fade only the paper perimeter; keep the painted centre at full colour. */
+  mask-image: radial-gradient(ellipse at center, #000 58%, transparent 72%);
+  padding: 0; border: 0; background: none;
+}
+:root[data-design="notebook"][data-theme="dark"] .weekly-growth-art--painted { mask-image: none; border-radius: 0; background: none; }
+:root[data-design="notebook"][data-theme="dark"] .weekly-growth-art--painted img {
+  mask-image: radial-gradient(ellipse at 50% 60%, #000 52%, transparent 72%);
+}
+/* Apply the completed text and surface together, avoiding green text briefly
+   crossing the terracotta background during its colour transition. */
+:where([data-design="notebook"]) .tip-card:is([data-completion="saved"], [data-completion="unsaved"]) .tip-completion-actions > .primary-button { transition: none; }
+:root[data-design="notebook"][data-theme="dark"] .tip-art--scene { border: 1px solid #8f7d58; }
+:root[data-design="notebook"][data-theme="dark"] .daily-quest { border-color: var(--rule); }
+:root[data-design="notebook"][data-theme="dark"] .site-footer { background: #192422; }
+
+@media (min-width: 1100px) {
+  :root[data-design="notebook"][data-theme="dark"] .hero-copy::before { inset-inline: -24px; }
+  /* Larger date labels still fit twelve weeks at the approved 1440px width;
+     narrower desktop panels scroll instead of making the dates microscopic. */
+  :where([data-design="notebook"]) .calendar-layout .calendar-months,
+  :where([data-design="notebook"]) .calendar-layout .calendar-squares { grid-template-columns: repeat(var(--calendar-weeks, 12), 28px); }
+  :where([data-design="notebook"]) .calendar-layout .calendar-square,
+  :where([data-design="notebook"]) .calendar-layout .calendar-future { width: 28px; height: 28px; font-size: 12px; }
+  :where([data-design="notebook"]) .calendar-weekdays,
+  :where([data-design="notebook"]) .calendar-months { font-size: 11px; }
+  :where([data-design="notebook"]) .calendar-preview { font-size: 12px; }
+  :where([data-design="notebook"]) .milestone-entry :is(p, h4),
+  :where([data-design="notebook"]) .milestone-notebook > p,
+  :where([data-design="notebook"]) .milestone-notebook summary,
+  :where([data-design="notebook"]) .personal-best-hint { font-size: 12px; }
+  :where([data-design="notebook"]) .category-picker .category-button { min-height: 44px; }
+  :where([data-design="notebook"]) .tip-card-header .favorite-button { min-height: 44px; }
+}
+
+@media (max-width: 1099px) {
+  :where([data-design="notebook"]) .app-shell { width: calc(100% - 32px); max-width: 980px; padding: 8px 0 20px; }
+  :where([data-design="notebook"]) .app-toolbar {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px;
+    position: relative; inset: auto; width: 100%; padding: 0; margin: 0 0 12px;
+    border: 0; box-shadow: none; background: none; pointer-events: auto;
+  }
+  :where([data-design="notebook"]) .toolbar-brand {
+    display: flex; align-items: center; gap: 6px; min-width: 0; grid-column: 1; grid-row: 1;
+    font-family: var(--font-display); font-size: 23px; font-weight: 600; letter-spacing: -.04em; color: var(--ink); text-decoration: none;
+  }
+  :where([data-design="notebook"]) .toolbar-brand .brand-emblem { width: 34px; height: 34px; padding: 2px; }
+  :where([data-design="notebook"]) .toolbar-menu-toggle { grid-column: 2; grid-row: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 12px; font-size: 13px; background: var(--surface-paper); }
+  :where([data-design="notebook"]) .toolbar-controls { display: none; grid-column: 1 / -1; width: 100%; }
+  :where([data-design="notebook"]) .toolbar-controls[data-open="true"] { display: grid; gap: 12px; padding: 12px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface-paper); max-height: calc(100dvh - 80px); overflow-y: auto; overscroll-behavior: contain; }
+  :where([data-design="notebook"]) .section-navigation { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  :where([data-design="notebook"]) .section-navigation a { padding: 8px; font-size: 14px; }
+  :where([data-design="notebook"]) .toolbar-account-controls { display: grid; gap: 12px; border-left: 0; border-top: 1px solid var(--rule); padding: 12px 0 0; }
+  :where([data-design="notebook"]) .toolbar-account-controls :is(.auth-trigger, .preference-select-trigger) { width: 100%; }
+  :where([data-design="notebook"]) .hero-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  :where([data-design="notebook"]) .hero-copy {
+    display: flex; align-items: flex-start; justify-content: flex-start; position: relative;
+    isolation: isolate; padding: 16px 16px 28px; border-radius: 14px; overflow: hidden; background: var(--surface-page);
+  }
+  /* The brand remains the section's accessible heading; the compact masthead
+     supplies its visible identity above the illustrated opening. */
+  :where([data-design="notebook"]) .hero-brand { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :where([data-design="notebook"]) .hero-message { align-self: auto; width: 100%; }
+  :where([data-design="notebook"]) .hero-message > .eyebrow { font-size: 10px; margin-bottom: 8px; letter-spacing: .06em; }
+  :where([data-design="notebook"]) .hero-promise { display: block; font-family: var(--font-display); font-weight: 600; font-size: clamp(30px, 7.8vw, 42px); line-height: 1.06; letter-spacing: -.045em; margin: 0 0 12px; }
+  :where([data-design="notebook"]) .hero-promise em { font-style: normal; color: var(--action-ink); }
+  :where([data-design="notebook"]) .hero-lede { font-size: 14px; line-height: 1.6; margin: 0; max-width: 48ch; }
+  :where([data-design="notebook"]) .hero-start { align-self: flex-start; margin-top: 16px; padding: 10px 22px; min-height: 44px; border-radius: 999px; background: var(--action); color: #fffaf0; text-decoration: none; font-size: 14px; }
+  :where([data-design="notebook"]) .hero-start:hover { background: var(--action-hover); }
+  :where([data-design="notebook"]) .hero-art {
+    position: absolute; inset: auto 0 0; grid-column: auto; grid-row: auto; z-index: -2;
+    height: 180px; padding: 0; margin: 0; background: none; box-shadow: none; transform: none; border-radius: 0;
+  }
+  :where([data-design="notebook"]) .hero-art img { width: 100%; height: 100%; object-fit: cover; object-position: 65% 65%; aspect-ratio: auto; }
+  :where([data-design="notebook"]) .hero-copy::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(to bottom, var(--surface-page) 0%, var(--surface-page) 46%, color-mix(in srgb, var(--surface-page) 96%, transparent) 65%, transparent 100%); }
+  :where([data-design="notebook"]) .daily-quest { min-width: 0; padding: 16px; border: 1px solid var(--paper-edge); border-radius: 8px 16px 16px 8px; box-shadow: var(--elevation-1); }
+  :where([data-design="notebook"]) .daily-quest h2 { font-size: 23px; line-height: 1.2; margin: 8px 0; }
+  :where([data-design="notebook"]) .daily-quest p:not(.panel-label) { font-size: 15px; line-height: 1.55; }
+  :where([data-design="notebook"]) .daily-quest-meta { gap: 8px; margin-top: 8px; }
+  :where([data-design="notebook"]) .daily-quest .favorite-button { min-height: 44px; font-size: 13px; padding: 8px 12px; border-radius: 999px; }
+  :where([data-design="notebook"]) .generator-section { padding: 20px 12px 12px; margin-top: 20px; background: var(--surface-raised); border: 1px solid var(--paper-edge); border-radius: 16px; }
+  :where([data-design="notebook"]) .generator-section::before { display: none; }
+  :where([data-design="notebook"]) .generator-section > .section-heading { margin-bottom: 12px; }
+  :where([data-design="notebook"]) .generator-section h2 { font-size: 27px; line-height: 1.15; }
+  :where([data-design="notebook"]) .action-entry-controls { margin-bottom: 12px; }
+  :where([data-design="notebook"]) .action-entry-controls > button { min-height: 44px; padding: 8px 14px; border-radius: 999px; background: var(--support-tint); font-size: 14px; }
+  :where([data-design="notebook"]) .category-picker > :is(.category-toggle, .category-filter) { display: none; }
+  :where([data-design="notebook"]) .category-mobile-select { display: grid; gap: 6px; font-size: 13px; font-weight: 600; }
+  :where([data-design="notebook"]) .category-mobile-select select { width: 100%; min-width: 0; min-height: 48px; font-size: 16px; padding: 8px; border: 1px solid var(--control-border); border-radius: 8px; color: var(--ink); background: var(--surface-paper); }
+  :where([data-design="notebook"]) .category-picker { margin-bottom: 16px; }
+  :where([data-design="notebook"]) .tip-card { grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 14px; border: 1px solid var(--paper-edge); border-radius: 12px; background: var(--surface-paper); box-shadow: none; }
+  :where([data-design="notebook"]) .tip-art--scene { display: block; grid-column: 1; grid-row: auto; height: 112px; margin: -14px -14px 0; overflow: hidden; border-radius: 12px 12px 0 0; }
+  :where([data-design="notebook"]) .tip-art--scene img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 58%; mask-image: none; }
+  :where([data-design="notebook"]) .tip-card > .tip-card-header { grid-column: 1; padding-bottom: 12px; gap: 8px 12px; }
+  :where([data-design="notebook"]) .tip-card-header .tip-category { font-size: 13px; }
+  :where([data-design="notebook"]) .tip-card-header .favorite-button { min-height: 44px; padding: 8px 12px; font-size: 13px; border-radius: 999px; }
+  :where([data-design="notebook"]) .tip-story h3 { font-size: 27px; line-height: 1.18; text-wrap: initial; }
+  :where([data-design="notebook"]) .tip-introduction { font-size: 15px; line-height: 1.6; margin-bottom: 14px; }
+  :where([data-design="notebook"]) .tip-card .quest-box { padding: 12px; }
+  :where([data-design="notebook"]) .tip-card .quest-box p:last-child { font-size: 15px; line-height: 1.65; }
+  :where([data-design="notebook"]) .tip-workflow { padding: 14px 0 0; border-left: 0; border-top: 1px dashed var(--rule); }
+  :where([data-design="notebook"]) .tip-workflow button { min-height: 48px; width: 100%; font-size: 14px; border-radius: 10px; }
+  :where([data-design="notebook"]) .tip-card > :is(.tip-explanation, .tip-sources, .completion-feedback) { grid-column: 1 / -1; }
+  :where([data-design="notebook"]) .completion-status:empty { min-height: 0; }
+
+  :where([data-design="notebook"]) :is(.journey-section, #favorites) { margin-top: 28px; }
+  :where([data-design="notebook"]) :is(.journey-section, #favorites) > .section-heading { margin-bottom: 16px; }
+  :where([data-design="notebook"]) :is(.journey-section, #favorites) > .section-heading h2 { font-size: 29px; }
+  :where([data-design="notebook"]) :is(.journey-section, #favorites) > .section-heading p { margin: 8px 0; font-size: 13px; }
+  :where([data-design="notebook"]) .storage-label { font-size: 12px; }
+  :where([data-design="notebook"]) .progress-overview { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  :where([data-design="notebook"]) .progress-overview > * { min-width: 0; margin: 0; }
+  :where([data-design="notebook"]) .progress-overview :is(.weekly-goal, .personal-milestones, .calendar-journal) { padding: 16px; border: 1px solid var(--paper-edge); border-radius: 14px; box-shadow: none; }
+  :where([data-design="notebook"]) .progress-overview h3 { font-size: 21px; line-height: 1.25; }
+  :where([data-design="notebook"]) .weekly-goal { background: color-mix(in srgb, var(--progress-ink) 5%, var(--surface-paper)); }
+  :where([data-design="notebook"]) .weekly-goal-entry { display: flex; flex-direction: column; gap: 0; }
+  :where([data-design="notebook"]) .weekly-goal h3 { min-height: 0; padding: 0; margin-bottom: 8px; }
+  :where([data-design="notebook"]) .weekly-growth-art--painted { position: static; width: 100%; height: 112px; margin-top: 8px; }
+  :where([data-design="notebook"]) .weekly-growth-art--painted img { height: 100%; object-fit: contain; }
+  :where([data-design="notebook"]) .weekly-goal-content { width: 100%; }
+  :where([data-design="notebook"]) .weekly-goal :is(p, summary, label) { font-size: 14px; }
+  :where([data-design="notebook"]) .weekly-goal-empty { color: var(--ink-muted); }
+  :where([data-design="notebook"]) .weekly-goal-days > span { font-size: 12px; padding: 6px 0; }
+  :where([data-design="notebook"]) .weekly-achievements { margin-top: 8px; }
+  :where([data-design="notebook"]) .calendar-journal { background: var(--surface-raised); }
+  :where([data-design="notebook"]) .calendar-journal .activity-calendar { margin: 0; padding: 0; border: 0; box-shadow: none; background: none; }
+  :where([data-design="notebook"]) .progress-week-summary { margin: 0 0 12px; font-size: 13px; }
+  :where([data-design="notebook"]) .calendar-controls { margin: 12px 0; }
+  :where([data-design="notebook"]) .calendar-controls label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; }
+  :where([data-design="notebook"]) .calendar-controls select { font-size: 16px; }
+  :where([data-design="notebook"]) .calendar-help { font-size: 13px; }
+  :where([data-design="notebook"]) .calendar-scroll-hint { display: block; margin: 4px 0 10px; color: var(--ink-muted); font-size: 12px; }
+  :where([data-design="notebook"]) .calendar-preview { min-height: 4em; font-size: 13px; }
+  :where([data-design="notebook"]) .calendar-legend { font-size: 12px; gap: 5px; }
+  :where([data-design="notebook"]) .calendar-year-controls { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; }
+  :where([data-design="notebook"]) .calendar-year-controls button { min-height: 44px; padding: 6px; font-size: 12px; }
+  :where([data-design="notebook"]) .milestone-entry { grid-template-columns: 76px minmax(0, 1fr); gap: 12px; }
+  :where([data-design="notebook"]) .milestone-entry .achievement-stamp { width: 76px; }
+  :where([data-design="notebook"]) .milestone-entry h4 { font-size: 13px; }
+  :where([data-design="notebook"]) .milestone-entry p { font-size: 14px; }
+  :where([data-design="notebook"]) .milestone-entry .milestone-badge { font-size: 19px; }
+  :where([data-design="notebook"]) .milestone-collection { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  :where([data-design="notebook"]) .personal-best { display: grid; grid-template-columns: minmax(0, 1fr) 96px; gap: 10px 12px; text-align: left; background: var(--surface-paper); }
+  :where([data-design="notebook"]) .personal-best h3 { grid-column: 1 / -1; margin: 0; }
+  :where([data-design="notebook"]) .personal-best-label { grid-column: 1; margin: 0; font-size: 14px; }
+  :where([data-design="notebook"]) .personal-best .achievement-stamp { grid-column: 2; grid-row: 2 / 4; width: 96px; margin: 0; align-self: center; }
+  :where([data-design="notebook"]) .personal-best [role="status"] { grid-column: 1; font-size: 14px; }
+  :where([data-design="notebook"]) .personal-best [role="status"] p { margin: 0; }
+  :where([data-design="notebook"]) .personal-best-hint { grid-column: 1 / -1; font-size: 13px; margin: 0; padding-top: 12px; }
+  :where([data-design="notebook"]) .personal-best-record { font-size: 26px; }
+  :where([data-design="notebook"]) .progress-view > .category-exploration { margin-top: 16px; padding: 12px 16px; border-inline: 0; border-radius: 0; box-shadow: none; background: none; }
+  :where([data-design="notebook"]) .category-exploration h3 button { padding: 8px 0; border: 0; min-height: 44px; font-size: 22px; }
+  :where([data-design="notebook"]) .exploration-peek { gap: 12px; }
+  :where([data-design="notebook"]) .exploration-peek img { width: 68px; }
+  :where([data-design="notebook"]) .exploration-peek p { font-size: 13px; }
+  :where([data-design="notebook"]) .exploration-overview { align-items: center; gap: 12px; }
+  :where([data-design="notebook"]) .exploration-overview [role="status"] { font-size: 14px; }
+  :where([data-design="notebook"]) .journal-details { display: grid; gap: 0; }
+  :where([data-design="notebook"]) .journal-details > details { margin: 0; border-top: 0; }
+  :where([data-design="notebook"]) .journal-details > details > summary { min-height: 48px; padding: 14px 8px; font-size: 19px; }
+  :where([data-design="notebook"]) .history-journal { margin: 0 0 16px; box-shadow: none; padding: 12px; }
+  :where([data-design="notebook"]) .history-journal h3 { font-size: 20px; }
+  :where([data-design="notebook"]) .history-empty { flex-direction: column; align-items: flex-start; gap: 8px; }
+  :where([data-design="notebook"]) .history-empty .notebook-illustration { width: 80px; }
+  :where([data-design="notebook"]) .progress-recent li { flex-direction: column; gap: 6px; }
+  :where([data-design="notebook"]) .progress-recent time { overflow-wrap: anywhere; }
+  :where([data-design="notebook"]) .what-helps { margin: 12px 0 20px; }
+  :where([data-design="notebook"]) .what-helps-list > li { padding: 16px 16px 16px 32px; }
+  :where([data-design="notebook"]) .what-helps-list button { max-width: 100%; }
+
+  :where([data-design="notebook"]) #favorites .saved-tip-shelf { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  :where([data-design="notebook"]) .saved-tip-shelf .collection-card { display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: 10px 12px; padding: 14px; border: 1px solid var(--paper-edge); border-radius: 12px; }
+  :where([data-design="notebook"]) .saved-tip-shelf .collection-card::before { display: none; }
+  :where([data-design="notebook"]) .saved-tip-shelf .saved-tip-art { display: grid; place-items: center; width: 80px; height: 112px; grid-column: 1; grid-row: 1 / 3; border-radius: 8px; background: var(--support-tint); }
+  :where([data-design="notebook"]) .saved-tip-shelf .library-tip-meta { grid-column: 2; gap: 4px; }
+  :where([data-design="notebook"]) .saved-tip-shelf .collection-category { font-size: 12px; padding: 0; border: 0; background: none; }
+  :where([data-design="notebook"]) .saved-tip-shelf h3 { grid-column: 2; font-size: 20px; margin: 0; }
+  :where([data-design="notebook"]) .saved-tip-shelf .saved-tip-details { grid-column: 1 / -1; font-size: 14px; }
+  :where([data-design="notebook"]) .saved-tip-shelf .tip-actions { grid-column: 1 / -1; gap: 8px; }
+  :where([data-design="notebook"]) .saved-tip-shelf .tip-actions button { font-size: 14px; min-height: 44px; padding: 8px 12px; }
+  :where([data-design="notebook"]) .saved-empty { flex-direction: column; align-items: stretch; gap: 0; padding: 0; overflow: hidden; border: 1px solid var(--paper-edge); }
+  :where([data-design="notebook"]) .saved-empty > img { width: 100%; max-width: none; height: 132px; object-fit: cover; border-radius: 0; }
+  :where([data-design="notebook"]) .saved-empty > div { padding: 16px; }
+  :where([data-design="notebook"]) .saved-empty p { font-size: 14px; margin: 0 0 12px; }
+  :where([data-design="notebook"]) .saved-empty .saved-empty-title { font-size: 23px; }
+  :where([data-design="notebook"]) #favorites .favorites-filters { padding: 12px; grid-template-columns: minmax(0, 1fr); }
+  :where([data-design="notebook"]) .tip-library { border-bottom: 1px solid var(--rule); margin: 20px 0; }
+  :where([data-design="notebook"]) .tip-library h2 > button { font-size: 22px; width: 100%; border: 0; }
+  :where([data-design="notebook"]) :is(.library-filters input, .library-filters select) { font-size: 16px; }
+  :where([data-design="notebook"]) .footer-inner { width: calc(100% - 32px); padding: 24px 0 64px; }
+  :where([data-design="notebook"]) .footer-brand { font-size: 28px; }
+  :where([data-design="notebook"]) .footer-meta { margin-top: 12px; padding-top: 12px; }
+}
+
+@media (min-width: 700px) and (max-width: 1099px) {
+  :where([data-design="notebook"]) .hero-section { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 16px; }
+  :where([data-design="notebook"]) .hero-copy { justify-content: center; }
+  :where([data-design="notebook"]) .daily-quest { align-self: stretch; justify-content: center; }
+  :where([data-design="notebook"]) .generator-section { padding: 24px; }
+  :where([data-design="notebook"]) .tip-card { grid-template-columns: minmax(0, 1fr) 220px; padding: 20px; gap: 16px 24px; }
+  :where([data-design="notebook"]) .tip-art--scene { grid-column: 1; grid-row: 1; height: 140px; margin: -20px -4px 0 -20px; border-radius: 12px 0 12px 0; }
+  :where([data-design="notebook"]) .tip-card > .tip-card-header { grid-column: 1; grid-row: 2; }
+  :where([data-design="notebook"]) .tip-story { grid-column: 1; grid-row: 3; }
+  :where([data-design="notebook"]) .tip-workflow { grid-column: 2; grid-row: 1 / 4; border-top: 0; border-left: 1px dashed var(--rule); padding: 0 0 0 16px; }
+  :where([data-design="notebook"]) .progress-overview { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  :where([data-design="notebook"]) .progress-overview .weekly-goal { align-self: stretch; }
+  :where([data-design="notebook"]) #favorites .saved-tip-shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  :where([data-design="notebook"]) .saved-empty { flex-direction: row; gap: 0; align-items: stretch; }
+  :where([data-design="notebook"]) .saved-empty > img { width: 32%; height: auto; }
+  :where([data-design="notebook"]) .toolbar-account-controls { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 359px) {
+  :where([data-design="notebook"]) .app-shell { width: calc(100% - 24px); }
+  :where([data-design="notebook"]) .toolbar-brand { font-size: 21px; }
+  :where([data-design="notebook"]) .hero-copy { padding-inline: 12px; }
+  :where([data-design="notebook"]) .generator-section { padding: 16px 8px 8px; }
+  :where([data-design="notebook"]) .tip-card { padding: 12px; }
+  :where([data-design="notebook"]) .tip-art--scene { margin: -12px -12px 0; height: 96px; }
+  :where([data-design="notebook"]) .tip-card-header .favorite-button { margin-left: 0; }
+  :where([data-design="notebook"]) .milestone-entry { grid-template-columns: 64px minmax(0, 1fr); gap: 8px; }
+  :where([data-design="notebook"]) .milestone-entry .achievement-stamp { width: 64px; }
+  :where([data-design="notebook"]) .saved-tip-shelf .collection-card { grid-template-columns: 68px minmax(0, 1fr); padding: 12px; gap: 8px; }
+  :where([data-design="notebook"]) .saved-tip-shelf .saved-tip-art { width: 68px; }
+}
+/* C2.1: shorten the route to the action without changing the reading order,
+   illustration slots, type sizes or comfortable control heights. */
+@media (max-width: 699px) {
+  :where([data-design="notebook"]) .hero-copy { padding-block: 8px 20px; gap: 0; }
+  :where([data-design="notebook"]) .hero-promise { margin-bottom: 8px; }
+  :where([data-design="notebook"]) .hero-start { margin-top: 12px; }
+  :where([data-design="notebook"]) .daily-quest { padding-block: 12px; }
+  :where([data-design="notebook"]) .daily-quest > p { margin-block: 0 8px; }
+  :where([data-design="notebook"]) .generator-section { margin-top: 12px; padding-top: 16px; }
+  :where([data-design="notebook"]) .generator-section > .section-heading,
+  :where([data-design="notebook"]) .action-entry-controls { margin-bottom: 8px; }
+  :where([data-design="notebook"]) .category-picker { margin-bottom: 12px; }
+  :where([data-design="notebook"]) .tip-card { gap: 10px; }
+  :where([data-design="notebook"]) .tip-card > .tip-card-header { padding-bottom: 8px; row-gap: 4px; }
+  :where([data-design="notebook"]) .tip-introduction { margin-bottom: 10px; }
+  :where([data-design="notebook"]) .tip-workflow { padding-top: 10px; gap: 8px; }
+  :where([data-design="notebook"]) .tip-card .action-timer { margin-bottom: 8px; padding-bottom: 4px; }
+  :where([data-design="notebook"]) .timer-heading { margin-bottom: 8px; }
+  :root[data-design="notebook"][data-theme="dark"] .weekly-growth-art--painted img { width: auto; max-width: 100%; margin-inline: auto; }
+}
+@media (pointer: coarse) and (min-width: 1100px) {
+  :where([data-design="notebook"]) .calendar-layout .calendar-months,
+  :where([data-design="notebook"]) .calendar-layout .calendar-squares { grid-template-columns: repeat(var(--calendar-weeks, 12), 44px); }
+  :where([data-design="notebook"]) .calendar-layout .calendar-square,
+  :where([data-design="notebook"]) .calendar-layout .calendar-future { width: 44px; height: 44px; font-size: 13px; }
+  :where([data-design="notebook"]) .calendar-scroll-hint { display: block; font-size: 13px; }
+}
+@media print, (forced-colors: active) {
+  :where([data-design="notebook"]) :is(.hero-art, .tip-art, .hero-copy::before, .saved-tip-art, .saved-empty > img) { display: none; }
+}
