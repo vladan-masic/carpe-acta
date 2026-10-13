@@ -29,14 +29,14 @@ export function artworkFamily(category: CategoryId) {
   return scene === "beginning" || scene === "focus" ? "desk" : scene;
 }
 
-export function ActionArtwork({ category, scene, thumbnail = false }: {
-  category?: CategoryId; scene?: Scene; thumbnail?: boolean;
+export function ActionArtwork({ category, scene, thumbnail = false, sizes }: {
+  category?: CategoryId; scene?: Scene; thumbnail?: boolean; sizes?: string;
 }) {
   const theme = scene ?? (category ? themes[category] : "beginning");
   // The hero already supplies the large path scene. Reserve the second path
   // for collection thumbnails, avoiding two neighboring panoramic landscapes.
   const [small, large] = scenes[!thumbnail && theme === "step" ? "beginning" : theme];
   return <img className="action-scene" src={small} srcSet={`${small} 320w, ${large} 640w`}
-    sizes={thumbnail ? "112px" : "(min-width: 1100px) 260px, 160px"}
+    sizes={sizes ?? (thumbnail ? "112px" : "(min-width: 1100px) 260px, (min-width: 700px) 32vw, calc(100vw - 32px)")}
     width="640" height="480" alt="" loading="lazy" decoding="async" />;
 }
