@@ -16,7 +16,7 @@ it.each(["en", "sr-Latn"] as const)("moves from the %s introduction to the gener
   render(<App />);
   const current = document.getElementById("active-tip-title")!.textContent;
   const hero = screen.getByRole("region", { name: "Carpe Acta" });
-  const start = within(hero).getByRole("link", { name: messages[locale].navigation.start });
+  const start = within(hero).getByRole("link", { name: messages[locale].hero.action });
   expect(start.getAttribute("href")).toBe("#tip-generator");
   fireEvent.click(start);
   expect(document.activeElement).toBe(document.getElementById("tip-generator"));

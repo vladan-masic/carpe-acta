@@ -29,7 +29,7 @@ it("does not write storage or call the network for preview interactions", () => 
   render(<DesignPreview />);
   fireEvent.change(screen.getByRole("combobox", { name: "Preview theme" }), { target: { value: "dark" } });
   fireEvent.click(screen.getByRole("button", { name: "Favorite: Two-Minute Start" }));
-  fireEvent.click(screen.getByRole("button", { name: "I did it ✓" }));
+  fireEvent.click(screen.getByRole("button", { name: "Mark as complete" }));
   expect(screen.getByText("Preview completion only — not saved.")).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Undo sample completion" }));
   expect(screen.getByRole("button", { name: "Start timer", exact: true })).toBeTruthy();
@@ -56,9 +56,9 @@ it("keeps the fixed active-day example distinct from local completion and timer 
   render(<DesignPreview />);
   fireEvent.click(screen.getByRole("button", { name: "Start timer", exact: true }));
   act(() => vi.advanceTimersByTime(120000));
-  expect(screen.getByRole("button", { name: "I did it ✓" }).hasAttribute("disabled")).toBe(false);
+  expect(screen.getByRole("button", { name: "Mark as complete" }).hasAttribute("disabled")).toBe(false);
   expect(screen.getByRole("button", { name: "Keep going" })).toBeTruthy();
-  fireEvent.click(screen.getByRole("button", { name: "I did it ✓" }));
+  fireEvent.click(screen.getByRole("button", { name: "Mark as complete" }));
   expect(screen.getByRole("progressbar").getAttribute("value")).toBe("3");
   expect(screen.getByRole("progressbar").getAttribute("max")).toBe("4");
 });

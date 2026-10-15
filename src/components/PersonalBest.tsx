@@ -1,3 +1,4 @@
+import { SectionIcon } from "./SectionIcon";
 import { AchievementStamp } from "./AchievementStamp";
 import type { Locale } from "../i18n/locales";
 import { personalBestMessages } from "../i18n/personalBests";
@@ -11,7 +12,7 @@ export function PersonalBest({ best, error, retry, locale }: Props) {
     day: "numeric", month: locale === "sr-Latn" ? "numeric" : "long", year: "numeric",
   }) : null;
   return <section className="personal-milestones personal-best" aria-labelledby="personal-best-title">
-    <h3 id="personal-best-title">{copy.title}</h3>
+    <h3 id="personal-best-title"><SectionIcon section="best" />{copy.title}</h3>
     <p className="personal-best-label">{copy.label}</p>
     <AchievementStamp kind="best" earned={!!best?.days} />
     <div role="status">

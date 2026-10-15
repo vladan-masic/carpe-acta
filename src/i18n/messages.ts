@@ -9,6 +9,7 @@ type Messages = {
   menuLabel: string;
   navigation: { label: string; start: string; browse: string; progress: string };
   hero: {
+    action: string;
     eyebrow: string;
     promise: string;
     promiseAccent: string;
@@ -64,7 +65,7 @@ const en = {
     unsaved: "Your browser couldn’t save your favorites. Changes will only last for this visit.",
   },
   completion: {
-    button: "I did it ✓",
+    button: "Mark as complete",
     completed: "Completed ✓",
     confirmation: "One small action done. That’s progress.",
     unsaved: "Your browser couldn’t save this completion. It will only be remembered for this visit.",
@@ -78,6 +79,7 @@ const en = {
   menuLabel: "Menu",
   navigation: { label: "Main navigation", start: "Start", browse: "Browse tips", progress: "Progress" },
   hero: {
+    action: "Generate a new tip",
     eyebrow: "Anti-procrastination quests",
     promise: "Small steps.",
     promiseAccent: "Brighter days.",
@@ -139,7 +141,7 @@ const srLatn = {
     unsaved: "Pregledač nije mogao da sačuva omiljene savete. Promene će važiti samo tokom ove posete.",
   },
   completion: {
-    button: "Urađeno ✓",
+    button: "Označi kao završeno",
     completed: "Završeno ✓",
     confirmation: "Jedna mala akcija je završena. To je napredak.",
     unsaved: "Pregledač nije mogao da sačuva ovu završenu akciju. Biće zapamćena samo tokom ove posete.",
@@ -153,6 +155,7 @@ const srLatn = {
   menuLabel: "Meni",
   navigation: { label: "Glavna navigacija", start: "Počni", browse: "Pregledaj savete", progress: "Napredak" },
   hero: {
+    action: "Generiši novi savet",
     eyebrow: "Misije protiv odlaganja",
     promise: "Mali koraci.",
     promiseAccent: "Vedriji dani.",

@@ -114,10 +114,10 @@ it("integrates with the action card, completion reset, guided mode, and shared g
   const tryButton = library.getByRole("button", { name: `Try this: ${localizeTip(tips[0], "en").title}` });
   fireEvent.click(tryButton);
   await waitFor(() => expect(document.activeElement).toBe(active()));
-  fireEvent.click(screen.getByRole("button", { name: "I did it ✓" }));
+  fireEvent.click(screen.getByRole("button", { name: "Mark as complete" }));
   expect((screen.getByRole("button", { name: "Completed ✓" }) as HTMLButtonElement).disabled).toBe(true);
   fireEvent.click(tryButton);
-  expect((screen.getByRole("button", { name: "I did it ✓" }) as HTMLButtonElement).disabled).toBe(false);
+  expect((screen.getByRole("button", { name: "Mark as complete" }) as HTMLButtonElement).disabled).toBe(false);
   fireEvent.click(screen.getByRole("button", { name: "Help me start" }));
   expect(document.getElementById("active-tip-title")).toBeNull();
   fireEvent.click(tryButton);

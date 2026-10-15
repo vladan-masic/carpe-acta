@@ -24,7 +24,7 @@ export function FavoriteButton({ selected, disabled, title, labels, onToggle }: 
     >
       <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
         <path
-          d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9Z"
+          d="M6 3h12v18l-6-4-6 4V3Z"
           fill={selected ? "currentColor" : "none"}
           stroke="currentColor"
           strokeWidth="1.7"

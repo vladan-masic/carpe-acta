@@ -1,3 +1,4 @@
+import { ActionIcon } from "./ActionIcon";
 import { CategoryIcon } from "./CategoryIcon";
 import type { Locale } from "../i18n/locales";
 import { TipSources } from "./TipSources";
@@ -72,14 +73,16 @@ export function TipCard({
         {timer}
         <div className="tip-actions tip-completion-actions">
           <button
-            className="primary-button"
+            className="secondary-button completion-action"
             onClick={onComplete}
             disabled={completionBusy || completionStatus !== null}
             type="button"
           >
+            <ActionIcon action="complete" />
             {completionStatus === "saving" ? savingLabel : completionStatus ? completionCopy.completed : completionCopy.button}
           </button>
           <button className="secondary-button" onClick={onGenerateTip} type="button">
+            <ActionIcon action="generate" />
             {completionStatus ? completionCopy.next : buttonLabel}
           </button>
           {extraActions}

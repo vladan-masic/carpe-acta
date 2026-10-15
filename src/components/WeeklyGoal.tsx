@@ -1,3 +1,4 @@
+import { SectionIcon } from "./SectionIcon";
 import { useWeeklyAchievements } from "../hooks/useWeeklyAchievements";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Locale } from "../i18n/locales";
@@ -18,7 +19,7 @@ export function WeeklyGoal({ client, owner, progress, locale, busy }: Props) {
   const weekday = new Intl.DateTimeFormat(locale, { weekday: "short" });
   return <section className="weekly-goal" aria-labelledby="weekly-goal-title" aria-busy={goal.loading || goal.saving || busy}>
     <div className="weekly-goal-entry"><div className="weekly-goal-content">
-    <h3 id="weekly-goal-title">{copy.title}</h3>
+    <h3 id="weekly-goal-title"><SectionIcon section="goal" />{copy.title}</h3>
     <details className="goal-settings"><summary>{copy.settings}</summary>
     <p>{copy.hint}</p>
     <label>{copy.target} <select value={goal.target} disabled={goal.loading || goal.saving} onChange={event => void goal.save(Number(event.target.value))}>

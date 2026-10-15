@@ -33,7 +33,7 @@ it.each(["en", "sr-Latn"] as const)("undoes a completion and feedback and allows
 it("expires the offer without changing history and preserves it through a language change", () => {
   localStorage.setItem("carpe-acta-locale", "en");
   const { unmount } = render(<App />);
-  fireEvent.click(screen.getByRole("button", { name: "I did it ✓" }));
+  fireEvent.click(screen.getByRole("button", { name: "Mark as complete" }));
   tick(undoNoticeDuration - 1);
   expect(screen.getByRole("button", { name: "Undo", exact: true })).toBeTruthy();
   tick(1);
@@ -87,7 +87,7 @@ it("keeps keyboard focus on the success control and restores the action heading 
 it("keeps undo for the original tip after moving to a new action", () => {
   localStorage.setItem("carpe-acta-locale", "en");
   render(<App />);
-  fireEvent.click(screen.getByRole("button", { name: "I did it ✓" }));
+  fireEvent.click(screen.getByRole("button", { name: "Mark as complete" }));
   const original = localStorage.getItem(completionStorageKey);
   fireEvent.click(screen.getByRole("button", { name: messages.en.completion.next }));
   const nextTitle = document.getElementById("active-tip-title")!.textContent;
@@ -103,7 +103,7 @@ it("keeps one weekly goal and celebrates then revokes first-action milestones th
   expect(screen.getAllByRole("heading", { name: "Weekly activity goal" })).toHaveLength(1);
   const milestones = within(screen.getByRole("region", { name: "Personal milestones" }));
   expect(milestones.getByRole("status").textContent).toBe("");
-  fireEvent.click(screen.getByRole("button", { name: "I did it ✓" }));
+  fireEvent.click(screen.getByRole("button", { name: "Mark as complete" }));
   expect(milestones.getByRole("status").textContent).toContain("First action");
   expect(milestones.getByRole("status").textContent).toContain("First active day");
   fireEvent.click(screen.getByRole("button", { name: "Undo", exact: true }));

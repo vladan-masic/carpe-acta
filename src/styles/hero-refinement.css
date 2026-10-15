@@ -1,0 +1,55 @@
+/* Viewport-sized artwork without including the scrollbar in its width. */
+:root[data-design="notebook"] body { container-type: inline-size; }
+@media (min-width: 1100px) {
+  :where([data-design="notebook"]) .hero-art,
+  :where([data-design="notebook"]) .hero-copy::before {
+    width: 100cqw; left: calc(50% - 50cqw); right: auto;
+  }
+}
+@media (max-width: 1099px) {
+  :where([data-design="notebook"]) .hero-copy { overflow: visible; background: transparent; }
+  :where([data-design="notebook"]) .hero-art,
+  :where([data-design="notebook"]) .hero-copy::before {
+    width: 100cqw; left: calc(-1 * max(16px, (100cqw - 980px) / 2)); right: auto;
+  }
+}
+@media (max-width: 699px) {
+  :where([data-design="notebook"]) .hero-art,
+  :where([data-design="notebook"]) .hero-copy::before { left: calc(50% - 50cqw); }
+}
+.section-icon { display: inline-block; width: 1em; height: 1em; margin-right: .4em; vertical-align: -.1em; flex-shrink: 0; color: var(--action-ink); }
+.section-icon--journey, .section-icon--milestones { color: var(--progress-ink); }
+:where([data-design="notebook"]) .tip-workflow .action-timer > .tip-actions .timer-primary-action {
+  background: var(--action); color: white; border-color: transparent;
+}
+:where([data-design="notebook"]) .tip-workflow .action-timer > .tip-actions .timer-primary-action:not(:disabled):hover {
+  background: var(--action-hover); color: white;
+}
+:where([data-design="notebook"]) .tip-workflow .action-timer > .tip-actions .timer-primary-action:not(:disabled):active { background: var(--action-pressed); }
+:where([data-design="notebook"]) .tip-completion-actions > .completion-action { background: var(--support-tint); color: var(--ink); border-color: transparent; }
+:where([data-design="notebook"]) .tip-completion-actions > .completion-action:not(:disabled):hover { background: var(--action-tint); color: var(--action-ink); border-color: var(--action-ink); }
+/* A translucent veil preserves contrast without erasing the painted left edge. */
+@media (min-width: 1100px) {
+  :where([data-design="notebook"]) .hero-copy::before {
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--surface-page) 35%, transparent) 0%,
+      color-mix(in srgb, var(--surface-page) 88%, transparent) 8%,
+      color-mix(in srgb, var(--surface-page) 88%, transparent) 26%,
+      transparent 52%);
+  }
+}
+.action-icon { display: inline-block; vertical-align: -.2em; margin-right: .45em; flex-shrink: 0; }
+/* The twelve-week overview fits its card; annual history retains its scroll. */
+:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year) {
+  width: 100%; max-width: 350px; min-width: 0; grid-template-columns: 24px minmax(0, 1fr); gap: 3px;
+}
+:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year) :is(.calendar-months, .calendar-squares) {
+  grid-template-columns: repeat(var(--calendar-weeks, 12), minmax(0, 1fr)); gap: 2px;
+}
+:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year) :is(.calendar-square, .calendar-future) {
+  width: 100%; height: auto; min-height: 0; aspect-ratio: 1; font-size: 10px;
+}
+:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year) .calendar-weekdays { gap: 2px; font-size: 9px; }
+:where([data-design="notebook"]) .calendar-layout .calendar-square { border-radius: 3px 5px 3px 4px; }
+:where([data-design="notebook"]) .calendar-square.activity-level-0 { background: var(--surface-paper); border-color: var(--paper-edge); }
+:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year) .calendar-months { font-size: 10px; }

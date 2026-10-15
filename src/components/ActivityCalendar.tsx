@@ -1,3 +1,4 @@
+import { SectionIcon } from "./SectionIcon";
 import { useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import type { Locale } from "../i18n/locales";
 import { progressMessages } from "../i18n/progress";
@@ -50,7 +51,7 @@ export function ActivityCalendar({ days, locale, selected, onSelect, year = null
     buttons.current[Math.max(0, Math.min(last, next))]?.focus();
   }
   return <section className="activity-calendar" aria-labelledby={`${id}-title`} onMouseLeave={() => setPreview(null)}>
-    <h3 id={`${id}-title`}>{title}</h3>
+    <h3 id={`${id}-title`}><SectionIcon section="calendar" />{title}</h3>
     <details className="calendar-help"><summary>{copy.calendarHelp}</summary><p className="progress-caption" id={`${id}-hint`}>{copy.calendarHint} {year !== null ? copy.yearHint : copy.scrollHint}</p></details>
     <p className="calendar-scroll-hint">{copy.scrollHint}</p>
     <div className="calendar-scroll" ref={scroll} tabIndex={0} role="region" aria-label={copy.scrollRegion}>

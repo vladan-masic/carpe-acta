@@ -1,3 +1,4 @@
+import { SectionIcon } from "./SectionIcon";
 import { CategoryIcon } from "./CategoryIcon";
 import { NotebookEmptyState } from "./NotebookEmptyState";
 import { TipSources } from "./TipSources";
@@ -41,7 +42,7 @@ export function FavoriteTips({ title, locale, disabled, loading, controls, descr
   return (
     <section className="favorites-section" id="favorites" aria-labelledby="favorites-title">
       <div className="section-heading">
-        <h2 id="favorites-title" ref={heading} tabIndex={-1}>{title} ({tips.length})</h2>
+        <h2 id="favorites-title" ref={heading} tabIndex={-1}><SectionIcon section="favorites" />{title} ({tips.length})</h2>
         <p>{description}</p>
       </div>
       {controls}

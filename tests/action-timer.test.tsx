@@ -99,11 +99,11 @@ it("never completes an action on expiry, resets a reopened tip, and stops on man
   tick(60 * 60 * 1000);
   expect(screen.getByRole("timer").textContent).toBe("0:00");
   expect(screen.queryByRole("button", { name: "Completed ✓" })).toBeNull();
-  expect((screen.getByRole("button", { name: "I did it ✓" }) as HTMLButtonElement).disabled).toBe(false);
+  expect((screen.getByRole("button", { name: "Mark as complete" }) as HTMLButtonElement).disabled).toBe(false);
   fireEvent.click(tryButton);
   expect(screen.queryByRole("timer")).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: /Start timer/ }));
-  fireEvent.click(screen.getByRole("button", { name: "I did it ✓" }));
+  fireEvent.click(screen.getByRole("button", { name: "Mark as complete" }));
   expect(screen.queryByRole("region", { name: "Action timer" })).toBeNull();
   expect(screen.getByRole("button", { name: "Completed ✓" })).toBeTruthy();
   tick(100);

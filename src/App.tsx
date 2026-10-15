@@ -1,3 +1,4 @@
+import { SectionIcon } from "./components/SectionIcon";
 import { HelpfulActionPicker } from "./components/HelpfulActionPicker";
 import { PersonalBest } from "./components/PersonalBest";
 import { CategoryExploration } from "./components/CategoryExploration";
@@ -213,10 +214,10 @@ export function App() {
             </div>
             <a className="hero-start" href="#tip-generator" onClick={() => {
               document.getElementById("tip-generator")?.focus({ preventScroll: true });
-            }}>{copy.navigation.start}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" /></svg></a>
+            }}>{copy.hero.action}<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" /></svg></a>
             <picture className="hero-art" aria-hidden="true">
               <img src={heroPath} srcSet={`${heroPath} 720w, ${heroPathLarge} 1200w`}
-                sizes="(min-width: 1100px) 1320px, (min-width: 700px) 65vw, 100vw"
+                sizes="100vw"
                 width="720" height="360" alt="" loading="eager" decoding="async" />
             </picture>
           </div>
@@ -231,7 +232,7 @@ export function App() {
         <section className="generator-section" aria-labelledby="tip-generator">
           <div className="section-heading">
             <p className="eyebrow">{selection.helping ? startCopy.title : copy.generator.eyebrow}</p>
-            <h2 id="tip-generator" tabIndex={-1}>{selection.helping ? startCopy.title : copy.generator.title}</h2>
+            <h2 id="tip-generator" tabIndex={-1}><SectionIcon section="generate" />{selection.helping ? startCopy.title : copy.generator.title}</h2>
           </div>
 
           <div className="action-entry-controls">
@@ -299,7 +300,7 @@ export function App() {
 
         <section className="favorites-section journey-section" aria-labelledby="completed-actions-title">
           <div className="section-heading">
-            <h2 id="completed-actions-title" tabIndex={-1}>{progressMessages[locale].journey}</h2>
+            <h2 id="completed-actions-title" tabIndex={-1}><SectionIcon section="journey" />{progressMessages[locale].journey}</h2>
             <p className="journey-count">{completionCopy.title}{completion.count !== null ? ` (${completion.count})` : ""}</p>
             <p className="storage-description"><strong className="storage-label">{storageLabel}</strong>
               {!auth.loading && <span>{completion.signedIn ? storageCopy.accountHint : storageCopy.guestHint}</span>}
