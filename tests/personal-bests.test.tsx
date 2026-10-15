@@ -54,7 +54,7 @@ it("updates the app record on completion and restores it after Undo", () => {
   render(<App />);
   const best = screen.getByRole("region", { name: "Personal best", exact: true });
   expect(best.textContent).toContain("2 active days");
-  fireEvent.click(screen.getByRole("button", { name: "I did it ✓" }));
+  fireEvent.click(screen.getByRole("button", { name: "Mark as complete" }));
   expect(best.textContent).toContain("3 active days");
   fireEvent.click(screen.getByRole("button", { name: "Undo", exact: true }));
   expect(best.textContent).toContain("2 active days");

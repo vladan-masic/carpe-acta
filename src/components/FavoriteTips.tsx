@@ -1,7 +1,8 @@
+import { SectionIcon } from "./SectionIcon";
 import { CategoryIcon } from "./CategoryIcon";
 import { NotebookEmptyState } from "./NotebookEmptyState";
 import { TipSources } from "./TipSources";
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { CategoryId, LocalizedTip, TipId } from "../types/tip";
 import { FavoriteButton, type FavoriteLabels } from "./FavoriteButton";
 import { tips as tipCatalog } from "../data/tips";
@@ -32,17 +33,43 @@ type FavoriteTipsProps = {
 };
 
 export function FavoriteTips({ title, locale, disabled, loading, controls, description, emptyMessage, openLabel, actionLabel, labels, tips, onToggle, onOpen, onBrowse }: FavoriteTipsProps) {
+  const [pageSize, setPageSize] = useState(4);
+  const [viewAll, setViewAll] = useState(false);
+  const [page, setPage] = useState({ key: "", index: 0 });
+  useEffect(() => {
+    if (!window.matchMedia) return;
+    const desktop = window.matchMedia("(min-width: 1100px)");
+    const tablet = window.matchMedia("(min-width: 700px)");
+    const update = () => setPageSize(desktop.matches ? 4 : tablet.matches ? 2 : 1);
+    update();
+    desktop.addEventListener?.("change", update); tablet.addEventListener?.("change", update);
+    return () => { desktop.removeEventListener?.("change", update); tablet.removeEventListener?.("change", update); };
+  }, []);
   const heading = useRef<HTMLHeadingElement>(null);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"all" | CategoryId>("all");
   const copy = favoritesSearchMessages[locale];
   const filteredTips = filterLibraryTips(tips, query, category, null);
+  const pageKey = JSON.stringify([query, category, locale, pageSize]);
+  if (page.key !== pageKey) setPage({ key: pageKey, index: 0 });
+  const lastPage = Math.max(0, Math.ceil(filteredTips.length / pageSize) - 1);
+  const pageIndex = page.key === pageKey ? Math.min(page.index, lastPage) : 0;
+  const start = viewAll ? 0 : pageIndex * pageSize;
+  const visibleTips = viewAll ? filteredTips : filteredTips.slice(start, start + pageSize);
   const hasFilters = query !== "" || category !== "all";
   return (
     <section className="favorites-section" id="favorites" aria-labelledby="favorites-title">
       <div className="section-heading">
-        <h2 id="favorites-title" ref={heading} tabIndex={-1}>{title} ({tips.length})</h2>
+        <h2 id="favorites-title" ref={heading} tabIndex={-1}><SectionIcon section="favorites" />{title} ({tips.length})</h2>
         <p>{description}</p>
+        {filteredTips.length > pageSize && <div className="favorites-navigation">
+          {!viewAll && <>
+            <button className="secondary-button" type="button" aria-label={copy.previous} aria-controls="favorite-cards" disabled={pageIndex === 0} onClick={() => setPage({ key: pageKey, index: pageIndex - 1 })}>‹</button>
+            <span role="status" aria-live="polite">{copy.page(start + 1, start + visibleTips.length, filteredTips.length)}</span>
+            <button className="secondary-button" type="button" aria-label={copy.next} aria-controls="favorite-cards" disabled={pageIndex === lastPage} onClick={() => setPage({ key: pageKey, index: pageIndex + 1 })}>›</button>
+          </>}
+          <button className="secondary-button" type="button" aria-expanded={viewAll} aria-controls="favorite-cards" onClick={() => { setViewAll(!viewAll); setPage({ key: pageKey, index: 0 }); }}>{viewAll ? copy.viewLess : copy.viewAll}</button>
+        </div>}
       </div>
       {controls}
       {(tips.length > 0 || hasFilters) && <>
@@ -59,7 +86,7 @@ export function FavoriteTips({ title, locale, disabled, loading, controls, descr
         </div>
         <button className="secondary-button" type="button" onClick={() => { setQuery(""); setCategory("all"); }}>{copy.reset}</button>
         <p className="library-result-count" role="status" aria-atomic="true">
-          {!loading && copy.results(filteredTips.length, tips.length)}
+          {!loading && copy.results(visibleTips.length, tips.length)}
         </p>
       </>}
       {tips.length === 0 ? !loading && <div className="saved-empty">
@@ -68,10 +95,10 @@ export function FavoriteTips({ title, locale, disabled, loading, controls, descr
         {onBrowse && <button className="secondary-button" type="button" onClick={onBrowse}>{messages[locale].navigation.browse} <span aria-hidden="true">→</span></button>}</div>
       </div> : (
         filteredTips.length === 0 ? !loading && <NotebookEmptyState motif="page" message={copy.empty} /> :
-        <div className="tips-grid saved-tip-shelf">
-          {filteredTips.map((tip, index) => (
+        <div className="tips-grid saved-tip-shelf" id="favorite-cards" data-view-all={viewAll}>
+          {visibleTips.map((tip, index) => (
             <article className="preview-card favorite-card collection-card" key={tip.id}>
-              <div className="saved-tip-art" aria-hidden="true">{index === 0 || artworkFamily(filteredTips[index - 1].categoryId) !== artworkFamily(tip.categoryId)
+              <div className="saved-tip-art" aria-hidden="true">{index === 0 || artworkFamily(visibleTips[index - 1].categoryId) !== artworkFamily(tip.categoryId)
                 ? <ActionArtwork category={tip.categoryId} thumbnail /> : <CategoryIcon category={tip.categoryId} />}</div>
               <div className="library-tip-meta"><span className="collection-category"><CategoryIcon category={tip.categoryId} />{tip.category}</span><span className="collection-effort">{tip.effort}</span></div>
               <h3>{tip.title}</h3>

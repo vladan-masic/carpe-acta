@@ -1,3 +1,4 @@
+import { ActionIcon } from "./ActionIcon";
 import { useId, useRef } from "react";
 import { useTimerAlerts } from "../hooks/useTimerAlerts";
 import { useActionTimer } from "../hooks/useActionTimer";
@@ -23,12 +24,13 @@ export function ActionTimer({ minutes, locale }: { minutes: number; locale: Loca
       <span role="timer" aria-live="off" aria-label={timer.extra ? copy.extra : copy.remaining}>{time}</span>
     </p>}
     <div className="tip-actions">
-      <button className="secondary-button" type="button" ref={primary}
+      <button className="primary-button timer-primary-action" type="button" ref={primary}
         onClick={() => {
           if (expired) timer.keepGoing();
           else if (running) timer.pause();
           else { void alerts.prepareSound(); timer.start(); }
         }}>
+        <ActionIcon action={running ? "pause" : "play"} />
         {idle ? `${copy.start} · ${messages[locale].formatEffort(minutes)}` : expired ? copy.keepGoing : running ? copy.pause : copy.resume}
       </button>
       {!idle && <button className="secondary-button" type="button" onClick={() => {

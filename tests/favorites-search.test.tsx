@@ -92,3 +92,35 @@ it("distinguishes no saved tips from unavailable or loading account data", () =>
   expect(screen.getByText(input.emptyMessage)).toBeTruthy();
   expect(screen.queryByText(favoritesSearchMessages.en.empty)).toBeNull();
 });
+
+it("pages favorites, expands all results, and resets pagination after filtering", () => {
+  const input = { ...props("en"), tips: tips.slice(0, 9).map(tip => localizeTip(tip, "en")) };
+  const copy = favoritesSearchMessages.en;
+  render(<FavoriteTips {...input} />);
+  expect(screen.getAllByRole("article")).toHaveLength(4);
+  expect((screen.getByRole("button", { name: copy.previous }) as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(screen.getByRole("button", { name: copy.next }));
+  expect(within(screen.getAllByRole("article")[0]).getByRole("heading").textContent).toBe(input.tips[4].title);
+  fireEvent.click(screen.getByRole("button", { name: copy.next }));
+  expect(screen.getAllByRole("article")).toHaveLength(1);
+  expect((screen.getByRole("button", { name: copy.next }) as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.change(screen.getByRole("searchbox"), { target: { value: input.tips[0].title } });
+  expect(within(screen.getAllByRole("article")[0]).getByRole("heading").textContent).toBe(input.tips[0].title);
+  fireEvent.click(screen.getByRole("button", { name: copy.reset }));
+  expect(within(screen.getAllByRole("article")[0]).getByRole("heading").textContent).toBe(input.tips[0].title);
+  fireEvent.click(screen.getByRole("button", { name: copy.viewAll }));
+  expect(screen.getAllByRole("article")).toHaveLength(9);
+  fireEvent.click(screen.getByRole("button", { name: copy.viewLess }));
+  expect(screen.getAllByRole("article")).toHaveLength(4);
+});
+
+it("keeps the last page valid when its final favorite is removed", () => {
+  const input = { ...props("en"), tips: tips.slice(0, 5).map(tip => localizeTip(tip, "en")) };
+  const { rerender } = render(<FavoriteTips {...input} />);
+  fireEvent.click(screen.getByRole("button", { name: favoritesSearchMessages.en.next }));
+  expect(screen.getAllByRole("article")).toHaveLength(1);
+  fireEvent.click(screen.getByRole("button", { name: `Favorite: ${input.tips[4].title}` }));
+  rerender(<FavoriteTips {...input} tips={input.tips.slice(0, 4)} />);
+  expect(screen.getAllByRole("article")).toHaveLength(4);
+  expect(document.activeElement?.id).toBe("favorites-title");
+});

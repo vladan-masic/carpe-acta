@@ -1,3 +1,4 @@
+import { SectionIcon } from "./SectionIcon";
 import { AchievementStamp } from "./AchievementStamp";
 import { useEffect, useRef, useState } from "react";
 import type { Locale } from "../i18n/locales";
@@ -24,7 +25,7 @@ export function PersonalMilestones({ totals, error, retry, locale, completionId 
     return copy.badge(kind as "actions" | "days", Number(n));
   }
   return <section className="personal-milestones milestone-notebook" aria-labelledby="milestones-title">
-    <h3 id="milestones-title">{copy.title}</h3>
+    <h3 id="milestones-title"><SectionIcon section="milestones" />{copy.title}</h3>
     <p>{copy.hint}</p>
     <p role="status">{totals && celebration.length > 0 ? `${copy.celebration} ${celebration.map(badgeLabel).join(" · ")}` : ""}</p>
     {!totals ? <p>{error ? <>{copy.error} <button type="button" className="secondary-button" onClick={retry}>{copy.retry}</button></> : copy.loading}</p> : <>

@@ -1,5 +1,6 @@
 import type { Locale } from "./locales";
 type ProgressCopy = {
+  month: string; previousMonth: string; nextMonth: string;
   achievements: string;
   journey: string;
   calendarHelp: string;
@@ -23,17 +24,18 @@ function srActions(count: number, completed = false) {
 
 export const progressMessages: Record<Locale, ProgressCopy> = {
   en: {
+    month: "Month", previousMonth: "Previous month", nextMonth: "Next month",
     achievements: "Achievements",
     journey: "Your journey",
     calendarHelp: "How to read your calendar",
     scrollRegion: "Scrollable calendar dates",
     scrollHint: "Scroll horizontally to explore all dates on smaller screens.",
     yearHint: "Scroll horizontally to see the whole year on smaller screens.",
-    view: "Calendar view", weeks: "12 weeks", year: "Year", yearTitle: "Your activity",
+    view: "Calendar view", weeks: "12 weeks", year: "Year", yearTitle: "Activity calendar",
     previousYear: "Previous year", nextYear: "Next year", loadingYear: "Loading this year’s activity…",
     yearError: "This year’s activity could not be loaded.", retryYear: "Retry year",
     weekSummary: (total, active) => `Past seven days: ${total.toLocaleString("en")} ${total === 1 ? "action" : "actions"} · active days: ${active}/7`,
-    calendar: "Your activity · 12 weeks", calendarHint: "Weeks start on Monday, in your device’s timezone. Hover, focus, or tap a day for its count; select it to see actions. Use arrow keys to explore.",
+    calendar: "Activity calendar", calendarHint: "Weeks start on Monday, in your device’s timezone. Hover, focus, or tap a day for its count; select it to see actions. Use arrow keys to explore.",
     less: "Less", more: "More", clearDay: "Show recent actions", emptyDay: "No completed actions on this day.",
     dayCount: (count) => `${count.toLocaleString("en")} completed ${count === 1 ? "action" : "actions"}`,
     recent: "Recent completed actions",
@@ -41,17 +43,18 @@ export const progressMessages: Record<Locale, ProgressCopy> = {
     unknown: "Previously available tip", loading: "Loading your progress…", unavailable: "Progress is unavailable. Try refreshing completed actions.",
   },
   "sr-Latn": {
+    month: "Mesec", previousMonth: "Prethodni mesec", nextMonth: "Sledeći mesec",
     achievements: "Dostignuća",
     journey: "Tvoj put",
     calendarHelp: "Kako da čitaš svoj kalendar",
     scrollRegion: "Datumi kalendara koji se pomeraju vodoravno",
     scrollHint: "Na manjim ekranima pomeraj kalendar vodoravno da istražiš sve datume.",
     yearHint: "Na manjim ekranima pomeraj kalendar vodoravno da vidiš celu godinu.",
-    view: "Prikaz kalendara", weeks: "12 nedelja", year: "Godina", yearTitle: "Tvoja aktivnost",
+    view: "Prikaz kalendara", weeks: "12 nedelja", year: "Godina", yearTitle: "Kalendar aktivnosti",
     previousYear: "Prethodna godina", nextYear: "Sledeća godina", loadingYear: "Učitavanje aktivnosti za ovu godinu…",
     yearError: "Aktivnost za ovu godinu nije mogla da se učita.", retryYear: "Pokušaj ponovo",
     weekSummary: (total, active) => `Prethodnih sedam dana: ${total.toLocaleString("sr-Latn")} ${srActions(total)} · aktivnih dana: ${active}/7`,
-    calendar: "Tvoja aktivnost · 12 nedelja", calendarHint: "Nedelje počinju ponedeljkom, u vremenskoj zoni tvog uređaja. Pređi pokazivačem, fokusiraj ili dodirni dan za broj radnji; izaberi ga za pregled. Koristi strelice za kretanje.",
+    calendar: "Kalendar aktivnosti", calendarHint: "Nedelje počinju ponedeljkom, u vremenskoj zoni tvog uređaja. Pređi pokazivačem, fokusiraj ili dodirni dan za broj radnji; izaberi ga za pregled. Koristi strelice za kretanje.",
     less: "Manje", more: "Više", clearDay: "Prikaži nedavne radnje", emptyDay: "Nema završenih radnji ovog dana.",
     dayCount: (count) => `${count.toLocaleString("sr-Latn")} ${srActions(count, true)}`,
     recent: "Nedavno završene radnje",
