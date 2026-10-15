@@ -40,16 +40,16 @@
 }
 .action-icon { display: inline-block; vertical-align: -.2em; margin-right: .45em; flex-shrink: 0; }
 /* The twelve-week overview fits its card; annual history retains its scroll. */
-:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year) {
+:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year):not(.calendar-layout-month) {
   width: 100%; max-width: 350px; min-width: 0; grid-template-columns: 24px minmax(0, 1fr); gap: 3px;
 }
-:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year) :is(.calendar-months, .calendar-squares) {
+:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year):not(.calendar-layout-month) :is(.calendar-months, .calendar-squares) {
   grid-template-columns: repeat(var(--calendar-weeks, 12), minmax(0, 1fr)); gap: 2px;
 }
-:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year) :is(.calendar-square, .calendar-future) {
+:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year):not(.calendar-layout-month) :is(.calendar-square, .calendar-future) {
   width: 100%; height: auto; min-height: 0; aspect-ratio: 1; font-size: 10px;
 }
-:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year) .calendar-weekdays { gap: 2px; font-size: 9px; }
+:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year):not(.calendar-layout-month) .calendar-weekdays { gap: 2px; font-size: 9px; }
 :where([data-design="notebook"]) .calendar-layout .calendar-square { border-radius: 3px 5px 3px 4px; }
 :where([data-design="notebook"]) .calendar-square.activity-level-0 { background: var(--surface-paper); border-color: var(--paper-edge); }
-:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year) .calendar-months { font-size: 10px; }
+:where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year):not(.calendar-layout-month) .calendar-months { font-size: 10px; }

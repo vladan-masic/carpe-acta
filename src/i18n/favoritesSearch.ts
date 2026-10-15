@@ -1,6 +1,8 @@
 import type { Locale } from "./locales";
 
 type FavoritesSearchMessages = {
+  previous: string; next: string; viewAll: string; viewLess: string;
+  page: (start: number, end: number, total: number) => string;
   invitation: string;
   search: string;
   category: string;
@@ -12,6 +14,8 @@ type FavoritesSearchMessages = {
 
 export const favoritesSearchMessages: Record<Locale, FavoritesSearchMessages> = {
   en: {
+    previous: "Previous favorites", next: "Next favorites", viewAll: "View all", viewLess: "Show fewer",
+    page: (start, end, total) => `${start}–${end} of ${total}`,
     invitation: "A little collection for the days ahead.",
     search: "Search favorites",
     category: "Favorite category",
@@ -21,6 +25,8 @@ export const favoritesSearchMessages: Record<Locale, FavoritesSearchMessages> = 
     results: (shown, total) => `Showing ${shown} of ${total} favorites`,
   },
   "sr-Latn": {
+    previous: "Prethodni omiljeni saveti", next: "Sledeći omiljeni saveti", viewAll: "Prikaži sve", viewLess: "Prikaži manje",
+    page: (start, end, total) => `${start}–${end} od ${total}`,
     invitation: "Mala zbirka za dane koji dolaze.",
     search: "Pretraži omiljene savete",
     category: "Kategorija omiljenih saveta",

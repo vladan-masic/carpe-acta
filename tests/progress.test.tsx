@@ -90,6 +90,7 @@ it.each(["en", "sr-Latn"] as const)("supports focus, hover, keyboard and day sel
   const localized = tips.map(tip => localizeTip(tip, locale));
   const props = { locale, tips: localized, busy: false };
   const { rerender } = render(<ProgressView {...props} progress={summarizeProgress(records, now)} />);
+  fireEvent.change(screen.getByLabelText(progressMessages[locale].view), { target: { value: "weeks" } });
   const group = screen.getByRole("group", { name: progressMessages[locale].calendar });
   const squares = within(group).getAllByRole("button");
   expect(squares.filter(button => button.tabIndex === 0)).toHaveLength(1);

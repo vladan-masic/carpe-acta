@@ -1,5 +1,6 @@
 import type { Locale } from "./locales";
 type ProgressCopy = {
+  month: string; previousMonth: string; nextMonth: string;
   achievements: string;
   journey: string;
   calendarHelp: string;
@@ -23,6 +24,7 @@ function srActions(count: number, completed = false) {
 
 export const progressMessages: Record<Locale, ProgressCopy> = {
   en: {
+    month: "Month", previousMonth: "Previous month", nextMonth: "Next month",
     achievements: "Achievements",
     journey: "Your journey",
     calendarHelp: "How to read your calendar",
@@ -41,6 +43,7 @@ export const progressMessages: Record<Locale, ProgressCopy> = {
     unknown: "Previously available tip", loading: "Loading your progress…", unavailable: "Progress is unavailable. Try refreshing completed actions.",
   },
   "sr-Latn": {
+    month: "Mesec", previousMonth: "Prethodni mesec", nextMonth: "Sledeći mesec",
     achievements: "Dostignuća",
     journey: "Tvoj put",
     calendarHelp: "Kako da čitaš svoj kalendar",

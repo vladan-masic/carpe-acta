@@ -4,8 +4,8 @@ import type { Locale } from "../i18n/locales";
 import { progressMessages } from "../i18n/progress";
 import { activityLevel, type CalendarDay } from "../utils/progress";
 
-type Props = { year?: number | null; today?: string; days: CalendarDay[]; locale: Locale; selected: string | null; onSelect: (date: string) => void };
-export function ActivityCalendar({ days, locale, selected, onSelect, year = null, today }: Props) {
+type Props = { monthly?: boolean; year?: number | null; today?: string; days: CalendarDay[]; locale: Locale; selected: string | null; onSelect: (date: string) => void };
+export function ActivityCalendar({ days, locale, selected, onSelect, year = null, today, monthly = false }: Props) {
   const copy = progressMessages[locale];
   const id = useId();
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
@@ -29,19 +29,19 @@ export function ActivityCalendar({ days, locale, selected, onSelect, year = null
     if (!container) return;
     // Start the short journal at its recent weeks without moving the page.
     // The annual view starts in January. Keyboard focus scrolls dates normally.
-    const position = () => { container.scrollLeft = year === null ? container.scrollWidth - container.clientWidth : 0; };
+    const position = () => { container.scrollLeft = year === null && !monthly ? container.scrollWidth - container.clientWidth : 0; };
     position();
     const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(position);
     observer?.observe(container);
     return () => observer?.disconnect();
-  }, [year, days.length]);
+  }, [year, days.length, monthly]);
   function navigate(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     let next: number;
     switch (event.key) {
-      case "ArrowUp": next = index - 1; break;
-      case "ArrowDown": next = index + 1; break;
-      case "ArrowLeft": next = index - 7; break;
-      case "ArrowRight": next = index + 7; break;
+      case "ArrowUp": next = index - (monthly ? 7 : 1); break;
+      case "ArrowDown": next = index + (monthly ? 7 : 1); break;
+      case "ArrowLeft": next = index - (monthly ? 1 : 7); break;
+      case "ArrowRight": next = index + (monthly ? 1 : 7); break;
       case "Home": next = event.ctrlKey ? 0 : index - (index + leading) % 7; break;
       case "End": next = event.ctrlKey ? last : index - (index + leading) % 7 + 6; break;
       case "Escape": setPreview(null); return;
@@ -50,25 +50,25 @@ export function ActivityCalendar({ days, locale, selected, onSelect, year = null
     event.preventDefault();
     buttons.current[Math.max(0, Math.min(last, next))]?.focus();
   }
-  return <section className="activity-calendar" aria-labelledby={`${id}-title`} onMouseLeave={() => setPreview(null)}>
+  return <section className={`activity-calendar${monthly ? " activity-calendar--monthly" : ""}`} aria-labelledby={`${id}-title`} onMouseLeave={() => setPreview(null)}>
     <h3 id={`${id}-title`}><SectionIcon section="calendar" />{title}</h3>
-    <details className="calendar-help"><summary>{copy.calendarHelp}</summary><p className="progress-caption" id={`${id}-hint`}>{copy.calendarHint} {year !== null ? copy.yearHint : copy.scrollHint}</p></details>
-    <p className="calendar-scroll-hint">{copy.scrollHint}</p>
-    <div className="calendar-scroll" ref={scroll} tabIndex={0} role="region" aria-label={copy.scrollRegion}>
-      <div className={`calendar-layout${year === null ? "" : " calendar-layout-year"}`} style={{ "--calendar-weeks": weeks } as CSSProperties}>
-        <div className="calendar-months" aria-hidden="true">
+    <details className="calendar-help"><summary>{copy.calendarHelp}</summary><p className="progress-caption" id={`${id}-hint`}>{copy.calendarHint} {!monthly && (year !== null ? copy.yearHint : copy.scrollHint)}</p></details>
+    {!monthly && <p className="calendar-scroll-hint">{copy.scrollHint}</p>}
+    <div className="calendar-scroll" ref={scroll} tabIndex={0} role="region" aria-label={monthly ? copy.calendar : copy.scrollRegion}>
+      <div className={`calendar-layout${monthly ? " calendar-layout-month" : year === null ? "" : " calendar-layout-year"}`} style={{ "--calendar-weeks": weeks } as CSSProperties}>
+        {!monthly && <div className="calendar-months" aria-hidden="true">
           {Array.from({ length: weeks }, (_, week) => {
             const entries = slots.slice(week * 7, week * 7 + 7).filter((day): day is CalendarDay => day !== null);
             const start = entries.find(day => new Date(day.date).getDate() === 1) ?? (week === 0 ? entries[0] : null);
             return <span key={week}>{start ? month.format(new Date(start.date)) : ""}</span>;
           })}
-        </div>
+        </div>}
         <div className="calendar-weekdays" aria-hidden="true">
-          {Array.from({ length: 7 }, (_, index) => <span key={index}>{index % 2 === 0 ? weekday.format(new Date(2026, 0, 5 + index)) : ""}</span>)}
+          {Array.from({ length: 7 }, (_, index) => <span key={index}>{monthly || index % 2 === 0 ? weekday.format(new Date(2026, 0, 5 + index)) : ""}</span>)}
         </div>
         <div className="calendar-squares" role="group" aria-label={title} aria-describedby={`${id}-hint`}>
           {Array.from({ length: leading }, (_, index) => <span key={`leading-${index}`} aria-hidden="true" />)}
-          {days.map((day, index) => day.future ? <span key={day.date} className="calendar-future" aria-hidden="true" /> : <button key={day.date} type="button"
+          {days.map((day, index) => day.future ? <span key={day.date} className="calendar-future" aria-hidden="true">{monthly ? new Date(day.date).getDate() : null}</span> : <button key={day.date} type="button"
             className={`calendar-square activity-level-${activityLevel(day.count)}`}
             ref={element => { buttons.current[index] = element; }}
             aria-label={label(day)} aria-pressed={selected === day.date}
@@ -78,7 +78,7 @@ export function ActivityCalendar({ days, locale, selected, onSelect, year = null
             onMouseEnter={() => setPreview(day.date)}
             onKeyDown={event => navigate(event, index)}
             onClick={() => { setPreview(day.date); onSelect(day.date); }}><span aria-hidden="true">{new Date(day.date).getDate()}</span></button>)}
-          {Array.from({ length: weeks * 7 - leading - days.length }, (_, index) => <span key={`future-${index}`} className="calendar-future" aria-hidden="true" />)}
+          {Array.from({ length: (monthly ? Math.ceil((leading + days.length) / 7) : weeks) * 7 - leading - days.length }, (_, index) => <span key={`future-${index}`} className="calendar-future" aria-hidden="true" />)}
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, renderHook, screen, waitFor, within } from "@testing-library/react";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { summarizeProgress, summarizeYear, yearStart } from "../src/utils/progress";
+import { monthDays, summarizeProgress, summarizeYear, yearStart } from "../src/utils/progress";
 import { fetchCalendarYear } from "../src/completions/api";
 import { useCalendarHistory } from "../src/hooks/useCalendarHistory";
 import { ProgressView } from "../src/components/ProgressView";
@@ -128,4 +128,35 @@ it.each(["en", "sr-Latn"] as const)("shows local date numbers without replacing 
   expect(button.textContent).toBe("29");
   expect(button.querySelector("span")?.getAttribute("aria-hidden")).toBe("true");
   expect(screen.getAllByRole("button")).toHaveLength(366);
+});
+
+it("builds a complete leap month and preserves loaded counts and records", () => {
+  const days = monthDays(summarizeYear([record], 2024, now), 2024, 1, now);
+  expect(days).toHaveLength(29);
+  expect(days.at(-1)?.records).toEqual([record]);
+  expect(days.at(-1)?.count).toBe(1);
+  expect(monthDays([], 2026, 9, now).filter(day => !day.future)).toHaveLength(6);
+});
+
+it.each(["en", "sr-Latn"] as const)("defaults to monthly view and crosses the year boundary in %s", locale => {
+  const copy = progressMessages[locale];
+  function View() {
+    const history = useCalendarHistory({ ...source, owner: null });
+    return <ProgressView progress={progress} calendarHistory={history} locale={locale} tips={[]} busy={false} />;
+  }
+  render(<View />);
+  expect((screen.getByLabelText(copy.view) as HTMLSelectElement).value).toBe("month");
+  expect((screen.getByRole("button", { name: copy.nextMonth }) as HTMLButtonElement).disabled).toBe(true);
+  for (let index = 0; index <= new Date().getMonth(); index++) fireEvent.click(screen.getByRole("button", { name: copy.previousMonth }));
+  const previousYear = new Date().getFullYear() - 1;
+  expect(screen.getByText(new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(new Date(previousYear, 11, 1)))).toBeTruthy();
+  const days = within(screen.getByRole("group", { name: copy.calendar })).getAllByRole("button");
+  expect(days).toHaveLength(31);
+  act(() => days[7].focus());
+  fireEvent.keyDown(days[7], { key: "ArrowUp" });
+  expect(document.activeElement).toBe(days[0]);
+  fireEvent.keyDown(days[0], { key: "ArrowRight" });
+  expect(document.activeElement).toBe(days[1]);
+  fireEvent.click(days[1]);
+  expect(screen.getByText(copy.emptyDay)).toBeTruthy();
 });

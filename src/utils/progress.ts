@@ -81,3 +81,16 @@ export function weeklyActivity(days: ProgressData["days"], now = new Date()) {
     return { date, future, active: !future && days.some(day => day.date === date.toISOString() && day.count > 0) };
   });
 }
+
+// Reuse the loaded history; fill empty/future dates using local calendar arithmetic.
+export function monthDays(source: CalendarDay[], year: number, month: number, now = new Date()): CalendarDay[] {
+  const byDate = new Map(source.map(day => [day.date, day]));
+  const start = yearStart(year);
+  start.setMonth(month);
+  const days: CalendarDay[] = [];
+  for (const date = new Date(start); date.getMonth() === month; date.setDate(date.getDate() + 1)) {
+    const key = date.toISOString();
+    days.push(byDate.get(key) ?? { date: key, count: 0, records: [], future: date.getTime() > now.getTime() });
+  }
+  return days;
+}
