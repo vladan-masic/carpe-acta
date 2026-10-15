@@ -5,11 +5,13 @@ type PreferenceSelectorProps<T extends string> = {
   value: T;
   options: ReadonlyArray<{ id: T; name: string; lang?: string }>;
   icon: ReactNode;
+  triggerLabel?: string;
+  iconOnly?: boolean;
   onSelect: (value: T) => void;
 };
 
 export function PreferenceSelector<T extends string>({
-  ariaLabel, value, options, icon, onSelect,
+  ariaLabel, value, options, icon, onSelect, triggerLabel, iconOnly = false,
 }: PreferenceSelectorProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const listboxId = useId();
@@ -102,22 +104,23 @@ export function PreferenceSelector<T extends string>({
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label={`${ariaLabel}: ${selectedOption.name}`}
-        className="preference-select-trigger"
+        title={`${ariaLabel}: ${selectedOption.name}`}
+        className={`preference-select-trigger${iconOnly ? " preference-select-trigger--icon" : ""}`}
         onClick={() => setIsOpen((current) => !current)}
         onKeyDown={handleTriggerKeyDown}
         ref={triggerRef}
         type="button"
       >
         {icon}
-        <span lang={selectedOption.lang}>{selectedOption.name}</span>
-        <svg
+        {!iconOnly && <span lang={selectedOption.lang}>{triggerLabel ?? selectedOption.name}</span>}
+        {!iconOnly && <svg
           aria-hidden="true"
           className="preference-selector-chevron"
           fill="none"
           viewBox="0 0 12 8"
         >
           <path d="m1 1.25 5 5 5-5" />
-        </svg>
+        </svg>}
       </button>
 
       {isOpen && (

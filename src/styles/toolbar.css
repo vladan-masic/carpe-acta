@@ -1,0 +1,52 @@
+/* Keep navigation geometry stable while scrolling, in both paper themes. */
+:where([data-design="notebook"]) .app-toolbar {
+  position: sticky; top: 12px; z-index: 30; width: 100%;
+  margin: 12px 0 16px; padding: 8px 14px; gap: 20px;
+  border: 1px solid var(--paper-edge); border-radius: 16px;
+  background: var(--surface-paper);
+  box-shadow: 0 4px 16px rgb(25 24 20 / 9%);
+}
+:where([data-design="notebook"]) .toolbar-controls { gap: 16px; }
+:where([data-design="notebook"]) .toolbar-account-controls { gap: 4px; padding-left: 12px; flex-shrink: 0; }
+:where([data-design="notebook"]) .toolbar-account-controls :is(.preference-select-trigger, .toolbar-search, .auth-trigger) {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  min-width: 44px; min-height: 44px; padding: 8px; border-radius: 10px;
+  color: var(--ink); background: transparent; border: 1px solid transparent; box-shadow: none;
+}
+:where([data-design="notebook"]) .toolbar-account-controls .preference-select-trigger--icon,
+:where([data-design="notebook"]) .toolbar-search { width: 44px; }
+:where([data-design="notebook"]) .toolbar-account-controls .auth-trigger { padding-inline: 10px; margin-left: 4px; }
+:where([data-design="notebook"]) .toolbar-account-controls :is(.preference-select-trigger, .toolbar-search, .auth-trigger):not(:disabled):hover,
+:where([data-design="notebook"]) .toolbar-account-controls .preference-select-trigger[aria-expanded="true"] {
+  background: var(--action-tint); color: var(--action-ink); border-color: transparent; box-shadow: none;
+}
+:where([data-design="notebook"]) .section-navigation a { gap: 7px; }
+.navigation-icon { flex-shrink: 0; }
+:where([data-design="notebook"]) .toolbar-search:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+:where([data-design="notebook"]) .preference-options { min-width: 152px; }
+.language-flag { flex-shrink: 0; border-radius: 2px; overflow: hidden; box-shadow: 0 0 0 1px rgb(128 128 128 / 20%); }
+.account-avatar { display: grid; place-items: center; width: 32px; height: 32px; flex-shrink: 0; overflow: hidden; border-radius: 50%; background: var(--support-tint); color: var(--ink); font-size: 12px; font-weight: 600; }
+.account-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.account-identity { display: grid; gap: 1px; text-align: left; min-width: 0; line-height: 1.3; }
+.account-greeting { font-size: 10px; font-weight: 400; color: var(--ink-muted); }
+.account-name { max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; font-weight: 600; }
+.account-chevron { flex-shrink: 0; margin-left: 3px; }
+@media (min-width: 1100px) {
+  :where([data-design="notebook"]) .app-toolbar { flex-wrap: nowrap; }
+  :where([data-design="notebook"]) .section-navigation a { padding-inline: 9px; }
+}
+@media (max-width: 1099px) {
+  :where([data-design="notebook"]) .section-navigation { grid-template-columns: minmax(0, 1fr); }
+  :where([data-design="notebook"]) .app-toolbar { top: 8px; padding: 6px 8px; gap: 8px; }
+  :where([data-design="notebook"]) .toolbar-controls[data-open="true"] {
+    position: absolute; top: calc(100% + 8px); left: 0; width: 100%;
+    max-height: calc(100dvh - 100px); box-shadow: 0 6px 18px rgb(25 24 20 / 12%);
+  }
+  :where([data-design="notebook"]) .toolbar-account-controls { grid-template-columns: 44px 44px minmax(0, 1fr); gap: 6px; padding: 12px 0 0; }
+  :where([data-design="notebook"]) .toolbar-account-controls .auth-trigger { grid-column: 1 / -1; margin-left: 0; justify-content: flex-start; }
+  :where([data-design="notebook"]) .toolbar-account-controls .preference-selector { min-width: 0; }
+  :where([data-design="notebook"]) .toolbar-controls .preference-options { position: absolute; right: 0; margin-top: 0; }
+  :where([data-design="notebook"]) .toolbar-account-controls > .preference-selector:nth-child(2) .preference-options { left: 0; right: auto; }
+  /* Reserve room for the menus inside the scrollable mobile disclosure. */
+  :where([data-design="notebook"]) .toolbar-controls:has(.preference-options) { padding-bottom: 152px; }
+}

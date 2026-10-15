@@ -12,6 +12,7 @@ import "./styles/discovery-account.css";
 import "./styles/homepage-reconstruction.css";
 import "./styles/journey-reconstruction.css";
 import "./styles/responsive-reconstruction.css";
+import "./styles/toolbar.css";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 

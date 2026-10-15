@@ -17,6 +17,7 @@ import {
   type CategoryFilterValue,
 } from "./components/CategoryFilter";
 import { AppFooter } from "./components/AppFooter";
+import { NavigationIcon } from "./components/NavigationIcon";
 import { AppToolbar } from "./components/AppToolbar";
 import { BackToTop } from "./components/BackToTop";
 import { BrandEmblem } from "./components/BrandEmblem";
@@ -137,6 +138,15 @@ export function App() {
     });
   }
 
+  function openLibrarySearch() {
+    setLibraryOpen(true);
+    requestAnimationFrame(() => {
+      const search = document.getElementById("tip-library-search");
+      search?.focus({ preventScroll: true });
+      search?.scrollIntoView({ block: "center" });
+    });
+  }
+
   function renderFavoriteButton(tip: LocalizedTip) {
     return (
       <FavoriteButton
@@ -154,20 +164,26 @@ export function App() {
       <main className="app-shell" id="page-top" tabIndex={-1}>
         <AppToolbar label={copy.menuLabel} navigation={
           <nav className="section-navigation" aria-label={copy.navigation.label}>
-            <a href="#tip-generator">{copy.navigation.start}</a>
+            <a href="#tip-generator"><NavigationIcon destination="start" />{copy.navigation.start}</a>
             <a href="#tip-library-title" onClick={(event) => {
               event.preventDefault();
-              setLibraryOpen(true);
-              requestAnimationFrame(() => {
-                const search = document.getElementById("tip-library-search");
-                search?.focus({ preventScroll: true });
-                document.getElementById("tip-library-title")?.scrollIntoView({ block: "start" });
-              });
-            }}>{copy.navigation.browse}</a>
-            <a href="#completed-actions-title">{copy.navigation.progress}</a>
-            <a href="#favorites-title">{copy.favorites.title} ({favoriteTips.length})</a>
+              openLibrarySearch();
+            }}><NavigationIcon destination="library" />{copy.navigation.browse}</a>
+            <a href="#completed-actions-title"><NavigationIcon destination="progress" />{copy.navigation.progress}</a>
+            <a href="#favorites-title"><NavigationIcon destination="favorites" />{copy.favorites.title} ({favoriteTips.length})</a>
           </nav>
         }>
+          <button className="toolbar-search secondary-button" data-toolbar-dismiss type="button" onClick={openLibrarySearch}
+            aria-label={locale === "en" ? "Search tips" : "Pretraži savete"}
+            title={locale === "en" ? "Search tips" : "Pretraži savete"}>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5" /></svg>
+          </button>
+          <ThemeSelector locale={locale} />
+          <LanguageSelector
+            ariaLabel={copy.languageSelectorLabel}
+            locale={locale}
+            onSelectLocale={setLocale}
+          />
           <AuthPanel locale={locale} auth={auth} imports={<>
             <BrowserImport locale={locale} title={storageCopy.favorites} label={favoritesCopy.import}
               count={favorites.browserCount} canImport={favorites.canImport}
@@ -180,12 +196,6 @@ export function App() {
               busy={completion.busy} disabled={completion.busy} error={completion.error}
               onImport={completion.importGuest} onRefresh={completion.refresh} />
           </>} />
-          <ThemeSelector locale={locale} />
-          <LanguageSelector
-            ariaLabel={copy.languageSelectorLabel}
-            locale={locale}
-            onSelectLocale={setLocale}
-          />
         </AppToolbar>
 
         <section className="hero-section" aria-labelledby="brand-title">
