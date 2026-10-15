@@ -1,7 +1,7 @@
 import type { Locale } from "./locales";
 
 const en = {
-  login: "Log in", account: "Account", logout: "Log out", close: "Close",
+  greeting: "Good day,", login: "Log in", account: "Account", logout: "Log out", close: "Close",
   loading: "Checking your account…", busy: "Please wait…",
   intro: "Sign in to save favorites and history across devices. An account is optional.",
   unavailable: "Login is not available yet. You can still use the tips and save favorites in this browser.",
@@ -29,7 +29,7 @@ const en = {
 export type AuthMessages = { [Key in keyof typeof en]: string };
 
 const sr: AuthMessages = {
-  login: "Prijavi se", account: "Nalog", logout: "Odjavi se", close: "Zatvori",
+  greeting: "Dobar dan,", login: "Prijavi se", account: "Nalog", logout: "Odjavi se", close: "Zatvori",
   loading: "Proveravamo tvoj nalog…", busy: "Sačekaj…",
   intro: "Prijavi se da čuvaš omiljene savete i istoriju na više uređaja. Nalog nije obavezan.",
   unavailable: "Prijava još nije dostupna. I dalje možeš da koristiš savete i čuvaš omiljene u ovom pregledaču.",

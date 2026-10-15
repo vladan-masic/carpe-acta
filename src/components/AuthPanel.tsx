@@ -1,3 +1,4 @@
+import { AccountIdentity } from "./AccountIdentity";
 import { BrandEmblem } from "./BrandEmblem";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
@@ -98,8 +99,9 @@ export function AuthPanel({ locale, auth, imports }: { locale: Locale; auth: Ret
   const newPassword = mode === "signup" || mode === "password";
 
   return <>
-    <button className="auth-trigger secondary-button" type="button" ref={trigger} onClick={open} disabled={auth.loading}>
-      {auth.loading ? copy.loading : auth.session ? copy.account : copy.login}
+    <button className="auth-trigger secondary-button" type="button" ref={trigger} onClick={open} disabled={auth.loading}
+      aria-label={auth.session ? copy.account : undefined} aria-haspopup="dialog">
+      {auth.loading ? copy.loading : auth.session ? <AccountIdentity key={auth.session.user.id} metadata={auth.session.user.user_metadata} greeting={copy.greeting} fallback={copy.account} /> : copy.login}
     </button>
     {createPortal(<dialog {...dismissDialog} className="auth-dialog" ref={dialog} aria-labelledby="auth-title" onClose={() => {
       setPassword(""); setConfirmation(""); trigger.current?.focus();

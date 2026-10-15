@@ -43,6 +43,7 @@ export function AppToolbar({ label, children, navigation }: AppToolbarProps) {
         {label}
       </button>
       <div className="toolbar-controls" id={controlsId} data-open={open} onClick={(event) => {
+        if ((event.target as Element).closest("[data-toolbar-dismiss]")) setOpen(false);
         const link = (event.target as Element).closest<HTMLAnchorElement>('a[href^="#"]');
         if (link) {
           setOpen(false);
