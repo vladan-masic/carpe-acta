@@ -16,6 +16,7 @@ import "./styles/toolbar.css";
 import "./styles/hero-refinement.css";
 import "./styles/collection-calendar.css";
 import "./styles/decorative-continuity.css";
+import "./styles/handwritten-botanical.css";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 

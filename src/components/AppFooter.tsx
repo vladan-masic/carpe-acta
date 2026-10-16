@@ -1,13 +1,17 @@
+import { HandwrittenNote } from "./HandwrittenNote";
+import type { Locale } from "../i18n/locales";
 import footerMeadow from "../assets/illustrations/footer-meadow-1440.webp";
 import footerMeadowSmall from "../assets/illustrations/footer-meadow-640.webp";
 import { BrandEmblem } from "./BrandEmblem";
 
 type AppFooterProps = {
+  locale?: Locale;
   createdByLabel: string;
   motto: string;
 };
 
 export function AppFooter({
+  locale = "en",
   createdByLabel,
   motto,
 }: AppFooterProps) {
@@ -29,6 +33,7 @@ export function AppFooter({
             <p className="footer-motto">{motto}</p>
           </div>
 
+          <HandwrittenNote locale={locale} placement="footer" />
         </div>
 
         <div className="footer-meta">

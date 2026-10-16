@@ -1,3 +1,4 @@
+import { HandwrittenNote } from "./components/HandwrittenNote";
 import { SectionIcon } from "./components/SectionIcon";
 import { HelpfulActionPicker } from "./components/HelpfulActionPicker";
 import { PersonalBest } from "./components/PersonalBest";
@@ -231,6 +232,7 @@ export function App() {
 
         <section className="generator-section" aria-labelledby="tip-generator">
           <div className="section-heading">
+            <HandwrittenNote locale={locale} placement="generator" />
             <p className="eyebrow">{selection.helping ? startCopy.title : copy.generator.eyebrow}</p>
             <h2 id="tip-generator" tabIndex={-1}><SectionIcon section="generate" />{selection.helping ? startCopy.title : copy.generator.title}</h2>
           </div>
@@ -299,6 +301,7 @@ export function App() {
         </section>
 
         <section className="favorites-section journey-section" aria-labelledby="completed-actions-title">
+          <HandwrittenNote locale={locale} placement="journey" />
           <div className="section-heading">
             <h2 id="completed-actions-title" tabIndex={-1}><SectionIcon section="journey" />{progressMessages[locale].journey}</h2>
             <p className="journey-count">{completionCopy.title}{completion.count !== null ? ` (${completion.count})` : ""}</p>
@@ -364,6 +367,7 @@ export function App() {
       </main>
 
       <AppFooter
+        locale={locale}
         createdByLabel={copy.footer.createdBy}
         motto={copy.footer.motto}
       />
