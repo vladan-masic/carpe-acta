@@ -41,7 +41,6 @@ export function WeeklyGoal({ client, owner, progress, locale, busy }: Props) {
     </div><div className="weekly-growth-art weekly-growth-art--painted" aria-hidden="true"><img src={growth} width="640" height="480" alt="" loading="lazy" decoding="async" /></div></div>
     <div className="weekly-achievements">
       <h4>{copy.achievements}</h4>
-      <details className="achievement-explanation"><summary>{copy.aboutAchievements}</summary><p>{copy.achievementHint}</p></details>
       {achievements.error ? <p role="alert">{copy.achievementError} <button type="button" className="secondary-button" onClick={achievements.retry}>{copy.retryAchievements}</button></p>
         : achievements.records === null ? <p>{copy.loadingAchievements}</p> : <>
           <p>{copy.weeksMet(achievements.records.length)}</p>

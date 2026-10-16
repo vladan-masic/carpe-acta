@@ -5,5 +5,5 @@ const paths = {
   generate: "m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z",
 };
 export function ActionIcon({ action }: { action: keyof typeof paths }) {
-  return <svg className="action-icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d={paths[action]} /></svg>;
+  return <svg className="action-icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill={action === "play" ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d={paths[action]} /></svg>;
 }

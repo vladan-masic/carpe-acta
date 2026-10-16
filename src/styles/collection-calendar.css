@@ -7,23 +7,24 @@
 .calendar-month-controls strong { text-align: center; text-transform: capitalize; }
 .calendar-month-controls button { min-width: 44px; min-height: 44px; font-size: 22px; padding: 4px 12px; }
 :where([data-design="notebook"]) .activity-calendar--monthly .calendar-layout-month {
-  display: block; width: 100%; max-width: 350px;
+  display: block; width: 100%; max-width: 238px; margin-inline: auto;
 }
 :where([data-design="notebook"]) .calendar-layout-month .calendar-weekdays {
   display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-template-rows: auto;
-  position: static; box-shadow: none; background: none; gap: 4px; margin-bottom: 8px; text-align: center; font-size: 11px;
+  position: static; box-shadow: none; background: none; gap: 7px; margin-bottom: 7px; text-align: center; font-size: 11px;
 }
 :where([data-design="notebook"]) .calendar-layout-month .calendar-squares {
-  grid-auto-flow: row; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-template-rows: none; gap: 4px;
+  grid-auto-flow: row; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-template-rows: none; gap: 7px; justify-items: center;
 }
 :where([data-design="notebook"]) .calendar-layout-month .calendar-square,
 :where([data-design="notebook"]) .calendar-layout-month .calendar-future {
-  width: 100%; height: auto; min-height: 28px; aspect-ratio: 1; font-size: 12px; display: grid; place-items: center;
+  width: min(100%, 28px); height: auto; min-height: 0; aspect-ratio: 1; font-size: 12px; display: grid; place-items: center;
+  border-radius: 50%; border-color: transparent; font-weight: 500;
 }
 :where([data-design="notebook"]) .calendar-layout-month .calendar-future { color: var(--ink-muted); opacity: .65; }
 :where([data-design="notebook"]) #favorites .saved-tip-shelf {
   display: grid; grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: repeat(4, minmax(0, 1fr));
-  overflow: visible; scroll-snap-type: none; gap: 12px;
+  overflow: visible; scroll-snap-type: none; gap: 12px; min-width: 0; align-items: stretch; grid-auto-rows: 1fr;
 }
 .favorites-navigation { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-left: auto; }
 .favorites-navigation button { min-height: 44px; min-width: 44px; }
@@ -35,3 +36,35 @@
   :where([data-design="notebook"]) #favorites .saved-tip-shelf { grid-template-columns: minmax(0, 1fr); }
   .favorites-navigation { margin: 12px 0 0; }
 }
+/* The heading belongs to the whole calendar card, above its view controls. */
+:where([data-design="notebook"]) .calendar-card-title { margin: 0 0 14px; }
+:where([data-design="notebook"]) .calendar-layout-month .calendar-square.activity-level-0 { background: transparent; border-color: transparent; }
+:where([data-design="notebook"]) .calendar-layout-month .calendar-square[aria-current="date"] { border-color: var(--action-ink); }
+:where([data-design="notebook"]) .calendar-layout-month .calendar-square[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--progress-ink); }
+:where([data-design="notebook"]) .calendar-layout-month .calendar-square:hover { background: var(--support-tint); }
+:where([data-design="notebook"]) .calendar-month-controls button { border-color: transparent; background: transparent; border-radius: 50%; }
+.favorites-row { min-width: 0; }
+.favorites-row[data-carousel="true"] { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: start; gap: 8px; }
+.favorites-arrow { align-self: center; width: 44px; min-height: 44px; padding: 0; border-radius: 50%; font-size: 25px; }
+.favorites-arrow:disabled { opacity: .35; cursor: default; }
+:where([data-design="notebook"]) .favorites-row .collection-card { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 699px) {
+  .favorites-row[data-carousel="true"] { gap: 4px; }
+  :where([data-design="notebook"]) .favorites-row[data-carousel="true"] .collection-card { grid-template-columns: minmax(0, 1fr); }
+  :where([data-design="notebook"]) .favorites-row[data-carousel="true"] .collection-card > * { grid-column: 1; grid-row: auto; }
+  :where([data-design="notebook"]) .favorites-row[data-carousel="true"] .saved-tip-art { width: 100%; height: 100px; }
+  :where([data-design="notebook"]) .favorites-row[data-carousel="true"] .saved-tip-art img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+/* Equal cards retain room for longer titles and grow together when details open. */
+:where([data-design="notebook"]) .favorites-row .collection-card { min-height: 220px; grid-template-rows: auto minmax(0, 1fr) auto auto; }
+:where([data-design="notebook"]) .favorites-row .collection-card .tip-actions { align-self: end; }
+@media (max-width: 699px) {
+  :where([data-design="notebook"]) .favorites-row[data-carousel="true"] .collection-card { min-height: 380px; grid-template-rows: auto auto minmax(0, 1fr) auto auto; }
+}
+
+@media (min-width: 1100px) {
+  :where([data-design="notebook"]) .progress-overview { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.favorites-row[data-carousel="true"] .saved-tip-shelf { touch-action: pan-y; cursor: grab; user-select: none; }
+.favorites-row[data-carousel="true"] .saved-tip-shelf[data-dragging="true"] { cursor: grabbing; }
