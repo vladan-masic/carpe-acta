@@ -1,3 +1,4 @@
+import { SectionIcon } from "./SectionIcon";
 import { NotebookEmptyState } from "./NotebookEmptyState";
 import type { CalendarHistory } from "../hooks/useCalendarHistory";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
@@ -20,6 +21,7 @@ export function ProgressView({ progress, locale, tips, busy, onTry, calendarHist
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
   const historyId = useId();
+  const calendarHeadingId = useId();
   const historyHeading = useRef<HTMLHeadingElement>(null);
   const copy = progressMessages[locale];
   if (!progress) return <div className="progress-view"><p role="status">{busy ? copy.loading : copy.unavailable}</p>{achievements}{exploration}</div>;
@@ -43,6 +45,7 @@ export function ProgressView({ progress, locale, tips, busy, onTry, calendarHist
       <div className="progress-overview">
       {weeklyGoal}
       <div className="calendar-journal" data-year={view === "year"}>
+      <h3 id={calendarHeadingId} className="calendar-card-title"><SectionIcon section="calendar" />{copy.calendar}</h3>
       <p className="progress-week-summary">{copy.weekSummary(total, activeDays)}</p>
       <div className="calendar-controls">
         <label>{copy.view} <select value={view} onChange={event => {
@@ -62,7 +65,7 @@ export function ProgressView({ progress, locale, tips, busy, onTry, calendarHist
       </div>
       {year !== null && (awaitingYear || calendarHistory?.loading) ? <p role="status">{copy.loadingYear}</p>
         : year !== null && calendarHistory?.error ? <div role="status"><p>{copy.yearError}</p><button type="button" className="secondary-button" onClick={calendarHistory.retry}>{copy.retryYear}</button></div>
-        : <ActivityCalendar key={`${view}-${year}-${month.getMonth()}`} monthly={view === "month"} days={calendar} year={view === "year" ? year : null} today={progress.days[progress.days.length - 1]?.date} locale={locale} selected={selectedDay?.date ?? null} onSelect={date => { setSelectedDate(date); setHistoryOpen(true); }} /> }
+        : <ActivityCalendar headingId={calendarHeadingId} key={`${view}-${year}-${month.getMonth()}`} monthly={view === "month"} days={calendar} year={view === "year" ? year : null} today={progress.days[progress.days.length - 1]?.date} locale={locale} selected={selectedDay?.date ?? null} onSelect={date => { setSelectedDate(date); setHistoryOpen(true); }} /> }
       </div>
       {achievements}
       </div>

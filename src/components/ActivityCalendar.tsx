@@ -4,8 +4,8 @@ import type { Locale } from "../i18n/locales";
 import { progressMessages } from "../i18n/progress";
 import { activityLevel, type CalendarDay } from "../utils/progress";
 
-type Props = { monthly?: boolean; year?: number | null; today?: string; days: CalendarDay[]; locale: Locale; selected: string | null; onSelect: (date: string) => void };
-export function ActivityCalendar({ days, locale, selected, onSelect, year = null, today, monthly = false }: Props) {
+type Props = { headingId?: string; monthly?: boolean; year?: number | null; today?: string; days: CalendarDay[]; locale: Locale; selected: string | null; onSelect: (date: string) => void };
+export function ActivityCalendar({ days, locale, selected, onSelect, year = null, today, monthly = false, headingId }: Props) {
   const copy = progressMessages[locale];
   const id = useId();
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
@@ -50,9 +50,8 @@ export function ActivityCalendar({ days, locale, selected, onSelect, year = null
     event.preventDefault();
     buttons.current[Math.max(0, Math.min(last, next))]?.focus();
   }
-  return <section className={`activity-calendar${monthly ? " activity-calendar--monthly" : ""}`} aria-labelledby={`${id}-title`} onMouseLeave={() => setPreview(null)}>
-    <h3 id={`${id}-title`}><SectionIcon section="calendar" />{title}</h3>
-    <details className="calendar-help"><summary>{copy.calendarHelp}</summary><p className="progress-caption" id={`${id}-hint`}>{copy.calendarHint} {!monthly && (year !== null ? copy.yearHint : copy.scrollHint)}</p></details>
+  return <section className={`activity-calendar${monthly ? " activity-calendar--monthly" : ""}`} aria-labelledby={headingId ?? `${id}-title`} onMouseLeave={() => setPreview(null)}>
+    {!headingId && <h3 id={`${id}-title`}><SectionIcon section="calendar" />{title}</h3>}
     {!monthly && <p className="calendar-scroll-hint">{copy.scrollHint}</p>}
     <div className="calendar-scroll" ref={scroll} tabIndex={0} role="region" aria-label={monthly ? copy.calendar : copy.scrollRegion}>
       <div className={`calendar-layout${monthly ? " calendar-layout-month" : year === null ? "" : " calendar-layout-year"}`} style={{ "--calendar-weeks": weeks } as CSSProperties}>
@@ -64,9 +63,9 @@ export function ActivityCalendar({ days, locale, selected, onSelect, year = null
           })}
         </div>}
         <div className="calendar-weekdays" aria-hidden="true">
-          {Array.from({ length: 7 }, (_, index) => <span key={index}>{monthly || index % 2 === 0 ? weekday.format(new Date(2026, 0, 5 + index)) : ""}</span>)}
+          {Array.from({ length: 7 }, (_, index) => <span key={index}>{monthly ? weekday.format(new Date(2026, 0, 5 + index)).slice(0, 1) : index % 2 === 0 ? weekday.format(new Date(2026, 0, 5 + index)) : ""}</span>)}
         </div>
-        <div className="calendar-squares" role="group" aria-label={title} aria-describedby={`${id}-hint`}>
+        <div className="calendar-squares" role="group" aria-label={title}>
           {Array.from({ length: leading }, (_, index) => <span key={`leading-${index}`} aria-hidden="true" />)}
           {days.map((day, index) => day.future ? <span key={day.date} className="calendar-future" aria-hidden="true">{monthly ? new Date(day.date).getDate() : null}</span> : <button key={day.date} type="button"
             className={`calendar-square activity-level-${activityLevel(day.count)}`}

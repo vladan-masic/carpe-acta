@@ -53,3 +53,6 @@
 :where([data-design="notebook"]) .calendar-layout .calendar-square { border-radius: 3px 5px 3px 4px; }
 :where([data-design="notebook"]) .calendar-square.activity-level-0 { background: var(--surface-paper); border-color: var(--paper-edge); }
 :where([data-design="notebook"]) .calendar-layout:not(.calendar-layout-year):not(.calendar-layout-month) .calendar-months { font-size: 10px; }
+
+.timer-primary-action, .completion-action { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.timer-primary-action .action-icon, .completion-action .action-icon { width: 22px; height: 22px; margin: 0; vertical-align: middle; }
