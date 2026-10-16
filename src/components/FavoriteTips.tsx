@@ -1,9 +1,9 @@
-import { useSwipeNavigation } from "../hooks/useSwipeNavigation";
+import { useFavoritesCarousel } from "../hooks/useFavoritesCarousel";
 import { SectionIcon } from "./SectionIcon";
 import { CategoryIcon } from "./CategoryIcon";
 import { NotebookEmptyState } from "./NotebookEmptyState";
 import { TipSources } from "./TipSources";
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { CategoryId, LocalizedTip, TipId } from "../types/tip";
 import { FavoriteButton, type FavoriteLabels } from "./FavoriteButton";
 import { tips as tipCatalog } from "../data/tips";
@@ -36,7 +36,6 @@ type FavoriteTipsProps = {
 export function FavoriteTips({ title, locale, disabled, loading, controls, description, emptyMessage, openLabel, actionLabel, labels, tips, onToggle, onOpen, onBrowse }: FavoriteTipsProps) {
   const [visibleCount, setVisibleCount] = useState(4);
   const [viewAll, setViewAll] = useState(false);
-  const [position, setPosition] = useState({ key: "", index: 0 });
   useEffect(() => {
     if (!window.matchMedia) return;
     const desktop = window.matchMedia("(min-width: 1100px)");
@@ -52,27 +51,7 @@ export function FavoriteTips({ title, locale, disabled, loading, controls, descr
   const copy = favoritesSearchMessages[locale];
   const filteredTips = filterLibraryTips(tips, query, category, null);
   const windowKey = JSON.stringify([query, category, locale, visibleCount]);
-  if (position.key !== windowKey) setPosition({ key: windowKey, index: 0 });
-  const maxStart = Math.max(0, filteredTips.length - visibleCount);
-  const startIndex = position.key === windowKey ? Math.min(position.index, maxStart) : 0;
-  const start = viewAll ? 0 : startIndex;
-  const visibleTips = viewAll ? filteredTips : filteredTips.slice(start, start + visibleCount);
-  const shelf = useRef<HTMLDivElement>(null);
-  const previousWindow = useRef({ key: windowKey, start, viewAll });
-  useLayoutEffect(() => {
-    const previous = previousWindow.current;
-    previousWindow.current = { key: windowKey, start, viewAll };
-    if (previous.key !== windowKey || previous.viewAll !== viewAll || previous.start === start ||
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-    const animation = shelf.current?.animate?.([
-      { transform: `translateX(${start > previous.start ? 8 : -8}px)`, opacity: 0.95 },
-      { transform: "translateX(0)", opacity: 1 },
-    ], { duration: 650, easing: "cubic-bezier(.25,.1,.25,1)" });
-    return () => animation?.cancel();
-  }, [windowKey, start, viewAll]);
-  const swipe = useSwipeNavigation(!viewAll && maxStart > 0, direction => {
-    setPosition({ key: windowKey, index: Math.max(0, Math.min(maxStart, startIndex + direction)) });
-  });
+  const carousel = useFavoritesCarousel(!viewAll && filteredTips.length > visibleCount, windowKey, filteredTips.map(tip => tip.id).join(","));
   const hasFilters = query !== "" || category !== "all";
   return (
     <section className="favorites-section" id="favorites" aria-labelledby="favorites-title">
@@ -80,7 +59,7 @@ export function FavoriteTips({ title, locale, disabled, loading, controls, descr
         <h2 id="favorites-title" ref={heading} tabIndex={-1}><SectionIcon section="favorites" />{title} ({tips.length})</h2>
         <p>{description}</p>
         {filteredTips.length > visibleCount && <div className="favorites-navigation">
-          <button className="secondary-button" type="button" aria-expanded={viewAll} aria-controls="favorite-cards" onClick={() => { setViewAll(!viewAll); setPosition({ key: windowKey, index: 0 }); }}>{viewAll ? copy.viewLess : copy.viewAll}</button>
+          <button className="secondary-button" type="button" aria-expanded={viewAll} aria-controls="favorite-cards" onClick={() => { setViewAll(!viewAll); }}>{viewAll ? copy.viewLess : copy.viewAll}</button>
         </div>}
       </div>
       {controls}
@@ -98,7 +77,7 @@ export function FavoriteTips({ title, locale, disabled, loading, controls, descr
         </div>
         <button className="secondary-button" type="button" onClick={() => { setQuery(""); setCategory("all"); }}>{copy.reset}</button>
         <p className="library-result-count" role="status" aria-atomic="true">
-          {!loading && (viewAll || filteredTips.length <= visibleCount ? copy.results(visibleTips.length, tips.length) : copy.page(start + 1, start + visibleTips.length, filteredTips.length))}
+          {!loading && copy.results(filteredTips.length, tips.length)}
         </p>
       </>}
       {tips.length === 0 ? !loading && <div className="saved-empty">
@@ -108,11 +87,11 @@ export function FavoriteTips({ title, locale, disabled, loading, controls, descr
       </div> : (
         filteredTips.length === 0 ? !loading && <NotebookEmptyState motif="page" message={copy.empty} /> :
         <div className="favorites-row" data-carousel={!viewAll && filteredTips.length > visibleCount}>
-          {!viewAll && filteredTips.length > visibleCount && <button className="secondary-button favorites-arrow favorites-arrow--previous" type="button" aria-label={copy.previous} aria-controls="favorite-cards" disabled={startIndex === 0} onClick={() => setPosition({ key: windowKey, index: startIndex - 1 })}>‹</button>}
-        <div ref={shelf} {...swipe} className="tips-grid saved-tip-shelf" id="favorite-cards" data-view-all={viewAll}>
-          {visibleTips.map((tip, index) => (
+          {!viewAll && filteredTips.length > visibleCount && <button className="secondary-button favorites-arrow favorites-arrow--previous" type="button" aria-label={copy.previous} aria-controls="favorite-cards" disabled={!carousel.edges.previous} onClick={() => carousel.move(-1)}>‹</button>}
+        <div ref={carousel.ref} {...carousel.handlers} tabIndex={!viewAll && filteredTips.length > visibleCount ? 0 : undefined} role="region" aria-labelledby="favorites-title" className="tips-grid saved-tip-shelf" id="favorite-cards" data-view-all={viewAll}>
+          {filteredTips.map((tip, index) => (
             <article className="preview-card favorite-card collection-card" key={tip.id}>
-              <div className="saved-tip-art" aria-hidden="true">{start + index === 0 || artworkFamily(filteredTips[start + index - 1].categoryId) !== artworkFamily(tip.categoryId)
+              <div className="saved-tip-art" aria-hidden="true">{index === 0 || artworkFamily(filteredTips[index - 1].categoryId) !== artworkFamily(tip.categoryId)
                 ? <ActionArtwork category={tip.categoryId} thumbnail /> : <CategoryIcon category={tip.categoryId} />}</div>
               <div className="library-tip-meta"><span className="collection-category"><CategoryIcon category={tip.categoryId} />{tip.category}</span><span className="collection-effort">{tip.effort}</span></div>
               <h3>{tip.title}</h3>
@@ -143,7 +122,7 @@ export function FavoriteTips({ title, locale, disabled, loading, controls, descr
             </article>
           ))}
         </div>
-          {!viewAll && filteredTips.length > visibleCount && <button className="secondary-button favorites-arrow favorites-arrow--next" type="button" aria-label={copy.next} aria-controls="favorite-cards" disabled={startIndex === maxStart} onClick={() => setPosition({ key: windowKey, index: startIndex + 1 })}>›</button>}
+          {!viewAll && filteredTips.length > visibleCount && <button className="secondary-button favorites-arrow favorites-arrow--next" type="button" aria-label={copy.next} aria-controls="favorite-cards" disabled={!carousel.edges.next} onClick={() => carousel.move(1)}>›</button>}
         </div>
       )}
     </section>
