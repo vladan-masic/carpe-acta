@@ -1,3 +1,5 @@
+import footerMeadow from "../assets/illustrations/footer-meadow-1440.webp";
+import footerMeadowSmall from "../assets/illustrations/footer-meadow-640.webp";
 import { BrandEmblem } from "./BrandEmblem";
 
 type AppFooterProps = {
@@ -13,6 +15,10 @@ export function AppFooter({
 
   return (
     <footer className="site-footer">
+      <picture className="footer-landscape" aria-hidden="true">
+        <source media="(max-width: 699px)" srcSet={footerMeadowSmall} />
+        <img src={footerMeadow} width="1440" height="480" alt="" loading="lazy" decoding="async" />
+      </picture>
       <div className="footer-inner">
         <div className="footer-primary">
           <div>
