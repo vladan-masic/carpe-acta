@@ -1,0 +1,22 @@
+export const persistenceCopy = {
+ en: {
+  otherDrafts:'Unsaved edits remain in another account or guest session in this page. Return to that session to save or download them before leaving.',finish:'Close focus prompt',board:'Board',list:'List',view:'Task view',loading:'Loading tasks…',unavailable:'Not synchronized',saving:'Saving…',saved:'Saved',pending:'Unsaved changes',
+  guest:'Browser tasks · stored on this device. Sign in to use your account.',account:'Account tasks · synchronized on focus or Refresh.',refresh:'Refresh',retry:'Retry save',retryLoad:'Retry loading',
+  import:'Import browser tasks',importHint:'Add your browser tasks to this account. Existing tasks stay intact; previously imported tasks will not be added again.',imported:'No new browser tasks to import.',
+  export:'Download recovery copy',reload:'Discard local edits and load saved tasks',discard:'Discard your unsaved edits? Download a recovery copy first if you need to keep them.',
+  delete:'Delete this task and its subtasks?',cancel:'Cancel',confirm:'Delete task',limit:'Up to 1,000 tasks and 100 subtasks per task.',
+  order:'Manual order is preserved within each status. Reordering is available with All + Manual selected.',
+  focusCopy:'Choose a small first action and give it your attention. This prompt does not start a timer or record a tip completion.',
+  error:{conflict:'Saved tasks changed elsewhere. Your edits are still here. Download a recovery copy, then load saved tasks before editing again.',storage:'Browser storage is unavailable. Your edits remain in this page; download a copy before leaving, or retry.',corrupt:'Stored tasks could not be read safely. They have not been overwritten. Restore a browser backup before retrying.',account:'Your account changed. These edits have not been sent to another account.',network:'Tasks could not be synchronized. Your edits remain here. Check your connection and retry.',invalid:'Some fields are invalid. Use a title, up to 200 characters; notes up to 10,000; a valid date; duration 1–10,000 minutes. Check task and subtask limits.'},
+ },
+ 'sr-Latn': {
+  otherDrafts:'Nesačuvane izmene drugog naloga ili gostujuće sesije ostaju na ovoj stranici. Vratite se u tu sesiju da ih sačuvate ili preuzmete pre odlaska.',finish:'Zatvori podsetnik',board:'Tabla',list:'Lista',view:'Prikaz zadataka',loading:'Učitavanje zadataka…',unavailable:'Nije sinhronizovano',saving:'Čuvanje…',saved:'Sačuvano',pending:'Nesačuvane izmene',
+  guest:'Zadaci pregledača · čuvaju se na ovom uređaju. Prijavite se za korišćenje naloga.',account:'Zadaci naloga · osvežavaju se pri povratku ili klikom na Osveži.',refresh:'Osveži',retry:'Pokušaj čuvanje ponovo',retryLoad:'Ponovo učitaj',
+  import:'Uvezi zadatke iz pregledača',importHint:'Dodajte zadatke iz pregledača na ovaj nalog. Postojeći ostaju sačuvani; već uvezeni zadaci se ne dodaju ponovo.',imported:'Nema novih zadataka za uvoz.',
+  export:'Preuzmi kopiju za oporavak',reload:'Odbaci lokalne izmene i učitaj sačuvane zadatke',discard:'Odbaciti nesačuvane izmene? Prvo preuzmite kopiju ako želite da ih zadržite.',
+  delete:'Obrisati ovaj zadatak i njegove korake?',cancel:'Otkaži',confirm:'Obriši zadatak',limit:'Do 1.000 zadataka i 100 koraka po zadatku.',
+  order:'Ručni redosled se čuva unutar svakog statusa. Pomeranje je dostupno uz Sve + Moj redosled.',
+  focusCopy:'Izaberite mali prvi korak i posvetite mu pažnju. Ovaj podsetnik ne pokreće tajmer i ne beleži završavanje saveta.',
+  error:{conflict:'Sačuvani zadaci su promenjeni na drugom mestu. Vaše izmene su i dalje ovde. Preuzmite kopiju, pa učitajte sačuvane zadatke pre daljih izmena.',storage:'Čuvanje u pregledaču nije dostupno. Izmene ostaju na ovoj stranici; preuzmite kopiju pre odlaska ili pokušajte ponovo.',corrupt:'Sačuvani zadaci nisu mogli bezbedno da se pročitaju i nisu prepisani. Vratite rezervnu kopiju pregledača pre ponovnog pokušaja.',account:'Nalog je promenjen. Ove izmene nisu poslate drugom nalogu.',network:'Sinhronizacija nije uspela. Izmene ostaju ovde. Proverite vezu i pokušajte ponovo.',invalid:'Neka polja nisu ispravna. Unesite naslov do 200 znakova, beleške do 10.000, ispravan datum i trajanje 1–10.000 minuta. Proverite ograničenja broja zadataka i koraka.'},
+ },
+};

@@ -167,6 +167,7 @@ export function App() {
         <AppToolbar label={copy.menuLabel} navigation={
           <nav className="section-navigation" aria-label={copy.navigation.label}>
             <a href="#tip-generator"><NavigationIcon destination="start" />{copy.navigation.start}</a>
+            <a href="/tasks">{locale === "en" ? "My Tasks" : "Moji zadaci"}</a>
             <a href="#tip-library-title" onClick={(event) => {
               event.preventDefault();
               openLibrarySearch();

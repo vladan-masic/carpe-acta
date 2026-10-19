@@ -20,8 +20,28 @@ import "./styles/handwritten-botanical.css";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
-// Vite removes this branch and its assets from production builds.
-if (import.meta.env.DEV && window.location.pathname === "/__discovery") {
+// Only DEV preview branches and their assets are removed from production builds.
+if (window.location.pathname.replace(/\/$/, "") === "/tasks") {
+  document.documentElement.dataset.design = "notebook";
+  import("./tasks/TasksPage").then(({ TasksPage }) => {
+    root.render(<StrictMode><TasksPage /></StrictMode>);
+  });
+} else if (import.meta.env.DEV && window.location.pathname === "/__realm-preview") {
+  document.documentElement.dataset.design = "notebook";
+  import("./dev/realm/RealmPreview").then(({ RealmPreview }) => {
+    root.render(<StrictMode><RealmPreview /></StrictMode>);
+  });
+} else if (import.meta.env.DEV && window.location.pathname === "/__tasks-kanban-preview") {
+  document.documentElement.dataset.design = "notebook";
+  import("./dev/kanban/KanbanPreview").then(({ KanbanPreview }) => {
+    root.render(<StrictMode><KanbanPreview /></StrictMode>);
+  });
+} else if (import.meta.env.DEV && window.location.pathname === "/__tasks-preview") {
+  document.documentElement.dataset.design = "notebook";
+  import("./dev/tasks/TasksPreview").then(({ TasksPreview }) => {
+    root.render(<StrictMode><TasksPreview /></StrictMode>);
+  });
+} else if (import.meta.env.DEV && window.location.pathname === "/__discovery") {
   document.documentElement.dataset.design = "notebook";
   document.documentElement.dataset.theme = "light";
   import("./dev/DiscoveryPreview").then(({ DiscoveryPreview }) => {

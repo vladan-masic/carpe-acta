@@ -1,0 +1,21 @@
+.task-storage { padding: 12px 18px; margin-top: 12px; border: 1px solid var(--paper-edge); border-radius: 14px; background: var(--surface-raised); font-size: .82rem; }
+.task-storage p { margin: 4px 0; }
+.task-storage-actions, .task-view-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.task-storage button, .task-view-switch button, .task-view-switch select { min-height: 44px; padding: 8px 12px; border: 1px solid var(--paper-edge); background: var(--surface-raised); border-radius: 10px; color: inherit; }
+.task-view-switch { margin-bottom: 12px; }
+.task-view-switch button[aria-pressed=true] { background: var(--action); color: white; }
+.task-view-switch label { margin-left: auto; }
+.task-content { border: 0; padding: 0; margin: 0; min-width: 0; }
+.production-list { margin-top: 16px; }
+.production-list li { grid-template-columns: 30px 30px minmax(0,1fr); }
+.tasks-preview dialog { color: var(--ink); background: var(--surface-raised); border: 1px solid var(--paper-edge); border-radius: 18px; max-width: min(450px,90vw); padding: 24px; }
+.tasks-preview dialog button { min-height: 44px; margin: 8px; }
+.task-storage [role=alert] { color: var(--action); }
+@media (max-width:600px) { .task-storage { padding: 10px; } .task-storage-actions button { flex: 1 1 40%; } .task-view-switch label { margin-left: 0; } .production-list li { grid-template-columns: 26px 26px minmax(0,1fr); } }
+@media (min-width:700px) { .task-storage { display:flex; flex-wrap:wrap; align-items:center; gap:8px 18px; } .task-storage>p:first-child { flex:1; } .task-storage>p[role=alert] { flex-basis:100%; } }
+.tasks-production .tasks-primary, .tasks-production .tasks-primary:hover,
+.tasks-production .kb-filters button[aria-pressed=true] { color:#fff8ee; }
+.tasks-production .kb-check, .tasks-production .kb-move-menu summary { min-height:44px; }
+.tasks-production .kb-drag-handle { flex-basis:44px; }
+.tasks-production .task-checkbox-touch { display:flex; align-items:center; justify-content:center; flex:0 0 44px; min-height:44px; cursor:pointer; }
+.tasks-production .task-import-hint { flex-basis:100%; font-size:.8rem; color:var(--ink-muted); }

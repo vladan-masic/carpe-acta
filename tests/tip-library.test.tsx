@@ -134,7 +134,8 @@ it.each(["en", "sr-Latn"] as const)("navigates sections and opens search without
   render(<App />);
   const copy = messages[locale];
   const nav = within(screen.getByRole("navigation", { name: copy.navigation.label }));
-  expect(nav.getAllByRole("link")).toHaveLength(4);
+  expect(nav.getAllByRole("link")).toHaveLength(5);
+  expect(nav.getByRole("link", { name: locale === "en" ? "My Tasks" : "Moji zadaci" }).getAttribute("href")).toBe("/tasks");
   const original = document.getElementById("active-tip-title")!.textContent;
   expect(document.getElementById("tips-preview-title")).toBeNull();
   expect(screen.queryByRole("searchbox")).toBeNull();
