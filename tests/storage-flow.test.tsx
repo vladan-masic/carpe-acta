@@ -13,12 +13,12 @@ import { authMessages } from "../src/i18n/auth";
 import { favoritesStorageKey } from "../src/utils/favorites";
 import { completionStorageKey } from "../src/utils/completions";
 import { addFavorites, fetchFavorites } from "../src/favorites/api";
-import { uploadCompletions, countCompletions, fetchProgress } from "../src/completions/api";
+import { uploadCompletions, countCompletions, fetchProgress, fetchCalendarYear } from "../src/completions/api";
 
 const mock = vi.hoisted(() => ({ session: null as Session | null, loading: false, client: {} as SupabaseClient }));
 vi.mock("../src/hooks/useAuth", () => ({ useAuth: () => ({ ...mock, recovering: false, setRecovering: vi.fn(), clearError: vi.fn(), error: null }) }));
 vi.mock("../src/favorites/api", () => ({ fetchFavorites: vi.fn(), addFavorites: vi.fn(), removeFavorite: vi.fn() }));
-vi.mock("../src/completions/api", () => ({ fetchProgress: vi.fn(), countCompletions: vi.fn(), uploadCompletions: vi.fn(), deleteCompletion: vi.fn() }));
+vi.mock("../src/completions/api", () => ({ fetchCalendarYear: vi.fn(), fetchProgress: vi.fn(), countCompletions: vi.fn(), uploadCompletions: vi.fn(), deleteCompletion: vi.fn() }));
 const guest = { id: "guest-one", tipId: "one-tiny-step", completedAt: "2026-10-01T12:00:00Z", feedback: true };
 beforeEach(() => {
   vi.resetAllMocks(); localStorage.clear(); mock.session = null; mock.loading = false;
@@ -27,6 +27,7 @@ beforeEach(() => {
   vi.mocked(fetchFavorites).mockResolvedValue([]);
   vi.mocked(countCompletions).mockResolvedValue(0);
   vi.mocked(fetchProgress).mockResolvedValue(summarizeProgress([]));
+  vi.mocked(fetchCalendarYear).mockResolvedValue([]);
   vi.mocked(addFavorites).mockResolvedValue(); vi.mocked(uploadCompletions).mockResolvedValue();
 });
 afterEach(() => { cleanup(); localStorage.clear(); });
