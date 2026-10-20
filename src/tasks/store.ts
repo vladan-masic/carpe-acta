@@ -1,4 +1,4 @@
-import { emptySnapshot, manual, validTasks, type Snapshot, type Task } from './domain';
+import { emptySnapshot, eligibleGuestTasks, validTasks, type Snapshot, type Task } from './domain';
 import { TaskError, type Save, type TaskAdapter } from './persistence';
 
 export type StoreState = Snapshot & { ready: boolean; dirty: boolean; saving: boolean; error: TaskError['code'] | null };
@@ -57,8 +57,7 @@ export class TaskStore {
   }
   importGuest(guest: Snapshot) {
     if(!this.owner || !this.state.ready || this.state.saving || this.state.error) return;
-    const seen=new Set([...this.state.importedIds,...this.state.tasks.map(t=>t.id)]);
-    const added=manual(guest.tasks).filter(t=>!seen.has(t.id));
+    const added=eligibleGuestTasks(guest,this.state);
     if(!added.length) return;
     const result=[...this.state.tasks];
     for(const task of added) result.push({...task,ownerId:this.owner,rank:Math.max(-1,...result.filter(t=>t.status===task.status).map(t=>t.rank))+1});
