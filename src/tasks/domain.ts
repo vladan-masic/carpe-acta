@@ -69,3 +69,9 @@ export function visibleTasks(tasks: Task[], filter: Filter, sort: Sort, today: s
   const result=manual(tasks).filter(t=>filter==='all'||(filter==='completed'?t.status==='done':t.status!=='done'&&(filter==='today'?t.deadline===today:filter==='upcoming'?!!t.deadline&&t.deadline>today:!t.deadline)));
   return sort==='manual'?result:result.sort((a,b)=>(a.deadline??'9999').localeCompare(b.deadline??'9999')||a.rank-b.rank||a.id.localeCompare(b.id));
 }
+
+/** Import receipts survive deletion; existing IDs must never be imported twice. */
+export function eligibleGuestTasks(guest: Snapshot, account: Pick<Snapshot, 'tasks' | 'importedIds'>): Task[] {
+  const seen = new Set([...account.importedIds, ...account.tasks.map(task => task.id)]);
+  return manual(guest.tasks).filter(task => !seen.has(task.id));
+}

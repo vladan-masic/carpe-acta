@@ -9,7 +9,7 @@ import { Properties } from './presentation/TaskControls';
 import { taskCopy } from './presentation/copy';
 import { bilingual, dateKey, type View } from './presentation/model';
 import { BoardCard } from './presentation/BoardCard';
-import { completeTask, newTask as createTask, moveTask, statuses, visibleTasks, type Task, type Status, type Sort } from './domain';
+import { eligibleGuestTasks, completeTask, newTask as createTask, moveTask, statuses, visibleTasks, type Task, type Status, type Sort } from './domain';
 import type { BoardTask } from './presentation/boardModel';
 import { kanbanCopy } from './presentation/boardCopy';
 import { useBoardDrag } from './presentation/useBoardDrag';
@@ -60,10 +60,23 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
   const [mode,setMode]=useState<'board'|'list'>(()=>{try{return localStorage.getItem('carpe-acta.tasks.view')==='list'?'list':'board';}catch{return 'board';}});
   const [sort,setSort]=useState<Sort>('manual');
   const [deleteRequested,setDeleteRequested]=useState(false);
-  const [importMessage,setImportMessage]=useState('');
+  const [importMessage,setImportMessage]=useState<string[]|'error'|null>(null);
+  const [canImport,setCanImport]=useState(false);
   const deleteDialog=useRef<HTMLDialogElement>(null);
   const p=persistenceCopy[locale];
   useEffect(()=>store.connect(),[store]);
+  useEffect(()=>{
+    const check=()=>{
+      try { setCanImport(Boolean(store.owner && state.ready && eligibleGuestTasks(readGuest(),state).length)); }
+      catch { setCanImport(false); }
+    };
+    const onStorage=(event:StorageEvent)=>{if(event.key===GUEST_KEY || event.key===null)check();};
+    check();
+    window.addEventListener('storage',onStorage);
+    window.addEventListener('focus',check);
+    document.addEventListener('visibilitychange',check);
+    return ()=>{window.removeEventListener('storage',onStorage);window.removeEventListener('focus',check);document.removeEventListener('visibilitychange',check);};
+  },[store,state]);
   useEffect(()=>{try{localStorage.setItem('carpe-acta.tasks.view',mode);}catch{/* The view still switches in memory. */}},[mode]);
   useEffect(()=>{if(deleteRequested)deleteDialog.current?.showModal();},[deleteRequested]);
   function download() { const raw=state.error==='corrupt'&&!store.owner?localStorage.getItem(GUEST_KEY):null;const blob=new Blob([raw??JSON.stringify({version:1,snapshot:state},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='carpe-acta-tasks-recovery.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000); }
@@ -135,18 +148,19 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
     <div className="kb-shell" id="page-top" tabIndex={-1}>
       {toolbar}
       <main>
-        <section className="task-storage" aria-label={p.saved}>
-         <p>{store.owner?p.account:p.guest}</p>{otherDrafts&&<p role="alert">{p.otherDrafts}</p>}
-         <div role="status">{state.saving?p.saving:state.dirty?p.pending:state.error?p.unavailable:!state.ready?p.loading:p.saved}</div>
-         {state.error&&<p role="alert">{p.error[state.error]}</p>}
-         {store.owner&&<p className="task-import-hint">{p.importHint}</p>}
+        <section className="task-storage" aria-label={store.owner?p.accountLabel:p.guestLabel}>
+         <span className="task-storage-type" title={store.owner?p.account:p.guest}>{store.owner?p.accountLabel:p.guestLabel}</span>
+         <div className="task-storage-status" role="status">{state.saving?p.saving:state.dirty?p.pending:state.error?p.unavailable:!state.ready?p.loading:p.saved}</div>
          <div className="task-storage-actions">
           <button disabled={state.saving || state.dirty} onClick={()=>void store.refresh()}>{state.ready?p.refresh:p.retryLoad}</button>
           {state.dirty&&state.error!=='conflict'&&<button disabled={state.saving} onClick={()=>void store.flush()}>{p.retry}</button>}
           {(state.dirty || state.error)&&<button onClick={download}>{p.export}</button>}
           {state.error==='conflict'&&<button onClick={()=>{if(window.confirm(p.discard))void store.reloadServer();}}>{p.reload}</button>}
-          {store.owner&&state.ready&&<button disabled={state.saving || !!state.error} title={p.importHint} onClick={()=>{try{const guest=readGuest();const count=state.tasks.length;store.importGuest(guest);setImportMessage(store.getSnapshot().tasks.length===count?p.imported:p.importHint);}catch{setImportMessage(p.error.storage);}}}>{p.import}</button>}
-         </div>{importMessage&&<p role="status">{importMessage}</p>}
+          {canImport&&<button disabled={state.saving || !!state.error} title={p.importHint} onClick={()=>{try{const guest=readGuest();const added=eligibleGuestTasks(guest,state);store.importGuest(guest);setImportMessage(added.length?added.map(task=>task.id):null);setCanImport(eligibleGuestTasks(guest,store.getSnapshot()).length>0);}catch{setImportMessage('error');}}}>{p.import}</button>}
+         </div>
+         {otherDrafts&&<p role="alert">{p.otherDrafts}</p>}
+         {state.error&&<p role="alert">{p.error[state.error]}</p>}
+         <div className="task-import-feedback" role="status" aria-live="polite">{importMessage==='error'?p.error.storage:Array.isArray(importMessage)&&importMessage.every(id=>state.importedIds.includes(id))&&!state.error?(state.dirty||state.saving?p.importPending:p.importSuccess):''}</div>
         </section>
         <header className="kb-hero">
           <div className="kb-hero-copy"><h1>{k.title}</h1><p className="kb-promise">{k.lead} <em>{k.accent}</em></p><p>{k.description}</p></div>
