@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+import { taskInteractive, type DragBindings } from './useBoardDrag';
 import type { Locale } from '../../i18n/locales';
 import { taskCopy } from './copy';
 import { dateKey } from './model';
@@ -9,21 +11,24 @@ type Props = {
   task: BoardTask; locale: Locale; selected: boolean; dragging: boolean;
   first: boolean; last: boolean; before: boolean;
   handle?: ReturnType<ReturnType<typeof useBoardDrag>['handle']>;
+  surface?: DragBindings;
   open: (button: HTMLButtonElement) => void;
   move: (status: Status) => void; reorder: (direction: number) => void;
   complete: (done: boolean) => void;
 };
 
-export function BoardCard({ task, locale, selected, dragging, first, last, before, handle, open, move, reorder, complete }: Props) {
+export function BoardCard({ task, locale, selected, dragging, first, last, before, handle, surface, open, move, reorder, complete }: Props) {
   const c = taskCopy[locale], k = kanbanCopy[locale];
   const title = task.title[locale];
+  const titleButton = useRef<HTMLButtonElement>(null);
   const deadline = task.deadline === dateKey() ? c.today : task.deadline
     ? new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : 'sr-Latn', { day: 'numeric', month: 'short' }).format(new Date(`${task.deadline}T12:00:00`)) : '';
   return <article className="kb-card" data-card-id={task.id} data-selected={selected} data-dragging={dragging}
-    data-done={task.done} data-insert={before} aria-label={title}>
+    data-done={task.done} data-insert={before} data-draggable={Boolean(surface)} aria-label={title} {...surface}
+    onClick={event=>{if(!(event.target as Element).closest(taskInteractive) && titleButton.current)open(titleButton.current);}}>
     <div className="kb-card-top">
-      <button className="kb-card-open" onClick={event => open(event.currentTarget)} aria-label={`${c.open}: ${title}`}>
-        <span className="kb-card-title">{title}</span>
+      <div className="kb-card-open">
+        <button ref={titleButton} className="kb-card-title-button" onClick={event => open(event.currentTarget)} aria-label={`${c.open}: ${title}`}><span className="kb-card-title">{title}</span></button>
         <span className="kb-card-meta">
           <span className="tasks-stars" title={`${c.difficulty}: ${c.ratings[task.difficulty - 1]}`}>{'★'.repeat(task.difficulty)}<span>{'☆'.repeat(5 - task.difficulty)}</span></span>
           <span className="tasks-badge" data-urgency={task.urgency}>{c.urgencies[task.urgency]}</span>
@@ -33,7 +38,7 @@ export function BoardCard({ task, locale, selected, dragging, first, last, befor
           {deadline && <span>▦ {deadline}</span>}
           {!deadline && !task.subtasks.length && <span>{c.noDate}</span>}
         </span>
-      </button>
+      </div>
       <button className="kb-drag-handle" disabled={!handle} {...handle} aria-label={`${k.drag}: ${title}`} aria-describedby="kb-drag-help" data-handle-id={task.id}>⠿</button>
     </div>
     <div className="kb-card-tools">

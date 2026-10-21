@@ -1,5 +1,6 @@
 import { useId } from 'react';
 import type { TaskCopy } from './copy';
+import type { DragBindings } from './useBoardDrag';
 import type { Task } from './model';
 export function Difficulty({value,onChange,copy}:{value:number;onChange:(n:number)=>void;copy:TaskCopy}) {
  const id=useId();
@@ -13,6 +14,6 @@ export function Properties({task,update,copy}:{task:Task;update:(patch:Partial<T
  <label>{copy.minutes}<input type="number" min="1" max="10000" value={task.minutes} onChange={e=>update({minutes:e.target.value})}/></label>
  </div></div>;
 }
-export function OrderControls({label,first,last,move,copy}:{label:string;first:boolean;last:boolean;move:(n:number)=>void;copy:TaskCopy}) {
- return <details className="tasks-order"><summary aria-label={`${copy.reorder}: ${label}`} title={copy.reorder}>⠿</summary><div><button type="button" disabled={first} onClick={()=>move(-1)}>{copy.up} ↑</button><button type="button" disabled={last} onClick={()=>move(1)}>{copy.down} ↓</button></div></details>;
+export function OrderControls({label,first,last,move,copy,handle,id}:{label:string;first:boolean;last:boolean;move:(n:number)=>void;copy:TaskCopy;handle?:DragBindings;id?:string}) {
+ return <details className="tasks-order"><summary {...handle} data-handle-id={id} data-drag-handle={Boolean(handle)} aria-label={`${copy.reorder}: ${label}`} title={copy.reorder}>⠿</summary><div><button type="button" disabled={first} onClick={()=>move(-1)}>{copy.up} ↑</button><button type="button" disabled={last} onClick={()=>move(1)}>{copy.down} ↓</button></div></details>;
 }

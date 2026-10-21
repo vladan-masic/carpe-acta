@@ -22,3 +22,30 @@
 .task-storage-status { margin-left: auto; color: var(--ink-muted); }
 .task-storage > [role=alert], .task-import-feedback:not(:empty) { flex-basis: 100%; }
 .task-import-feedback:empty { display: none; }
+
+/* Keep the existing artwork and hero dimensions; spread the landscape beneath the copy. */
+.tasks-production .kb-art { inset: 0; mask-image: none; opacity: 1; pointer-events: none; }
+.tasks-production .kb-art img:first-child { object-position: center 58%; }
+.tasks-production .kb-art img:last-child { left: 57%; }
+.tasks-production .kb-hero::before { background: linear-gradient(90deg, color-mix(in srgb, var(--surface-page) 88%, transparent), color-mix(in srgb, var(--surface-page) 72%, transparent) 32%, transparent 72%); }
+.tasks-production .kb-quick-row > .task-add-icon { line-height: 1; }
+.task-add-icon svg { width: 21px; height: 21px; display: block; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.tasks-production .kb-cards { overscroll-behavior-y: auto; }
+.tasks-production .kb-board { overscroll-behavior-y: auto; }
+.tasks-production .task-advanced-toggle { min-height: 30px; border: 0; background: transparent; padding: 5px 0; color: var(--action-ink); font-size: 11px; }
+#task-advanced-fields { margin-top: 8px; }
+#task-advanced-fields[hidden] { display: none; }
+.tasks-production .tasks-row-title-button { display: block; padding: 0; border: 0; border-radius: 3px; background: transparent; color: inherit; text-align: left; min-height: 44px; max-width: 100%; }
+.tasks-production [data-draggable=true] { cursor: grab; user-select: none; }
+.tasks-production [data-draggable=true] :is(input,textarea,[contenteditable]) { user-select: text; }
+.task-list-groups { display: grid; gap: 8px; margin-top: 16px; }
+.task-list-groups .production-list { margin-top: 0; }
+.task-list-groups [data-dragging=true] { opacity: .3; }
+.task-list-groups [data-insert=true]::before, .task-list-groups [data-insert-end=true]::after { content: ''; position: absolute; height: 4px; left: 0; right: 0; top: -7px; border-radius: 8px; background: var(--action); z-index: 2; }
+.task-list-groups [data-insert-end=true]::after { top: auto; bottom: -7px; }
+.tasks-production [data-drag-handle=true] { touch-action: none; cursor: grab; user-select: none; }
+@media (max-width:599px) {
+ .tasks-production .kb-art img:first-child { object-position: 40% center; }
+ .tasks-production .kb-hero::before { background: linear-gradient(90deg, color-mix(in srgb, var(--surface-page) 90%, transparent), color-mix(in srgb, var(--surface-page) 65%, transparent)); }
+ .tasks-production .task-advanced-toggle { min-height: 44px; }
+}
