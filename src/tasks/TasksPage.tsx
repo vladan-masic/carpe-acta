@@ -84,6 +84,7 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
   const [view, setView] = useState<View>('all');
   const [draft, setDraft] = useState(newTask);
   const [title, setTitle] = useState('');
+  const [detailsOpen,setDetailsOpen]=useState(false);
   const [addStatus, setAddStatus] = useState<Status>('next');
   const [visibleColumn, setVisibleColumn] = useState<Status>('later');
   const [announcement, announce] = useState('');
@@ -110,7 +111,8 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
       else quickInput.current?.focus({ preventScroll: true });
     });
   }
-  const { drag, handle } = useBoardDrag(board, move, announce, k);
+  const dragging = useBoardDrag(board, move, announce, k, {enabled:canOrder && state.ready && state.error!=='conflict',scope:mode});
+  const { drag, handle, surface } = dragging;
   const draggedTask = visible.find(task => task.id === drag?.id);
 
   function open(id: string, button: HTMLButtonElement) {
@@ -180,10 +182,11 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
                 setTitle(''); setDraft(newTask()); setView('all'); announce(`${c.added} ${k.columns[addStatus]}.`);
                 navigateColumn(addStatus); quickInput.current?.focus();
               }}>
-                <div className="kb-quick-row"><span aria-hidden="true">＋</span><input ref={quickInput} value={title} onChange={event => setTitle(event.target.value)} maxLength={200} aria-label={c.placeholder} placeholder={c.placeholder}/><button className="tasks-primary" type="submit" disabled={tasks.length>=1000}>{c.add}</button></div>
+                <div className="kb-quick-row"><span className="task-add-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><input ref={quickInput} value={title} onChange={event => setTitle(event.target.value)} maxLength={200} aria-label={c.placeholder} placeholder={c.placeholder}/><button className="tasks-primary" type="submit" disabled={tasks.length>=1000}>{c.add}</button></div>
                 <div className="kb-quick-options"><label>{k.addTo}<select value={addStatus} onChange={event => setAddStatus(event.target.value as Status)}>{statuses.map(status => <option key={status} value={status}>{k.columns[status]}</option>)}</select></label>
-                  <details><summary>{c.advanced}</summary><Properties task={draft} update={patch => setDraft(task => ({ ...task, ...patch }))} copy={c}/><label>{c.notes}<textarea maxLength={10000} value={draft.notes[locale]} onChange={event => setDraft(task => ({ ...task, notes: bilingual(event.target.value, event.target.value) }))}/></label></details>
+                  <button type="button" className="task-advanced-toggle" aria-expanded={detailsOpen} aria-controls="task-advanced-fields" onClick={()=>setDetailsOpen(value=>!value)}><span aria-hidden="true">{detailsOpen?'▾':'▸'}</span> {c.advanced}</button>
                 </div>
+                <div id="task-advanced-fields" hidden={!detailsOpen}><Properties task={draft} update={patch => setDraft(task => ({ ...task, ...patch }))} copy={c}/><label>{c.notes}<textarea maxLength={10000} value={draft.notes[locale]} onChange={event => setDraft(task => ({ ...task, notes: bilingual(event.target.value, event.target.value) }))}/></label></div>
               </form>
               <div className="kb-filters" role="group" aria-label={k.filter}>{(['all', 'today', 'upcoming', 'someday', 'completed'] as View[]).map(filter => <button key={filter} aria-pressed={view === filter} onClick={() => setView(filter)}>{filter === 'all' ? k.all : c[filter]}</button>)}</div>
             </div>
@@ -201,7 +204,7 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
                 return <section key={status} className="kb-column" data-column={status} data-target={drag?.target?.status === status} aria-labelledby={`column-${status}`}>
                   <header className="kb-column-heading"><span className="kb-status-icon" aria-hidden="true">{icons[status]}</span><div><h2 id={`column-${status}`}>{k.columns[status]} <span>{cards.length}</span></h2><p>{k.hints[status]}</p></div></header>
                   <div className="kb-cards">
-                    {cards.map((task, index) => <BoardCard key={task.id} task={task} locale={locale} selected={task.id === selected} dragging={drag?.id === task.id} before={drag?.target?.beforeId === task.id} first={!canOrder || index === 0} last={!canOrder || index === cards.length - 1} handle={canOrder?handle(task.id):undefined}
+                    {cards.map((task, index) => <BoardCard key={task.id} task={task} locale={locale} selected={task.id === selected} dragging={drag?.id === task.id} before={drag?.target?.beforeId === task.id} first={!canOrder || index === 0} last={!canOrder || index === cards.length - 1} handle={canOrder?handle(task.id):undefined} surface={canOrder?surface(task.id):undefined}
                       open={button => open(task.id, button)} move={target => move(task.id, target)} reorder={direction => reorder(task, direction)}
                       complete={done => setTasks(items=>completeTask(items,task.id,done))}/>) }
                     {cards.length === 0 && <p className="kb-empty">{view === 'all' ? k.noCards : k.noMatches}</p>}
@@ -213,7 +216,7 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
               })}
             </div>
             <p className="kb-drag-help" id="kb-drag-help">{canOrder?k.dragHint:p.order}</p></>}
-            {mode==='list'&&<><ListView tasks={visibleRecords} locale={locale} selected={selected} manual={canOrder} open={open} reorder={reorder} complete={(id,done)=>setTasks(items=>completeTask(items,id,done))}/>{!visible.length&&<div className="tasks-empty"><h2>{c.empty}</h2><p>{c.emptyCopy}</p></div>}<p className="kb-drag-help">{p.order}</p></>}
+            {mode==='list'&&<><ListView container={board} dragging={dragging} tasks={visibleRecords} locale={locale} selected={selected} manual={canOrder} open={open} reorder={reorder} complete={(id,done)=>setTasks(items=>completeTask(items,id,done))}/>{!visible.length&&<div className="tasks-empty"><h2>{c.empty}</h2><p>{c.emptyCopy}</p></div>}<p className="kb-drag-help" id="kb-drag-help">{p.order} {k.dragHint}</p></>}
             </fieldset>
           </section>
           {selectedTask && <aside className="kb-detail-wrap" aria-label={c.details}>
