@@ -45,12 +45,12 @@ it('moves tasks through semantic controls and disables manual ordering in sorted
  expect(screen.getAllByRole('button',{name:/^Open task:/})[0].textContent).toContain('Apply for three');
 });
 it('demonstrates action support, localized samples, and a recoverable empty state',()=>{
- setup();fireEvent.click(screen.getByRole('button',{name:'✧ I’m stuck'}));fireEvent.click(screen.getByRole('button',{name:'It feels too big'}));
- expect(screen.getByText('Pick one corner of the task. What could you do in two minutes?')).toBeTruthy();
- fireEvent.click(screen.getByRole('button',{name:'✂ Make it smaller'}));
- expect(screen.getByText(/What is one small, visible action/)).toBeTruthy();
- fireEvent.click(screen.getByRole('button',{name:'▷ Start',exact:true}));
- expect(screen.getByText(/This is a practice session/)).toBeTruthy();
+ setup();fireEvent.click(screen.getByRole('button',{name:'I’m stuck'}));fireEvent.click(screen.getByRole('button',{name:'The task feels overwhelming'}));
+ expect(screen.getByText('Choose one small, visible part. The rest can wait.')).toBeTruthy();
+ fireEvent.click(screen.getByRole('button',{name:'Make it smaller'}));
+ expect(screen.getByText(/What’s one small action you could take/)).toBeTruthy();
+ fireEvent.click(screen.getByRole('button',{name:'Start',exact:true}));
+ expect(screen.getByText(/What will you work on/)).toBeTruthy();
  fireEvent.click(screen.getByRole('button',{name:'Select language: English'}));
  fireEvent.click(screen.getByRole('option',{name:'Srpski'}));
  expect(screen.getByRole('heading',{name:'Moji zadaci'})).toBeTruthy();

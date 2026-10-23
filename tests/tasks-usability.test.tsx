@@ -38,7 +38,7 @@ it('drags board surfaces only after the threshold, saves only on drop, and suppr
 });
 it('leaves touch surfaces and interactive controls alone; handles still drag and Escape cancels',async()=>{
  await setup();vi.useFakeTimers();const card=screen.getByRole('article',{name:'First step'});target(screen.getByRole('region',{name:'Done 0'}));
- for(const element of [within(card).getByRole('button',{name:'Open task: First step'}),within(card).getByRole('checkbox'),within(card).getByLabelText('Move task: First step')]){
+ for(const element of [within(card).getByRole('button',{name:'Open task: First step'}),within(card).getByRole('checkbox')]){
   pointer(element,'Down',10,10);pointer(element,'Move',90,90);pointer(element,'Up',90,90);act(()=>vi.advanceTimersByTime(20));expect(document.querySelector('.kb-drag-ghost')).toBeNull();
  }
  pointer(card,'Down',10,10,'touch');pointer(card,'Move',90,90,'touch');act(()=>vi.advanceTimersByTime(20));expect(document.querySelector('.kb-drag-ghost')).toBeNull();
@@ -59,7 +59,7 @@ it('reorders list rows within their status, persists across reload, and disables
  fireEvent.change(screen.getByRole('combobox',{name:'Sort'}),{target:{value:'manual'}});fireEvent.click(within(screen.getByRole('group',{name:'Filter tasks'})).getByRole('button',{name:'Someday'}));expect(document.querySelector('[data-draggable=true]')).toBeNull();
 });
 it('keeps advanced fields mounted below the toggle, preserving values and editable difficulty after creation',async()=>{
- await setup();const toggle=screen.getByRole('button',{name:'Add details'}),parent=toggle.parentElement;
+ await setup();fireEvent.focus(screen.getByRole('textbox',{name:'What do you want to accomplish?'}));const toggle=screen.getByRole('button',{name:'Add details'}),parent=toggle.parentElement;
  fireEvent.click(toggle);expect(toggle.parentElement).toBe(parent);expect(toggle.getAttribute('aria-expanded')).toBe('true');
  fireEvent.click(screen.getByRole('radio',{name:'4 — Difficult'}));fireEvent.click(toggle);expect(toggle.getAttribute('aria-expanded')).toBe('false');fireEvent.click(toggle);expect((screen.getByRole('radio',{name:'4 — Difficult'}) as HTMLInputElement).checked).toBe(true);
  fireEvent.click(toggle);fireEvent.click(screen.getByRole('button',{name:'Open task: First step'}));fireEvent.click(screen.getByRole('radio',{name:'3 — Moderate'}));
@@ -71,4 +71,14 @@ it('shows an insertion target, cancels on pointer cancellation, and never reorde
  pointer(card,'Down',10,200);pointer(card,'Move',10,105);act(()=>vi.advanceTimersByTime(20));expect(other.getAttribute('data-insert')).toBe('true');
  fireEvent.pointerCancel(card,{pointerId:1});expect(document.querySelector('.kb-drag-ghost')).toBeNull();expect(other.getAttribute('data-insert')).toBe('false');
  fireEvent.click(within(screen.getByRole('group',{name:'Filter tasks'})).getByRole('button',{name:'Someday'}));pointer(card,'Down',10,200);pointer(card,'Move',10,105);pointer(card,'Up',10,105);act(()=>vi.advanceTimersByTime(450));expect(readGuest().revision).toBe(0);
+});
+
+it('dismisses the handle menu outside while preserving interaction inside',async()=>{
+ await setup();const card=screen.getByRole('article',{name:'First step'});const menu=card.querySelector('details')!;
+ fireEvent.click(within(card).getByRole('button',{name:'Drag task: First step'}));
+ await waitFor(()=>expect(menu.open).toBe(true));
+ const select=within(card).getByRole('combobox',{name:'Move to column'});
+ pointer(select,'Down');pointer(select,'Up');expect(menu.open).toBe(true);
+ pointer(document.body,'Down');pointer(document.body,'Up');expect(menu.open).toBe(false);
+ expect(card.querySelector('.kb-card-tools')).toBeNull();
 });

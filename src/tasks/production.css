@@ -15,7 +15,7 @@
 
 .tasks-production .tasks-primary, .tasks-production .tasks-primary:hover,
 .tasks-production .kb-filters button[aria-pressed=true] { color:#fff8ee; }
-.tasks-production .kb-check, .tasks-production .kb-move-menu summary { min-height:44px; }
+.tasks-production .kb-check { min-height:44px; }
 .tasks-production .kb-drag-handle { flex-basis:44px; }
 .tasks-production .task-checkbox-touch { display:flex; align-items:center; justify-content:center; flex:0 0 44px; min-height:44px; cursor:pointer; }
 .task-storage-type { font-weight: 600; }
@@ -49,3 +49,39 @@
  .tasks-production .kb-hero::before { background: linear-gradient(90deg, color-mix(in srgb, var(--surface-page) 90%, transparent), color-mix(in srgb, var(--surface-page) 65%, transparent)); }
  .tasks-production .task-advanced-toggle { min-height: 44px; }
 }
+
+.tasks-production :is(.task-view-switch select,.kb-quick-options > label > select) {
+ cursor: pointer; border: 1px solid var(--paper-edge); border-radius: 10px;
+ background: var(--surface-raised); color: var(--ink); min-height: 44px;
+ padding: 8px 10px; margin: 0; font: inherit; font-size: 12px;
+}
+.tasks-production :is(.task-view-switch select,.kb-quick-options > label > select):hover { background: var(--surface-paper); border-color: var(--rule); }
+.tasks-production :is(.task-view-switch select,.kb-quick-options > label > select):focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+.tasks-production .kb-quick-options { align-items: center; }
+.task-doing-reminder:not(:empty) { padding: 8px 12px; margin: 8px 0; border-inline-start: 3px solid var(--rule); border-radius: 6px; color: var(--ink-muted); font-size: 12px; }
+.task-doing-reminder[data-over=true] { background: var(--action-tint); border-color: var(--action); color: var(--ink); }
+.task-doing-reminder strong { margin-right: 6px; color: var(--ink); }
+
+.kb-column > .task-doing-reminder:not(:empty) { margin: 0 2px 9px; border: 1px solid var(--paper-edge); border-inline-start: 3px solid var(--rule); border-radius: 10px; background: var(--surface-paper); }
+.kb-column > .task-doing-reminder[data-over=true] { background: var(--action-tint); border-inline-start-color: var(--action); }
+
+.tasks-production .kb-filters { align-items: center; align-self: start; padding: 5px; border: 1px solid var(--paper-edge); border-radius: 16px; background: var(--surface-paper); }
+.tasks-production .kb-filters button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+.tasks-production .kb-detail-wrap h2 { margin-bottom: 6px; }
+.tasks-production .tasks-heading-input { display: block; }
+/* Four botanical accents from the existing transparent illustration sheet. */
+.tasks-production [data-column=later] .kb-column-note::before { background-position: center; }
+.tasks-production [data-column=next] .kb-column-note::before { background-position: left center; }
+.tasks-production [data-column=doing] .kb-column-note::before { background-size: auto 105px; background-position: -229px center; width: 47px; }
+.tasks-production [data-column=done] .kb-column-note::before { background: url('../assets/illustrations/done-cornflowers.webp') center / contain no-repeat; width: 65px; mask-image: none; }
+
+/* Equal-height, aligned groups for entry and filtering. */
+.tasks-production .kb-entry { background: transparent; border: 0; padding: 0; box-shadow: none; gap: 10px; }
+.tasks-production .kb-quick, .tasks-production .kb-filters { box-sizing: border-box; padding: 6px; min-height: 58px; border: 1px solid var(--paper-edge); border-radius: 16px; background: var(--surface-raised); }
+.tasks-production .kb-quick-row { min-height: 44px; }
+.tasks-production .kb-quick-options[hidden] { display: none; }
+.tasks-production .kb-card { --card-type-size: 15px; }
+.tasks-production .kb-card-title, .tasks-production .kb-card-meta .tasks-stars { font-size: var(--card-type-size); }
+@media(max-width:599px) { .tasks-production .kb-card { --card-type-size: 17px; } }
+
+.tasks-production .kb-quick, .tasks-production .kb-filters { background: color-mix(in srgb, var(--surface-paper) 80%, var(--surface-raised)); }

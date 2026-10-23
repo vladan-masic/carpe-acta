@@ -1,4 +1,6 @@
-import { useRef } from 'react';
+import { TaskIcon } from './TaskIcon';
+import { useRef, useState } from 'react';
+import { useOutsideDismiss } from './useOutsideDismiss';
 import { taskInteractive, type DragBindings } from './useBoardDrag';
 import type { Locale } from '../../i18n/locales';
 import { taskCopy } from './copy';
@@ -21,6 +23,9 @@ export function BoardCard({ task, locale, selected, dragging, first, last, befor
   const c = taskCopy[locale], k = kanbanCopy[locale];
   const title = task.title[locale];
   const titleButton = useRef<HTMLButtonElement>(null);
+  const movementMenu = useRef<HTMLDetailsElement>(null);
+  const [movementOpen,setMovementOpen]=useState(false);
+  useOutsideDismiss(movementMenu,movementOpen,()=>{if(movementMenu.current)movementMenu.current.open=false;setMovementOpen(false);});
   const deadline = task.deadline === dateKey() ? c.today : task.deadline
     ? new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : 'sr-Latn', { day: 'numeric', month: 'short' }).format(new Date(`${task.deadline}T12:00:00`)) : '';
   return <article className="kb-card" data-card-id={task.id} data-selected={selected} data-dragging={dragging}
@@ -28,23 +33,20 @@ export function BoardCard({ task, locale, selected, dragging, first, last, befor
     onClick={event=>{if(!(event.target as Element).closest(taskInteractive) && titleButton.current)open(titleButton.current);}}>
     <div className="kb-card-top">
       <div className="kb-card-open">
-        <button ref={titleButton} className="kb-card-title-button" onClick={event => open(event.currentTarget)} aria-label={`${c.open}: ${title}`}><span className="kb-card-title">{title}</span></button>
+        <div className="kb-card-title-row"><label className="kb-check"><input type="checkbox" checked={task.done} aria-label={`${task.done ? c.reopen : c.complete}: ${title}`} onChange={event => complete(event.target.checked)}/></label><button ref={titleButton} className="kb-card-title-button" onClick={event => open(event.currentTarget)} aria-label={`${c.open}: ${title}`}><span className="kb-card-title">{title}</span></button></div>
         <span className="kb-card-meta">
-          <span className="tasks-stars" title={`${c.difficulty}: ${c.ratings[task.difficulty - 1]}`}>{'★'.repeat(task.difficulty)}<span>{'☆'.repeat(5 - task.difficulty)}</span></span>
+          <span className="tasks-stars kb-cap-stars" role="img" aria-label={`${c.difficulty}: ${c.ratings[task.difficulty - 1]}`} title={`${c.difficulty}: ${c.ratings[task.difficulty - 1]}`}>{Array.from({length:5},(_,i)=><svg key={i} viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path d="M50 2 62 36 98 38 69 60 79 97 50 76 21 97 31 60 2 38 38 36Z" fill={i<task.difficulty?'currentColor':'none'} stroke="currentColor" strokeWidth="3" strokeLinejoin="round"/></svg>)}</span>
           <span className="tasks-badge" data-urgency={task.urgency}>{c.urgencies[task.urgency]}</span>
         </span>
         <span className="kb-card-bottom">
           {task.subtasks.length > 0 && <span>☷ {task.subtasks.filter(step => step.done).length}/{task.subtasks.length} {c.subtasks.toLowerCase()}</span>}
-          {deadline && <span>▦ {deadline}</span>}
+          {deadline && <span className="kb-card-deadline"><TaskIcon name="today"/>{deadline}</span>}
           {!deadline && !task.subtasks.length && <span>{c.noDate}</span>}
         </span>
       </div>
-      <button className="kb-drag-handle" disabled={!handle} {...handle} aria-label={`${k.drag}: ${title}`} aria-describedby="kb-drag-help" data-handle-id={task.id}>⠿</button>
-    </div>
-    <div className="kb-card-tools">
-      <label className="kb-check"><input type="checkbox" checked={task.done} aria-label={`${task.done ? c.reopen : c.complete}: ${title}`} onChange={event => complete(event.target.checked)}/><span>{task.done ? c.completed : c.complete}</span></label>
-      <details className="kb-move-menu"><summary aria-label={`${k.move}: ${title}`}>⋯</summary>
-        <div><label>{k.moveTo}<select value={task.status} onChange={event => move(event.target.value as Status)}>{statuses.map(status => <option key={status} value={status}>{k.columns[status]}</option>)}</select></label>
+      <details ref={movementMenu} onToggle={event=>setMovementOpen(event.currentTarget.open)} className="kb-handle-menu" onKeyDown={event=>{if(event.key==='Escape'){event.preventDefault();event.currentTarget.open=false;event.currentTarget.querySelector('summary')?.focus();}}}>
+        <summary role="button" className="kb-drag-handle" {...handle} aria-label={`${k.drag}: ${title}`} title={k.move} aria-describedby="kb-drag-help" data-handle-id={task.id}>⠿</summary>
+        <div className="kb-handle-options"><label>{k.moveTo}<select value={task.status} onChange={event => move(event.target.value as Status)}>{statuses.map(status => <option key={status} value={status}>{k.columns[status]}</option>)}</select></label>
           <div className="kb-move-buttons"><button disabled={first} onClick={() => reorder(-1)}>{c.up} ↑</button><button disabled={last} onClick={() => reorder(1)}>{c.down} ↓</button></div>
         </div>
       </details>

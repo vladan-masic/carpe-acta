@@ -1,6 +1,7 @@
 export const persistenceCopy = {
  en: {
   otherDrafts:'Unsaved edits remain in another account or guest session in this page. Return to that session to save or download them before leaving.',finish:'Close focus prompt',board:'Board',list:'List',view:'Task view',loading:'Loading tasks…',unavailable:'Not synchronized',saving:'Saving…',saved:'Saved',pending:'Unsaved changes',
+  doingAtLimit:(count:number)=>`${count} tasks in progress. Consider finishing one before starting another.`,doingOverLimit:'One step at a time. You can return to the others later.',
   accountLabel:'Account tasks',guestLabel:'Browser tasks',importPending:'Browser tasks added; waiting to save…',importSuccess:'Browser tasks imported and saved.',
   guest:'Browser tasks · stored on this device. Sign in to use your account.',account:'Account tasks · synchronized on focus or Refresh.',refresh:'Refresh',retry:'Retry save',retryLoad:'Retry loading',
   import:'Import browser tasks',importHint:'Add your browser tasks to this account. Existing tasks stay intact; previously imported tasks will not be added again.',imported:'No new browser tasks to import.',
@@ -12,6 +13,7 @@ export const persistenceCopy = {
  },
  'sr-Latn': {
   otherDrafts:'Nesačuvane izmene drugog naloga ili gostujuće sesije ostaju na ovoj stranici. Vratite se u tu sesiju da ih sačuvate ili preuzmete pre odlaska.',finish:'Zatvori podsetnik',board:'Tabla',list:'Lista',view:'Prikaz zadataka',loading:'Učitavanje zadataka…',unavailable:'Nije sinhronizovano',saving:'Čuvanje…',saved:'Sačuvano',pending:'Nesačuvane izmene',
+  doingAtLimit:(count:number)=>`${count} zadatka su u toku. Možda prvo da završiš jedan pre nego što započneš novi.`,doingOverLimit:'Korak po korak. Ostalim zadacima možeš da se vratiš kasnije.',
   accountLabel:'Zadaci naloga',guestLabel:'Zadaci pregledača',importPending:'Zadaci pregledača su dodati; čuvanje je u toku…',importSuccess:'Zadaci pregledača su uvezeni i sačuvani.',
   guest:'Zadaci pregledača · čuvaju se na ovom uređaju. Prijavite se za korišćenje naloga.',account:'Zadaci naloga · osvežavaju se pri povratku ili klikom na Osveži.',refresh:'Osveži',retry:'Pokušaj čuvanje ponovo',retryLoad:'Ponovo učitaj',
   import:'Uvezi zadatke iz pregledača',importHint:'Dodajte zadatke iz pregledača na ovaj nalog. Postojeći ostaju sačuvani; već uvezeni zadaci se ne dodaju ponovo.',imported:'Nema novih zadataka za uvoz.',
