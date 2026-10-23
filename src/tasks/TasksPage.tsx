@@ -1,3 +1,4 @@
+import { TaskIcon } from './presentation/TaskIcon';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { AppToolbar } from '../components/AppToolbar';
 import { AppFooter } from '../components/AppFooter';
@@ -26,6 +27,9 @@ import { accountAdapter, guestAdapter, readGuest, GUEST_KEY } from './persistenc
 import { persistenceCopy } from './copy';
 import { toEditor, fromEditor } from './viewAdapter';
 import { ListView } from './ListView';
+import { useOutsideDismiss } from './presentation/useOutsideDismiss';
+import { taskInteractive } from './presentation/usePointerDrag';
+export const SUGGESTED_DOING_LIMIT = 3;
 
 export function TasksPage() {
  const auth=useAuth();
@@ -55,6 +59,7 @@ const newTask = (): BoardTask => ({
 function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;locale:Locale;toolbar:React.ReactNode;otherDrafts:boolean}) {
   const state=useSyncExternalStore(store.subscribe,store.getSnapshot);
   const tasks=state.tasks;
+  const doingCount=tasks.filter(task=>task.status==='doing' && !task.completedAt).length;
   const setTasks=(update:(tasks:Task[])=>Task[])=>store.edit(update);
   const [selected,setSelected]=useState<string|null>(null);
   const [mode,setMode]=useState<'board'|'list'>(()=>{try{return localStorage.getItem('carpe-acta.tasks.view')==='list'?'list':'board';}catch{return 'board';}});
@@ -85,10 +90,14 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
   const [draft, setDraft] = useState(newTask);
   const [title, setTitle] = useState('');
   const [detailsOpen,setDetailsOpen]=useState(false);
+  const [quickActivated,setQuickActivated]=useState(false);
   const [addStatus, setAddStatus] = useState<Status>('next');
   const [visibleColumn, setVisibleColumn] = useState<Status>('later');
   const [announcement, announce] = useState('');
   const quickInput = useRef<HTMLInputElement>(null);
+  const quickForm = useRef<HTMLFormElement>(null);
+  const detailsToggle = useRef<HTMLButtonElement>(null);
+  const detailPanel = useRef<HTMLElement>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
   const board = useRef<HTMLDivElement>(null);
   const c = {...taskCopy[locale],focusCopy:p.focusCopy,finish:p.finish,saved:p.pending}, k = kanbanCopy[locale];
@@ -120,8 +129,11 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
     setSelected(id);
     requestAnimationFrame(() => document.getElementById('task-detail-heading')?.focus());
   }
-  function close() {
+  useOutsideDismiss(quickForm,quickActivated,()=>{setDetailsOpen(false);setQuickActivated(false);});
+  useOutsideDismiss(detailPanel,Boolean(selectedTask)&&!deleteRequested,target=>close(!target.closest(taskInteractive)),'[data-card-id], dialog');
+  function close(restoreFocus=true) {
     setSelected(null);
+    if(!restoreFocus)return;
     requestAnimationFrame(() => {
       if (opener.current?.isConnected) opener.current.focus();
       else quickInput.current?.focus();
@@ -145,6 +157,8 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
     quickInput.current?.focus();
     quickInput.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
   }
+
+  const doingReminder = <div className="task-doing-reminder" role="status" data-over={doingCount>SUGGESTED_DOING_LIMIT}>{doingCount>=SUGGESTED_DOING_LIMIT&&<><strong>{k.columns.doing} · {doingCount}</strong> {doingCount===SUGGESTED_DOING_LIMIT?p.doingAtLimit(doingCount):p.doingOverLimit}</>}</div>;
 
   return <div className="tasks-preview kb-preview tasks-production" data-detail-open={Boolean(selectedTask)}>
     <div className="kb-shell" id="page-top" tabIndex={-1}>
@@ -174,7 +188,7 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
             <div className="task-view-switch" role="group" aria-label={p.view}><button aria-pressed={mode==='board'} onClick={()=>setMode('board')}>{p.board}</button><button aria-pressed={mode==='list'} onClick={()=>setMode('list')}>{p.list}</button><label>{c.sort}<select value={sort} onChange={e=>setSort(e.target.value as Sort)}><option value="manual">{c.manual}</option><option value="deadline">{c.byDate}</option></select></label></div>
             <fieldset className="task-content" disabled={!state.ready || state.error==='conflict'}>
             <div className="kb-entry">
-              <form className="kb-quick" onSubmit={event => {
+              <form ref={quickForm} className="kb-quick" onKeyDown={event=>{if(event.key==='Escape' && detailsOpen && !(event.target instanceof HTMLSelectElement) && !(event.target instanceof HTMLInputElement && event.target.type==='date')){event.preventDefault();event.stopPropagation();setDetailsOpen(false);detailsToggle.current?.focus();}}} onSubmit={event => {
                 event.preventDefault();
                 if (!title.trim()) { announce(c.blank); return; }
                 const task=createTask(title,store.owner,addStatus,tasks);
@@ -182,13 +196,13 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
                 setTitle(''); setDraft(newTask()); setView('all'); announce(`${c.added} ${k.columns[addStatus]}.`);
                 navigateColumn(addStatus); quickInput.current?.focus();
               }}>
-                <div className="kb-quick-row"><span className="task-add-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><input ref={quickInput} value={title} onChange={event => setTitle(event.target.value)} maxLength={200} aria-label={c.placeholder} placeholder={c.placeholder}/><button className="tasks-primary" type="submit" disabled={tasks.length>=1000}>{c.add}</button></div>
-                <div className="kb-quick-options"><label>{k.addTo}<select value={addStatus} onChange={event => setAddStatus(event.target.value as Status)}>{statuses.map(status => <option key={status} value={status}>{k.columns[status]}</option>)}</select></label>
-                  <button type="button" className="task-advanced-toggle" aria-expanded={detailsOpen} aria-controls="task-advanced-fields" onClick={()=>setDetailsOpen(value=>!value)}><span aria-hidden="true">{detailsOpen?'▾':'▸'}</span> {c.advanced}</button>
+                <div className="kb-quick-row"><span className="task-add-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><input ref={quickInput} onFocus={()=>setQuickActivated(true)} onClick={()=>setQuickActivated(true)} value={title} onChange={event => setTitle(event.target.value)} maxLength={200} aria-label={c.placeholder} placeholder={c.placeholder}/><button className="tasks-primary" type="submit" disabled={tasks.length>=1000}>{c.add}</button></div>
+                <div className="kb-quick-options" hidden={!quickActivated}><label>{k.addTo}<select value={addStatus} onChange={event => setAddStatus(event.target.value as Status)}>{statuses.map(status => <option key={status} value={status}>{k.columns[status]}</option>)}</select></label>
+                  <button ref={detailsToggle} type="button" className="task-advanced-toggle" aria-expanded={detailsOpen} aria-controls="task-advanced-fields" onClick={()=>setDetailsOpen(value=>!value)}><span aria-hidden="true">{detailsOpen?'▾':'▸'}</span> {c.advanced}</button>
                 </div>
                 <div id="task-advanced-fields" hidden={!detailsOpen}><Properties task={draft} update={patch => setDraft(task => ({ ...task, ...patch }))} copy={c}/><label>{c.notes}<textarea maxLength={10000} value={draft.notes[locale]} onChange={event => setDraft(task => ({ ...task, notes: bilingual(event.target.value, event.target.value) }))}/></label></div>
               </form>
-              <div className="kb-filters" role="group" aria-label={k.filter}>{(['all', 'today', 'upcoming', 'someday', 'completed'] as View[]).map(filter => <button key={filter} aria-pressed={view === filter} onClick={() => setView(filter)}>{filter === 'all' ? k.all : c[filter]}</button>)}</div>
+              <div className="kb-filters" role="group" aria-label={k.filter}>{(['all', 'today', 'upcoming', 'someday', 'completed'] as View[]).map(filter => <button key={filter} aria-pressed={view === filter} onClick={() => setView(filter)}><TaskIcon name={filter}/>{filter === 'all' ? k.all : c[filter]}</button>)}</div>
             </div>
             <p className="kb-filter-help">{k.explanation}</p>
             {mode==='board'&&<><nav className="kb-column-nav" aria-label={k.moveTo}>{statuses.map(status => <button key={status} aria-pressed={visibleColumn === status} onClick={() => navigateColumn(status)}>{icons[status]} {k.columns[status]} <span>{visible.filter(task => task.status === status).length}</span></button>)}</nav>
@@ -203,6 +217,7 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
                 const cards = visible.filter(task => task.status === status);
                 return <section key={status} className="kb-column" data-column={status} data-target={drag?.target?.status === status} aria-labelledby={`column-${status}`}>
                   <header className="kb-column-heading"><span className="kb-status-icon" aria-hidden="true">{icons[status]}</span><div><h2 id={`column-${status}`}>{k.columns[status]} <span>{cards.length}</span></h2><p>{k.hints[status]}</p></div></header>
+                  {status==='doing'&&doingReminder}
                   <div className="kb-cards">
                     {cards.map((task, index) => <BoardCard key={task.id} task={task} locale={locale} selected={task.id === selected} dragging={drag?.id === task.id} before={drag?.target?.beforeId === task.id} first={!canOrder || index === 0} last={!canOrder || index === cards.length - 1} handle={canOrder?handle(task.id):undefined} surface={canOrder?surface(task.id):undefined}
                       open={button => open(task.id, button)} move={target => move(task.id, target)} reorder={direction => reorder(task, direction)}
@@ -216,11 +231,11 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
               })}
             </div>
             <p className="kb-drag-help" id="kb-drag-help">{canOrder?k.dragHint:p.order}</p></>}
-            {mode==='list'&&<><ListView container={board} dragging={dragging} tasks={visibleRecords} locale={locale} selected={selected} manual={canOrder} open={open} reorder={reorder} complete={(id,done)=>setTasks(items=>completeTask(items,id,done))}/>{!visible.length&&<div className="tasks-empty"><h2>{c.empty}</h2><p>{c.emptyCopy}</p></div>}<p className="kb-drag-help" id="kb-drag-help">{p.order} {k.dragHint}</p></>}
+            {mode==='list'&&<>{doingReminder}<ListView container={board} dragging={dragging} tasks={visibleRecords} locale={locale} selected={selected} manual={canOrder} open={open} reorder={reorder} complete={(id,done)=>setTasks(items=>completeTask(items,id,done))}/>{!visible.length&&<div className="tasks-empty"><h2>{c.empty}</h2><p>{c.emptyCopy}</p></div>}<p className="kb-drag-help" id="kb-drag-help">{p.order} {k.dragHint}</p></>}
             </fieldset>
           </section>
-          {selectedTask && <aside className="kb-detail-wrap" aria-label={c.details}>
-            <TaskDetail expanded key={selectedTask.id} task={selectedTask} locale={locale} copy={c} update={patch => setTasks(items => fromEditor(items, selectedTask.id, patch,locale))} close={close} announce={announce}/>
+          {selectedTask && <aside ref={detailPanel} className="kb-detail-wrap" data-done={selectedTask.done} aria-label={c.details}>
+            <TaskDetail expanded dragEnabled={state.ready&&state.error!=='conflict'} key={selectedTask.id} task={selectedTask} locale={locale} copy={c} update={patch => setTasks(items => fromEditor(items, selectedTask.id, patch,locale))} close={()=>close()} announce={announce}/>
             <div className="kb-detail-tools"><label>{k.status}<select value={selectedTask.status} onChange={event => move(selectedTask.id, event.target.value as Status, null, false)}>{statuses.map(status => <option key={status} value={status}>{k.columns[status]}</option>)}</select></label>
               <button onClick={()=>setDeleteRequested(true)}>{k.delete}</button>
             </div>

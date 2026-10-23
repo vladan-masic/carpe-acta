@@ -4,7 +4,7 @@ import type { DragBindings } from './useBoardDrag';
 import type { Task } from './model';
 export function Difficulty({value,onChange,copy}:{value:number;onChange:(n:number)=>void;copy:TaskCopy}) {
  const id=useId();
- return <fieldset className="tasks-difficulty"><legend>{copy.difficulty} <span>· {copy.ratings[value-1]}</span></legend><div>{copy.ratings.map((label,i)=><label key={label} title={label}><input type="radio" name={id} value={i+1} checked={value===i+1} onChange={()=>onChange(i+1)} aria-label={`${i+1} — ${label}`} /><span aria-hidden="true" data-filled={i<value}>★</span></label>)}</div></fieldset>;
+ return <fieldset className="tasks-difficulty"><legend>{copy.difficulty} <span>· {copy.ratings[value-1]}</span></legend><div>{copy.ratings.map((label,i)=><label key={label} title={label}><input type="radio" name={id} value={i+1} checked={value===i+1} onChange={()=>onChange(i+1)} aria-label={`${i+1} — ${label}`} /><span aria-hidden="true" data-filled={i<value}>{i<value?'★':'☆'}</span></label>)}</div></fieldset>;
 }
 export function Properties({task,update,copy}:{task:Task;update:(patch:Partial<Task>)=>void;copy:TaskCopy}) {
  return <div className="tasks-properties"><Difficulty value={task.difficulty} onChange={difficulty=>update({difficulty})} copy={copy}/><div className="tasks-fields">

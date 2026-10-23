@@ -79,3 +79,18 @@ it('keeps failed import feedback and retry available without reporting success',
  expect(screen.queryByText('Browser tasks imported and saved.')).toBeNull();
  expect(readGuest().tasks).toHaveLength(1);
 });
+it('keeps action sessions account-scoped and persists guided subtasks without touching guest data',async()=>{
+ const task=newTask('Account writing',alice,'next',[]);const guest=newTask('Guest untouched',null,'later',[]);
+ localStorage.setItem(GUEST_KEY,JSON.stringify({version:1,snapshot:{...emptySnapshot(),tasks:[guest]}}));
+ records.set(alice,{...emptySnapshot(),tasks:[task]});records.set(bob,{...emptySnapshot(),tasks:[{...task,ownerId:bob}]});auth.session={user:{id:alice}};
+ const view=render(<TasksPage/>);await screen.findByRole('article',{name:'Account writing'});fireEvent.click(screen.getByRole('button',{name:'Open task: Account writing'}));fireEvent.click(screen.getByRole('button',{name:'Make it smaller',exact:true}));fireEvent.change(screen.getByRole('textbox',{name:'Your next action'}),{target:{value:'Prepare a source'}});fireEvent.click(screen.getByRole('button',{name:'Save and start'}));
+ await waitFor(()=>expect(records.get(alice)?.tasks[0].subtasks).toHaveLength(1));expect(records.get(alice)?.tasks[0].status).toBe('next');expect(readGuest().tasks).toEqual([guest]);
+ auth.session={user:{id:bob}};view.rerender(<TasksPage/>);await screen.findByRole('article',{name:'Account writing'});expect(screen.queryByRole('timer')).toBeNull();fireEvent.click(screen.getByRole('button',{name:'Open task: Account writing'}));fireEvent.click(screen.getByRole('button',{name:'Start',exact:true}));expect(screen.queryByText('Prepare a source')).toBeNull();expect(screen.getByRole('button',{name:'Start focus'})).toBeTruthy();expect(records.get(bob)?.tasks[0].subtasks).toHaveLength(0);
+ cleanup();auth.session={user:{id:alice}};render(<TasksPage/>);await screen.findByRole('article',{name:'Account writing'});fireEvent.click(screen.getByRole('button',{name:'Open task: Account writing'}));expect((screen.getByRole('textbox',{name:'Subtask title 1'}) as HTMLTextAreaElement).value).toBe('Prepare a source');
+});
+it('keeps a guided action after a failed account save and retries without duplication',async()=>{
+ auth.session={user:{id:alice}};records.set(alice,{...emptySnapshot(),tasks:[newTask('Retry writing',alice,'next',[])]});const rpc=auth.client.rpc;let offline=true;
+ auth.client.rpc=vi.fn((name:string,args:any)=>name==='write_tasks'&&offline?Promise.resolve({data:null,error:{code:'offline'}}):rpc(name,args));
+ render(<TasksPage/>);await screen.findByRole('article',{name:'Retry writing'});fireEvent.click(screen.getByRole('button',{name:'Open task: Retry writing'}));fireEvent.click(screen.getByRole('button',{name:'Make it smaller',exact:true}));fireEvent.change(screen.getByRole('textbox',{name:'Your next action'}),{target:{value:'Keep this next step'}});fireEvent.click(screen.getByRole('button',{name:'Save as subtask'}));await screen.findByText(/Tasks could not be synchronized/);expect((screen.getByRole('textbox',{name:'Subtask title 1'}) as HTMLTextAreaElement).value).toBe('Keep this next step');expect(records.get(alice)?.tasks[0].subtasks).toHaveLength(0);
+ offline=false;fireEvent.click(screen.getByRole('button',{name:'Retry save'}));await waitFor(()=>expect(records.get(alice)?.tasks[0].subtasks).toHaveLength(1));expect(records.get(alice)?.tasks[0].subtasks[0].title).toBe('Keep this next step');
+});

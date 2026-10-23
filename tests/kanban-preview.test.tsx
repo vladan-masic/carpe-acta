@@ -43,11 +43,11 @@ it('adds directly to a column with title alone and never writes storage or calls
 it('moves and reorders through keyboard-accessible controls, including completion and reopening', () => {
   setup();
   const card = screen.getByRole('article', { name: 'Visit Japan in spring' });
-  fireEvent.click(within(card).getByLabelText('Move task: Visit Japan in spring'));
+  fireEvent.click(within(card).getByLabelText('Drag task: Visit Japan in spring'));
   fireEvent.change(within(card).getByRole('combobox', { name: 'Move to column' }), { target: { value: 'next' } });
   expect(within(column('Next')).getByRole('article', { name: 'Visit Japan in spring' })).toBeTruthy();
   const moved = screen.getByRole('article', { name: 'Visit Japan in spring' });
-  fireEvent.click(within(moved).getByLabelText('Move task: Visit Japan in spring'));
+  fireEvent.click(within(moved).getByLabelText('Drag task: Visit Japan in spring'));
   fireEvent.click(within(moved).getByRole('button', { name: 'Move up ↑' }));
   expect(within(column('Next')).getAllByRole('article').map(card => card.getAttribute('aria-label')).slice(-2)).toEqual(['Visit Japan in spring', 'Call the dentist']);
   fireEvent.click(screen.getByRole('checkbox', { name: 'Complete: Visit Japan in spring' }));
