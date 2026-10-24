@@ -1,3 +1,5 @@
+import { FocusProvider, useFocusSession } from './focus/FocusProvider';
+import { FocusBar } from './focus/FocusBar';
 import { TaskIcon } from './presentation/TaskIcon';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { AppToolbar } from '../components/AppToolbar';
@@ -46,7 +48,7 @@ export function TasksPage() {
  },[]);
  const otherDrafts=[...stores.current.entries()].some(([scope,s])=>scope!==key&&s.getSnapshot().dirty);
  useEffect(()=>{persistLocale(locale);document.documentElement.lang=locale;document.title=`${taskCopy[locale].title} · Carpe Acta`;},[locale]);
- return auth.loading || !store?<div className="tasks-preview kb-preview tasks-production"><div className="kb-shell">{toolbar}<p role="status">{persistenceCopy[locale].loading}</p></div></div>:<TasksWorkspace key={key} store={store} locale={locale} toolbar={toolbar} otherDrafts={otherDrafts}/>;
+ return <FocusProvider scope={auth.loading||auth.error?null:key}>{auth.loading || !store?<div className="tasks-preview kb-preview tasks-production"><div className="kb-shell">{toolbar}<p role="status">{persistenceCopy[locale].loading}</p></div></div>:<TasksWorkspace key={key} store={store} locale={locale} toolbar={toolbar} otherDrafts={otherDrafts}/>}</FocusProvider>;
 }
 
 
@@ -59,6 +61,20 @@ const newTask = (): BoardTask => ({
 function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;locale:Locale;toolbar:React.ReactNode;otherDrafts:boolean}) {
   const state=useSyncExternalStore(store.subscribe,store.getSnapshot);
   const tasks=state.tasks;
+  const focus=useFocusSession();
+  const [focusRequest,setFocusRequest]=useState(0);
+  const requestedOnLoad=useRef(window.location.hash==='#task-focus');
+  const requested=useRef(0);
+  useEffect(()=>{
+    if(!state.ready || !focus.session)return;
+    if(!requestedOnLoad.current && requested.current===focus.openRequest)return;
+    requestedOnLoad.current=false;requested.current=focus.openRequest;
+    if(tasks.some(task=>task.id===focus.session?.taskId)) {
+      setSelected(focus.session.taskId);setFocusRequest(n=>n+1);
+    }
+  },[state.ready,focus.openRequest,focus.session?.id,tasks]);
+  const focusTask=tasks.find(task=>task.id===focus.session?.taskId);
+  const focusUnavailable=!focusTask || Boolean(focusTask.completedAt) || Boolean(focus.session?.subtaskId&&!focusTask.subtasks.some(step=>step.id===focus.session?.subtaskId&&!step.completedAt));
   const doingCount=tasks.filter(task=>task.status==='doing' && !task.completedAt).length;
   const setTasks=(update:(tasks:Task[])=>Task[])=>store.edit(update);
   const [selected,setSelected]=useState<string|null>(null);
@@ -130,7 +146,7 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
     requestAnimationFrame(() => document.getElementById('task-detail-heading')?.focus());
   }
   useOutsideDismiss(quickForm,quickActivated,()=>{setDetailsOpen(false);setQuickActivated(false);});
-  useOutsideDismiss(detailPanel,Boolean(selectedTask)&&!deleteRequested,target=>close(!target.closest(taskInteractive)),'[data-card-id], dialog');
+  useOutsideDismiss(detailPanel,Boolean(selectedTask)&&!deleteRequested,target=>close(!target.closest(taskInteractive)),'[data-card-id], dialog, [data-no-dismiss]');
   function close(restoreFocus=true) {
     setSelected(null);
     if(!restoreFocus)return;
@@ -235,7 +251,7 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
             </fieldset>
           </section>
           {selectedTask && <aside ref={detailPanel} className="kb-detail-wrap" data-done={selectedTask.done} aria-label={c.details}>
-            <TaskDetail expanded dragEnabled={state.ready&&state.error!=='conflict'} key={selectedTask.id} task={selectedTask} locale={locale} copy={c} update={patch => setTasks(items => fromEditor(items, selectedTask.id, patch,locale))} close={()=>close()} announce={announce}/>
+            <TaskDetail expanded focusRequest={selectedTask.id===focus.session?.taskId?focusRequest:0} supportEnabled={state.ready&&!state.error} dragEnabled={state.ready&&state.error!=='conflict'} key={selectedTask.id} task={selectedTask} locale={locale} copy={c} update={patch => setTasks(items => fromEditor(items, selectedTask.id, patch,locale))} close={()=>close()} announce={announce}/>
             <div className="kb-detail-tools"><label>{k.status}<select value={selectedTask.status} onChange={event => move(selectedTask.id, event.target.value as Status, null, false)}>{statuses.map(status => <option key={status} value={status}>{k.columns[status]}</option>)}</select></label>
               <button onClick={()=>setDeleteRequested(true)}>{k.delete}</button>
             </div>
@@ -246,6 +262,7 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
       </main>
     </div>
     <AppFooter locale={locale} createdByLabel={messages[locale].footer.createdBy} motto={messages[locale].footer.motto}/>
+    <FocusBar locale={locale} onOpen={focus.requestOpen} availability={!state.ready?'loading':state.error?'blocked':focusUnavailable?'unavailable':undefined}/>
     {drag && draggedTask && <div className="kb-drag-ghost" aria-hidden="true" style={{ width: drag.width, minHeight: drag.height, transform: `translate3d(${drag.x - drag.offsetX}px, ${drag.y - drag.offsetY}px, 0) rotate(2deg)` }}><strong>{draggedTask.title[locale]}</strong><span className="tasks-stars">{'★'.repeat(draggedTask.difficulty)}{'☆'.repeat(5 - draggedTask.difficulty)}</span><p>{drag.target ? k.columns[drag.target.status] : k.cancelDrag}</p></div>}
   </div>;
 }

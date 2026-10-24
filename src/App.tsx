@@ -1,3 +1,5 @@
+import { FocusProvider } from "./tasks/focus/FocusProvider";
+import { FocusBar } from "./tasks/focus/FocusBar";
 import { HandwrittenNote } from "./components/HandwrittenNote";
 import { SectionIcon } from "./components/SectionIcon";
 import { HelpfulActionPicker } from "./components/HelpfulActionPicker";
@@ -162,7 +164,7 @@ export function App() {
   }
 
   return (
-    <>
+    <FocusProvider scope={auth.loading||auth.error?null:auth.session?.user.id??'guest'}>
       <main className="app-shell" id="page-top" tabIndex={-1}>
         <AppToolbar label={copy.menuLabel} navigation={
           <nav className="section-navigation" aria-label={copy.navigation.label}>
@@ -373,6 +375,7 @@ export function App() {
         motto={copy.footer.motto}
       />
       <BackToTop label={copy.footer.backToTop} />
-    </>
+      <FocusBar locale={locale}/>
+    </FocusProvider>
   );
 }
