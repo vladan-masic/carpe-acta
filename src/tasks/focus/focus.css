@@ -1,0 +1,27 @@
+.task-focus-clearance { height: var(--task-focus-clearance, 0px); }
+html { scroll-padding-bottom: var(--task-focus-clearance, 0px); }
+body:has(.task-focus-bar) .back-to-top { bottom: calc(var(--task-focus-clearance, 0px) + 16px); }
+.task-focus-bar { position: fixed; z-index: 45; bottom: max(12px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: min(760px, calc(100% - 24px)); box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 12px 16px; border: 1px solid var(--paper-edge); border-inline-start: 4px solid var(--action); border-radius: 16px; background: var(--surface-paper); color: var(--ink); box-shadow: var(--elevation-2); font-family: var(--font-body); }
+.task-focus-label { flex: 1 1 180px; min-width: 0; display: grid; gap: 3px; }
+.task-focus-label strong { font: 600 16px/1.35 var(--font-display); overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.task-focus-label > span { font-size: 11px; color: var(--ink-muted); }
+.task-focus-clock { font-variant-numeric: tabular-nums; font-size: 20px; }
+.task-focus-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+.task-focus-bar button, .task-focus-bar a, .task-focus-dialog button { cursor: pointer; font: 600 12px/1.3 var(--font-body); min-height: 44px; padding: 8px 10px; border: 1px solid var(--paper-edge); border-radius: 10px; color: var(--ink); background: var(--surface-raised); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+.task-focus-bar button:focus-visible, .task-focus-bar a:focus-visible, .task-focus-dialog button:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+.task-focus-bar > p { flex-basis: 100%; font-size: 12px; margin: 0; }
+.task-focus-dialog { max-width: min(420px, calc(100% - 32px)); padding: 20px; background: var(--surface-paper); color: var(--ink); border: 1px solid var(--paper-edge); border-radius: 16px; }
+.task-focus-dialog::backdrop { background: #18221d80; }
+.task-focus-dialog button { margin: 4px; }
+.task-focus-local { font-size: 11px; color: var(--ink-muted); }
+@media(max-width:599px) {
+ .task-focus-bar { padding: 8px 10px; gap: 5px 8px; }
+ .task-focus-buttons { width: 100%; }
+ .task-focus-buttons > * { flex: 1; }
+}
+/* Keep the desktop editor clear; the page spacer lets all mobile content scroll above the bar. */
+@media(min-width:1181px) {
+ body:has(.kb-detail-wrap) .task-focus-bar { left: 24px; transform: none; width: min(760px, calc(100% - 440px)); }
+}
+.task-action-support { scroll-margin-bottom: var(--task-focus-clearance, 0px); }
+.task-focus-bar .task-focus-buttons > :is(button, a) { font: 600 12px/1.3 var(--font-body); padding: 8px 10px; min-width: 0; }

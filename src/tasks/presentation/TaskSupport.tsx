@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { useActionTimer } from '../../hooks/useActionTimer';
+import { useFocusSession } from '../focus/FocusProvider';
+import { EndSessionButton } from '../focus/EndSessionButton';
+import { focusCopy } from '../focus/copy';
+import { focusSeconds, type FocusInput } from '../focus/controller';
 import type { Locale } from '../../i18n/locales';
 import { bilingual, type Task } from './model';
 import { actionCopy } from './actionCopy';
@@ -7,41 +10,42 @@ import { AutoGrowTextarea } from './AutoGrowTextarea';
 import './taskSupport.css';
 
 export type SupportMode = 'start'|'smaller'|'stuck';
-type Session = { text:string; subtaskId:string|null; stage:'working'|'review' };
 const durations = [2,5,10,25,0];
-export function TaskSupport({mode,task,locale,enabled=true,update,close,openStart,announce}:{
- mode:SupportMode|null;task:Task;locale:Locale;enabled?:boolean;update:(patch:Partial<Task>)=>void;
+export function TaskSupport({mode,task,locale,enabled=true,reveal=0,update,close,openStart,announce}:{
+ reveal?:number;mode:SupportMode|null;task:Task;locale:Locale;enabled?:boolean;update:(patch:Partial<Task>)=>void;
  close:()=>void;openStart:()=>void;announce:(message:string)=>void;
 }) {
- const c=actionCopy[locale];
+ const c=actionCopy[locale],f=focusCopy[locale];
+ const focus=useFocusSession();
+ const session=focus.session?.taskId===task.id?focus.session:null;
+ const [pending,setPending]=useState<{input:FocusInput;existingId:string}|null>(null);
  const [choice,setChoice]=useState(()=>task.subtasks.find(s=>!s.done)?.id??'parent');
  const [draft,setDraft]=useState('');
  const [obstacle,setObstacle]=useState<number|null>(null);
  const [variant,setVariant]=useState(0);
  const [minutes,setMinutes]=useState(2);
- const [session,setSession]=useState<Session|null>(null);
- const [untimedPaused,setUntimedPaused]=useState(false);
  const [notice,setNotice]=useState('');
- const timer=useActionTimer(minutes);
+ const seconds=session?focusSeconds(session):0;
+ const command=(action:'pause'|'resume'|'reset'|'finish'|'continue'|'end')=>{if(session)void focus.controller?.command(action,session.id);};
  const heading=useRef<HTMLHeadingElement>(null);
+ const completedSession=useRef<string|null>(null);
  const submitted=useRef<{text:string;id:string}|null>(null);
- const previousMinutes=useRef(minutes);
  useEffect(()=>{if(submitted.current&&task.subtasks.some(s=>s.id===submitted.current?.id))submitted.current=null;},[task.subtasks]);
- // Configuration changes reset only the local timer, never task data.
- useEffect(()=>{if(previousMinutes.current!==minutes){previousMinutes.current=minutes;timer.reset();}},[minutes]); // eslint-disable-line react-hooks/exhaustive-deps
- useEffect(()=>{if(mode)heading.current?.focus();else {timer.pause();setUntimedPaused(true);}},[mode]); // eslint-disable-line react-hooks/exhaustive-deps
+ useEffect(()=>{if(mode){heading.current?.focus();if(reveal)heading.current?.closest('section')?.scrollIntoView({block:'nearest'});}},[mode,reveal]);
  const selectedStep=task.subtasks.find(s=>s.id===choice&&!s.done);
  const actionText=choice==='custom'?draft.trim():choice==='parent'?task.title[locale]:selectedStep?.title[locale]??'';
  const invalid=Boolean(session&&(task.done||(session.subtaskId&&!task.subtasks.some(s=>s.id===session.subtaskId&&!s.done))));
- useEffect(()=>{if(invalid){timer.pause();setUntimedPaused(true);}},[invalid]); // eslint-disable-line react-hooks/exhaustive-deps
- const paused=minutes===0?untimedPaused:timer.phase==='paused'||timer.phase==='idle';
- const review=session?.stage==='review'||(minutes!==0&&timer.phase==='expired');
+ useEffect(()=>{if(invalid&&session?.phase==='running')command('pause');},[invalid,session?.id]);
+ const paused=session?.phase==='paused';
+ const review=session?.phase==='review'||session?.phase==='expired';
  function feedback(message:string){setNotice(message);announce(message);}
  function focusHeading(){requestAnimationFrame(()=>heading.current?.focus());}
- function begin(text:string,id:string|null){
-  if(!text.trim()||task.done)return;
-  timer.reset();if(minutes)timer.start();setUntimedPaused(false);
-  setSession({text:text.trim(),subtaskId:id,stage:'working'});setNotice('');openStart();focusHeading();
+ async function begin(text:string,id:string|null,replaceId?:string,duration=minutes){
+  if(!text.trim()||task.done||!focus.controller)return;
+  const input={taskId:task.id,subtaskId:id,text:text.trim(),minutes:duration};
+  const started=await focus.controller.start(input,replaceId);
+  if(!started){const existing=focus.controller.getSnapshot().session;if(existing)setPending({input,existingId:existing.id});feedback(f.other);return;}
+  setPending(null);setNotice('');openStart();focusHeading();
  }
  function save(start:boolean){
   const text=draft.trim();if(!enabled)return;if(!text){feedback(c.blank);return;}
@@ -59,31 +63,41 @@ export function TaskSupport({mode,task,locale,enabled=true,update,close,openStar
   if(start)begin(text,id);
  }
  function complete(parent:boolean){
-  if(!enabled||!session||invalid)return;
+  if(!enabled||focus.error==='conflict'||!session||invalid||completedSession.current===session.id)return;
+  focus.controller?.restore();
+  if(focus.controller?.getSnapshot().session?.id!==session.id){feedback(f.changed);return;}
+  completedSession.current=session.id;
   if(parent)update({done:true});
   else if(session.subtaskId)update({subtasks:task.subtasks.map(s=>s.id===session.subtaskId?{...s,done:true}:s)});
-  timer.reset();setSession(null);feedback(c.completed);focusHeading();
+  command('finish');feedback(c.completed);focusHeading();
  }
  function chooseObstacle(index:number,nextVariant=0){setObstacle(index);setVariant(nextVariant);setDraft(c.steps[index][nextVariant]);setNotice('');}
  const durationControl=<label>{mode==='stuck'?c.budget:c.timer}<select value={minutes} onChange={e=>setMinutes(Number(e.target.value))}>{durations.map(n=><option key={n} value={n}>{n?`${n} ${c.minute}`:c.noTimer}</option>)}</select></label>;
- return <section hidden={!mode} className="tasks-support task-action-support" aria-label={c.title} onKeyDown={e=>{if(e.key==='Escape'&&!(e.target instanceof HTMLSelectElement)){e.preventDefault();e.stopPropagation();close();}}}>
-  <div className="tasks-support-heading"><h3 ref={heading} tabIndex={-1}>{c.title}</h3><button type="button" className="tasks-icon-button" aria-label={c.close} onClick={close}>×</button></div>
+ return <section hidden={!mode} className="tasks-support task-action-support" aria-label={c.title} onKeyDown={e=>{if(e.key==='Escape'&&!(e.target instanceof HTMLSelectElement)&&!(e.target instanceof Element&&e.target.closest('dialog'))){e.preventDefault();e.stopPropagation();close();}}}>
+  <div className="tasks-support-heading"><h3 ref={heading} tabIndex={-1}>{c.title}</h3><button type="button" className="tasks-icon-button" aria-label={f.minimize} onClick={close}>×</button></div>
   <p className="task-action-parent">{task.title[locale]}</p>
-  {!enabled&&<p role="status">{c.blocked}</p>}
+  <p className="task-focus-local">{f.local}</p>
+  {!enabled&&<p role="status">{f.blocked}</p>}
+  {focus.error&&<p role="alert">{f[focus.error]}</p>}
+  {pending&&<div className="task-support-controls" role="group" aria-label={f.other}>
+   <p>{f.other}</p><button onClick={()=>{setPending(null);focus.requestOpen();}}>{f.return}</button>
+   <button onClick={()=>void begin(pending.input.text,pending.input.subtaskId,pending.existingId,pending.input.minutes)}>{f.replace}</button>
+   <button onClick={()=>setPending(null)}>{f.cancel}</button>
+  </div>}
   {mode==='start'&&session?<>
    <p className="task-next-action">{session.text}</p>
-   {invalid?<><p role="status">{c.invalid}</p><button onClick={()=>{timer.reset();setSession(null);setChoice(task.subtasks.find(s=>!s.done)?.id??'parent');}}>{c.newAction}</button></>:<>
-    <p role="status">{minutes!==0&&timer.phase==='expired'?c.expired:paused?c.paused:c.running}</p>
-    {minutes!==0?<div role="timer" aria-live="off" aria-label={c.timer} className="task-focus-time">{timer.extra?'+':''}{Math.floor(timer.seconds/60)}:{String(timer.seconds%60).padStart(2,'0')}</div>:<p>{c.noTimer}</p>}
+   {invalid?<><p role="status">{c.invalid}</p><EndSessionButton locale={locale} sessionId={session.id} controller={focus.controller}/></>:<>
+    <p role="status">{session.phase==='expired'?c.expired:session.phase==='review'?f.review:paused?c.paused:c.running}</p>
+    <div role="timer" aria-live="off" aria-label={session.minutes?c.timer:f.elapsed} className="task-focus-time">{session.overtime?'+':''}{Math.floor(seconds/60)}:{String(seconds%60).padStart(2,'0')}</div>{!session.minutes&&<p>{c.noTimer}</p>}
     {review?<div className="task-support-controls">
-     <button onClick={()=>{timer.reset();setSession(null);feedback(c.feedback);focusHeading();}}>{c.progress}</button>
-     {session.subtaskId&&<button disabled={!enabled} onClick={()=>complete(false)}>{c.completeStep}</button>}
-     <button disabled={!enabled} onClick={()=>complete(true)}>{c.completeTask}</button>
-     <button className="tasks-primary" onClick={()=>{setSession({...session,stage:'working'});focusHeading();if(timer.phase==='expired')timer.keepGoing();else if(minutes)timer.start();setUntimedPaused(false);}}>{c.continue}</button>
+     <button onClick={()=>{command('end');feedback(c.feedback);focusHeading();}}>{c.progress}</button>
+     {session.subtaskId&&<button disabled={!enabled||focus.error==='conflict'} onClick={()=>complete(false)}>{c.completeStep}</button>}
+     <button disabled={!enabled||focus.error==='conflict'} onClick={()=>complete(true)}>{c.completeTask}</button>
+     <button className="tasks-primary" onClick={()=>{command('continue');focusHeading();}}>{c.continue}</button>
     </div>:<div className="task-support-controls">
-     <button onClick={()=>{if(minutes){if(paused)timer.start();else timer.pause();}else setUntimedPaused(!untimedPaused);}}>{paused?c.resume:c.pause}</button>
-     <button title={c.resetHint} onClick={()=>{timer.reset();setUntimedPaused(true);}}>{c.reset}</button>
-     <button className="tasks-primary" onClick={()=>{timer.pause();setSession({...session,stage:'review'});focusHeading();}}>{c.finish}</button>
+     <button onClick={()=>{command(paused?'resume':'pause');}}>{paused?c.resume:c.pause}</button>
+     <button title={c.resetHint} onClick={()=>{command('reset');}}>{c.reset}</button>
+     <button className="tasks-primary" onClick={()=>{command('finish');focusHeading();}}>{c.finish}</button>
     </div>}
    </>}
   </>:mode==='start'?<>

@@ -1,6 +1,6 @@
 import { TaskSupport, type SupportMode } from './TaskSupport';
 import { TaskIcon } from './TaskIcon';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AutoGrowTextarea } from './AutoGrowTextarea';
 import { useSubtaskDrag } from './useSubtaskDrag';
@@ -8,13 +8,14 @@ import type { Locale } from '../../i18n/locales';
 import type { TaskCopy } from './copy';
 import { bilingual, moveItem, type Task } from './model';
 import { OrderControls, Properties } from './TaskControls';
-type Props = {expanded?:boolean;dragEnabled?:boolean;startRequested?:boolean;task:Task;locale:Locale;copy:TaskCopy;update:(patch:Partial<Task>)=>void;close:()=>void;announce:(s:string)=>void};
-export function TaskDetail({expanded=false,dragEnabled=true,startRequested=false,task,locale,copy:c,update,close,announce}:Props) {
+type Props = {expanded?:boolean;supportEnabled?:boolean;focusRequest?:number;dragEnabled?:boolean;startRequested?:boolean;task:Task;locale:Locale;copy:TaskCopy;update:(patch:Partial<Task>)=>void;close:()=>void;announce:(s:string)=>void};
+export function TaskDetail({expanded=false,dragEnabled=true,supportEnabled=dragEnabled,focusRequest=0,startRequested=false,task,locale,copy:c,update,close,announce}:Props) {
  const [tab,setTab]=useState<'subtasks'|'details'>('subtasks');
  const [action,setAction]=useState<SupportMode|null>(startRequested?'start':null);
+ useEffect(()=>{if(focusRequest)setAction('start');},[focusRequest]);
  const actionOpener=useRef<HTMLButtonElement|null>(null);
  const openSupport=(mode:SupportMode,button:HTMLButtonElement)=>{actionOpener.current=button;setAction(mode);};
- const closeSupport=()=>{setAction(null);requestAnimationFrame(()=>actionOpener.current?.focus());};
+ const closeSupport=()=>{setAction(null);requestAnimationFrame(()=>(actionOpener.current?.isConnected?actionOpener.current:document.querySelector<HTMLElement>('[data-focus-open]'))?.focus());};
  const [step,setStep]=useState('');
  const stepInput=useRef<HTMLInputElement>(null);
  const done=task.subtasks.filter(s=>s.done).length;
@@ -30,7 +31,7 @@ export function TaskDetail({expanded=false,dragEnabled=true,startRequested=false
   requestAnimationFrame(()=>{[...subtaskList.current?.querySelectorAll<HTMLElement>('[data-handle-id]')??[]].find(element=>element.dataset.handleId===id)?.focus({preventScroll:true});});
  },announce,{picked:c.stepPicked,cancelDrag:c.stepCancelled},dragEnabled,task.id);
  const draggedSubtask=task.subtasks.find(sub=>sub.id===drag?.id);
- return <section className="tasks-detail" aria-label={`${c.details}: ${task.title[locale]}`} onKeyDown={e=>{if(e.key==='Escape' && !e.defaultPrevented && !(e.target instanceof HTMLSelectElement) && !(e.target instanceof HTMLInputElement && e.target.type==='date')){e.preventDefault();close();}}}>
+ return <section className="tasks-detail" aria-label={`${c.details}: ${task.title[locale]}`} onKeyDown={e=>{if(e.key==='Escape' && !(e.target instanceof Element&&e.target.closest('dialog')) && !e.defaultPrevented && !(e.target instanceof HTMLSelectElement) && !(e.target instanceof HTMLInputElement && e.target.type==='date')){e.preventDefault();close();}}}>
  <div className="tasks-detail-top"><span className="tasks-eyebrow">{c.details}</span><button type="button" className="tasks-text-button" onClick={close} aria-label={c.close}>← {c.close}</button></div>
  <h2 tabIndex={-1} id="task-detail-heading" aria-label={expanded ? task.title[locale] : undefined}>{expanded ? <AutoGrowTextarea maxLength={200} className="tasks-heading-input" aria-label={c.taskTitle} value={task.title[locale]} onChange={e=>update({title:{...task.title,[locale]:e.target.value}})} onBlur={()=>{if(!task.title[locale].trim())update({title:{...task.title,[locale]:c.newTask}});}}/> : task.title[locale]}</h2>
  {!expanded && task.notes[locale] && <p className="tasks-description">{task.notes[locale]}</p>}
@@ -49,7 +50,7 @@ export function TaskDetail({expanded=false,dragEnabled=true,startRequested=false
  <form className="tasks-add-step" onSubmit={e=>{e.preventDefault();if(!step.trim() || task.subtasks.length>=100)return;update({subtasks:[...task.subtasks,{id:crypto.randomUUID(),title:bilingual(step.trim(),step.trim()),done:false}]});setStep('');announce(c.stepAdded);stepInput.current?.focus();}}><input ref={stepInput} aria-label={c.addStep} placeholder={`${c.addStep}…`} value={step} onChange={e=>setStep(e.target.value)} maxLength={200}/><button type="submit" aria-label={c.addStep} disabled={!step.trim() || task.subtasks.length>=100}>＋</button></form>
  </div>}
  <div className="tasks-action-buttons"><button className="tasks-primary" onClick={e=>openSupport('start',e.currentTarget)}><TaskIcon name="start"/>{c.start}</button><button onClick={e=>openSupport('smaller',e.currentTarget)}><TaskIcon name="smaller"/>{c.smaller}</button><button onClick={e=>openSupport('stuck',e.currentTarget)}><TaskIcon name="stuck"/>{c.stuck}</button></div>
- <TaskSupport mode={action} task={task} locale={locale} enabled={dragEnabled} update={update} close={closeSupport} openStart={()=>setAction('start')} announce={announce}/>
+ <TaskSupport reveal={focusRequest} mode={action} task={task} locale={locale} enabled={supportEnabled} update={update} close={closeSupport} openStart={()=>setAction('start')} announce={announce}/>
  {drag&&draggedSubtask&&createPortal(<div className="tasks-subtask-ghost" aria-hidden="true" style={{width:drag.width,transform:`translate3d(${drag.x-drag.offsetX}px,${drag.y-drag.offsetY}px,0)`}}>{draggedSubtask.title[locale]}</div>,document.body)}
  </section>;
 }
