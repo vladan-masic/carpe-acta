@@ -12,6 +12,7 @@ class TestPointerEvent extends MouseEvent {
 }
 const longTitle='Prepare a thoughtful first draft with the main ideas, supporting examples, and a small next action that is easy to begin tomorrow.';
 beforeEach(()=>{
+ HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','');};
  localStorage.clear();vi.stubGlobal('matchMedia',()=>({matches:false,addEventListener(){},removeEventListener(){}}));vi.stubGlobal('PointerEvent',TestPointerEvent);
  Object.defineProperty(navigator,'locks',{configurable:true,value:{request:async(_name:string,fn:()=>unknown)=>fn()}});
  HTMLElement.prototype.setPointerCapture=vi.fn();HTMLElement.prototype.scrollIntoView=vi.fn();HTMLElement.prototype.scrollTo=vi.fn();window.scrollBy=vi.fn();
@@ -64,8 +65,9 @@ it('updates the Doing suggestion on status changes without blocking a fourth tas
 });
 
 it('persists a guided subtask and explicit completion through Board, List and guest reload',async()=>{
- await setup();click(screen.getByRole('button',{name:'Open task: Writing project'}));click(screen.getByRole('button',{name:'Make it smaller',exact:true}));fireEvent.change(screen.getByRole('textbox',{name:'Your next action'}),{target:{value:'Find one relevant example'}});click(screen.getByRole('button',{name:'Save and start'}));click(await screen.findByRole('button',{name:'Finish session'}));click(screen.getByRole('button',{name:'I completed this subtask'}));
+ await setup();click(screen.getByRole('button',{name:'Open task: Writing project'}));click(screen.getByRole('button',{name:'Make it smaller',exact:true}));fireEvent.change(screen.getByRole('textbox',{name:'Your next action'}),{target:{value:'Find one relevant example'}});click(screen.getByRole('button',{name:'Save and start'}));click(await screen.findByRole('button',{name:'Finish session'}));click(within(await screen.findByRole('dialog',{name:'Review focus session'})).getByRole('button',{name:'I completed this subtask'}));
  await waitFor(()=>expect(readGuest().tasks.find(t=>t.title==='Writing project')?.subtasks.find(s=>s.title==='Find one relevant example')?.completedAt).toBeTruthy());
+ click(screen.getByRole('button',{name:'Discard session'}));await waitFor(()=>expect(screen.queryByRole('dialog')).toBeNull());
  const saved=readGuest().tasks.find(t=>t.title==='Writing project')!;expect(saved.status).toBe('next');expect(saved.subtasks).toHaveLength(4);
  click(screen.getByRole('button',{name:'List',exact:true}));click(screen.getByRole('button',{name:'Open task: Writing project'}));expect((screen.getByRole('textbox',{name:'Subtask title 4'}) as HTMLTextAreaElement).value).toBe('Find one relevant example');cleanup();await setup();click(screen.getByRole('button',{name:'Open task: Writing project'}));expect((screen.getByRole('checkbox',{name:'Reopen: Find one relevant example'}) as HTMLInputElement).checked).toBe(true);
 });

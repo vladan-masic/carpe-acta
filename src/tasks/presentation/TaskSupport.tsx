@@ -26,7 +26,7 @@ export function TaskSupport({mode,task,locale,enabled=true,reveal=0,update,close
  const [minutes,setMinutes]=useState(2);
  const [notice,setNotice]=useState('');
  const seconds=session?focusSeconds(session):0;
- const command=(action:'pause'|'resume'|'reset'|'finish'|'continue'|'end')=>{if(session)void focus.controller?.command(action,session.id);};
+ const command=(action:'pause'|'resume'|'reset'|'finish'|'continue'|'end')=>{if(session)void focus.controller?.command(action,session.id).then(changed=>{if(action==='finish'&&changed)focus.requestReview();});};
  const heading=useRef<HTMLHeadingElement>(null);
  const completedSession=useRef<string|null>(null);
  const submitted=useRef<{text:string;id:string}|null>(null);
@@ -81,7 +81,7 @@ export function TaskSupport({mode,task,locale,enabled=true,reveal=0,update,close
   {focus.error&&<p role="alert">{f[focus.error]}</p>}
   {pending&&<div className="task-support-controls" role="group" aria-label={f.other}>
    <p>{f.other}</p><button onClick={()=>{setPending(null);focus.requestOpen();}}>{f.return}</button>
-   <button onClick={()=>void begin(pending.input.text,pending.input.subtaskId,pending.existingId,pending.input.minutes)}>{f.replace}</button>
+   <button onClick={async()=>{await focus.controller?.command('finish',pending.existingId);setPending(null);focus.requestReview();}}>{f.replace}</button>
    <button onClick={()=>setPending(null)}>{f.cancel}</button>
   </div>}
   {mode==='start'&&session?<>
@@ -90,7 +90,7 @@ export function TaskSupport({mode,task,locale,enabled=true,reveal=0,update,close
     <p role="status">{session.phase==='expired'?c.expired:session.phase==='review'?f.review:paused?c.paused:c.running}</p>
     <div role="timer" aria-live="off" aria-label={session.minutes?c.timer:f.elapsed} className="task-focus-time">{session.overtime?'+':''}{Math.floor(seconds/60)}:{String(seconds%60).padStart(2,'0')}</div>{!session.minutes&&<p>{c.noTimer}</p>}
     {review?<div className="task-support-controls">
-     <button onClick={()=>{command('end');feedback(c.feedback);focusHeading();}}>{c.progress}</button>
+     <button onClick={()=>{if(session.scope==='preview'){command('end');feedback(c.feedback);focusHeading();}else command('finish');}}>{c.progress}</button>
      {session.subtaskId&&<button disabled={!enabled||focus.error==='conflict'} onClick={()=>complete(false)}>{c.completeStep}</button>}
      <button disabled={!enabled||focus.error==='conflict'} onClick={()=>complete(true)}>{c.completeTask}</button>
      <button className="tasks-primary" onClick={()=>{command('continue');focusHeading();}}>{c.continue}</button>

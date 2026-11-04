@@ -26,24 +26,24 @@ it('keeps one session through minimizing, Board/List, other tasks, page roots an
  const task=fixture();let page=render(<TasksPage/>);await screen.findByRole('article',{name:task.title});
  await click(`Open task: ${task.title}`);await click('Start');await click('Start focus');const id=JSON.parse(localStorage.getItem(focusKey('guest'))!).id;
  await click('Minimize session');expect(within(bar()).getByText('Open the notes')).toBeTruthy();await click('Back to tasks');await click('List');await click('Board');
- await click('Open task: Read a book');await click('Start');await click('Start focus');expect(screen.getByText('End existing session and start this action')).toBeTruthy();
+ await click('Open task: Read a book');await click('Start');await click('Start focus');expect(screen.getByText('Review existing session first')).toBeTruthy();
  expect(JSON.parse(localStorage.getItem(focusKey('guest'))!).id).toBe(id);await click('Return to existing session');expect(within(support()).getByText('Open the notes')).toBeTruthy();
  page.unmount();page=render(<FocusProvider scope="guest"><FocusBar locale="en"/></FocusProvider>);expect(within(bar()).getByText('Open the notes')).toBeTruthy();expect(screen.getByRole('link',{name:'Open session'}).getAttribute('href')).toBe('/tasks#task-focus');
  await click('Pause',bar());page.unmount();window.history.replaceState(null,'','/tasks#task-focus');page=render(<TasksPage/>);
  await screen.findByRole('timer');expect(within(bar()).getByText('Paused')).toBeTruthy();expect(within(support()).getByText('Open the notes')).toBeTruthy();
  expect(readGuest().tasks.find(t=>t.id===task.id)?.status).toBe('next');
- await click('Finish session',support());await click('I made some progress');expect(screen.queryByRole('complementary',{name:'Task focus session'})).toBeNull();expect(readGuest().tasks[0].completedAt).toBeNull();
+ await click('Finish session',support());expect(screen.getByRole('dialog',{name:'Review focus session'})).toBeTruthy();await click('Discard session');expect(screen.queryByRole('complementary',{name:'Task focus session'})).toBeNull();expect(readGuest().tasks[0].completedAt).toBeNull();
 });
 it('restores expiry without completion, and persists an explicit subtask completion once',async()=>{
  const task=fixture(),controller=new FocusController('guest',()=>localStorage,()=>Date.now()-180000);
  await controller.start({taskId:task.id,subtaskId:task.subtasks[0].id,text:'Open the notes',minutes:2});window.history.replaceState(null,'','/tasks#task-focus');
  render(<TasksPage/>);await screen.findByRole('timer');expect(screen.getByRole('timer').textContent).toBe('0:00');expect(readGuest().tasks[0].subtasks[0].completedAt).toBeNull();
- await click('I completed this subtask');await waitFor(()=>expect(readGuest().tasks[0].subtasks[0].completedAt).toBeTruthy());const saved=readGuest().tasks[0].subtasks[0].completedAt;
+ await click('I completed this subtask',support());await waitFor(()=>expect(readGuest().tasks[0].subtasks[0].completedAt).toBeTruthy());const saved=readGuest().tasks[0].subtasks[0].completedAt;
  expect(readGuest().tasks[0].completedAt).toBeNull();cleanup();render(<TasksPage/>);await screen.findByText(/The task or subtask is completed/);expect(screen.queryByRole('button',{name:'I completed this subtask'})).toBeNull();expect(readGuest().tasks[0].subtasks[0].completedAt).toBe(saved);
 });
 it('requires confirmation to end and handles missing references without stale writes',async()=>{
  fixture();const controller=new FocusController('guest');await controller.start({taskId:'deleted-task',subtaskId:null,text:'Missing action',minutes:0});
- render(<TasksPage/>);await screen.findByText(/The task or subtask is completed/);await click('End session',bar());expect(screen.getByRole('dialog',{name:'End session'})).toBeTruthy();await click('Keep session');expect(bar()).toBeTruthy();await click('End session',bar());await click('End session without completing');expect(screen.queryByRole('complementary',{name:'Task focus session'})).toBeNull();expect(readGuest().tasks).toHaveLength(2);
+ render(<TasksPage/>);await screen.findByText(/The task or subtask is completed/);await click('End session',bar());expect(screen.getByRole('dialog',{name:'Review focus session'})).toBeTruthy();await click('Close review');expect(bar()).toBeTruthy();await click('End session',bar());await click('Discard session');expect(screen.queryByRole('complementary',{name:'Task focus session'})).toBeNull();expect(readGuest().tasks).toHaveLength(2);
 });
 it('never shows another owner during auth transitions and restores local account sessions',async()=>{
  await new FocusController('alice').start({taskId:'alice-task',subtaskId:null,text:'Private Alice action',minutes:5});
@@ -62,7 +62,7 @@ it('observes another tab pausing and ending without contradictory sessions',asyn
 it('retains session and completion edits when task persistence fails, then retries normally',async()=>{
  const task=fixture();render(<TasksPage/>);await screen.findByRole('article',{name:task.title});await click(`Open task: ${task.title}`);await click('Start');await click('Start focus');await click('Finish session',support());
  const original=Storage.prototype.setItem;const fail=vi.spyOn(Storage.prototype,'setItem').mockImplementation(function(key,value){if(key===GUEST_KEY)throw Error('quota');original.call(this,key,value);});
- await click('I completed the task');await screen.findByText(/Browser storage is unavailable/);expect(bar()).toBeTruthy();expect(readGuest().tasks[0].completedAt).toBeNull();
+ await click('I completed the task',screen.getByRole('dialog'));await screen.findByText(/Browser storage is unavailable/);expect(bar()).toBeTruthy();expect(readGuest().tasks[0].completedAt).toBeNull();
  fail.mockRestore();await click('Retry save');await waitFor(()=>expect(readGuest().tasks[0].completedAt).toBeTruthy());expect(JSON.parse(localStorage.getItem(focusKey('guest'))!).phase).toBe('review');
 });
 it('preserves the session and blocks completion during a task conflict',async()=>{
