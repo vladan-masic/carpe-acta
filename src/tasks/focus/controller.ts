@@ -1,3 +1,4 @@
+import { MAX_FOCUSED_SECONDS, parseEntry, type FocusEntry, type FocusOutcome } from '../history/domain';
 export const FOCUS_VERSION = 1;
 export const focusKey = (scope: string) => `carpe-acta.focus.v1:${scope}`;
 export const focusDurations = [2, 5, 10, 25, 0] as const;
@@ -6,6 +7,7 @@ export type FocusSession = {
   version: 1; id: string; scope: string; taskId: string; subtaskId: string | null;
   text: string; minutes: number; phase: FocusPhase; elapsedMs: number;
   anchorMs: number | null; overtime: boolean;
+  totalMs?: number; startedAtMs?: number | null; reviewedAtMs?: number; lastWorkedAtMs?: number; recording?: FocusEntry;
 };
 export type FocusInput = Pick<FocusSession, 'taskId' | 'subtaskId' | 'text' | 'minutes'>;
 export type FocusState = { session: FocusSession | null; error: 'storage' | 'corrupt' | 'conflict' | null };
@@ -23,9 +25,16 @@ export function parseFocus(raw: string | null, scope: string): FocusSession | nu
     || !Number.isSafeInteger(s.elapsedMs) || s.elapsedMs < 0 || s.elapsedMs > MAX_TIME || typeof s.overtime !== 'boolean'
     || !(s.anchorMs === null || Number.isSafeInteger(s.anchorMs) && s.anchorMs >= 0)
     || (s.phase === 'running') !== (s.anchorMs !== null)) throw new Error('Invalid focus record');
-  // Do not retain unknown fields from storage.
+  if (s.totalMs !== undefined && (!Number.isSafeInteger(s.totalMs) || s.totalMs < s.elapsedMs || s.totalMs > MAX_TIME)
+    || s.startedAtMs !== undefined && s.startedAtMs !== null && (!Number.isSafeInteger(s.startedAtMs) || s.startedAtMs < 0)
+    || s.lastWorkedAtMs !== undefined && (!Number.isSafeInteger(s.lastWorkedAtMs) || s.lastWorkedAtMs < 0)
+    || s.reviewedAtMs !== undefined && (!Number.isSafeInteger(s.reviewedAtMs) || s.reviewedAtMs < 0)) throw new Error('Invalid cumulative timing');
+  const recording = s.recording ? parseEntry(s.recording, scope === 'guest' ? null : scope) : undefined;
+  if (recording && (recording.sessionId !== s.id || recording.taskId !== s.taskId || recording.subtaskId !== s.subtaskId || s.phase !== 'review')) throw new Error('Invalid pending recording');
+  // Optional fields extend v1 in place; existing sessions are preserved, never invented retroactively.
   return {version:1,id:s.id,scope,taskId:s.taskId,subtaskId:s.subtaskId,text:s.text,minutes:s.minutes,
-    phase:s.phase,elapsedMs:s.elapsedMs,anchorMs:s.anchorMs,overtime:s.overtime};
+    phase:s.phase,elapsedMs:s.elapsedMs,anchorMs:s.anchorMs,overtime:s.overtime,
+    totalMs:s.totalMs ?? s.elapsedMs, startedAtMs:s.startedAtMs ?? null, reviewedAtMs:s.reviewedAtMs, lastWorkedAtMs:s.lastWorkedAtMs, recording};
 }
 
 /** No ticking writes. Wall-clock timestamps survive suspended tabs and browser restarts. */
@@ -35,8 +44,8 @@ export function focusAt(session: FocusSession, now: number): FocusSession {
   if (now < session.anchorMs) return {...session,phase:'paused',anchorMs:null};
   const elapsedMs = Math.min(MAX_TIME, session.elapsedMs + Math.max(0, now - session.anchorMs));
   if (session.minutes && !session.overtime && elapsedMs >= session.minutes * 60000)
-    return {...session,elapsedMs:session.minutes*60000,phase:'expired',anchorMs:null};
-  return {...session,elapsedMs,anchorMs:now};
+    return {...session,lastWorkedAtMs:session.anchorMs+Math.max(0,session.minutes*60000-session.elapsedMs),totalMs:Math.min(MAX_TIME,(session.totalMs??session.elapsedMs)+Math.max(0,session.minutes*60000-session.elapsedMs)),elapsedMs:session.minutes*60000,phase:'expired',anchorMs:null};
+  return {...session,lastWorkedAtMs:now,totalMs:Math.min(MAX_TIME,(session.totalMs??session.elapsedMs)+elapsedMs-session.elapsedMs),elapsedMs,anchorMs:now};
 }
 export function focusSeconds(session: FocusSession) {
   return session.minutes && !session.overtime ? Math.ceil(Math.max(0, session.minutes*60000-session.elapsedMs)/1000) : Math.floor(session.elapsedMs/1000);
@@ -87,7 +96,7 @@ export class FocusController {
       this.unsaved=false; this.publish(session,null);
     } catch { this.unsaved=true; this.publish(session,'storage'); }
   }
-  private locked<T>(work:()=>T): Promise<T> {
+  private locked<T>(work:()=>T|Promise<T>): Promise<T> {
     // Web Locks serialize starts/transitions across same-origin tabs. Older browsers use latest-read/last-write.
     if(typeof navigator!=='undefined' && navigator.locks) return navigator.locks.request(this.key,work);
     return Promise.resolve(work());
@@ -100,9 +109,10 @@ export class FocusController {
   start(input: FocusInput, replaceId?: string): Promise<boolean> {
     return this.transact(()=>{
       const current=this.state.session;
+      if(current?.recording)return false;
       if(current && current.id!==replaceId || replaceId && current?.id!==replaceId)return false;
       const candidate:FocusSession={version:1,id:crypto.randomUUID(),scope:this.scope,...input,text:input.text.trim(),
-        phase:'running',elapsedMs:0,anchorMs:this.clock(),overtime:false};
+        phase:'running',elapsedMs:0,totalMs:0,startedAtMs:this.clock(),anchorMs:this.clock(),overtime:false};
       parseFocus(JSON.stringify(candidate),this.scope);
       this.persist(candidate);return true;
     });
@@ -110,21 +120,44 @@ export class FocusController {
   command(command:FocusCommand,id:string):Promise<boolean> {
     return this.transact(()=>{
       const current=this.state.session;
-      if(!current || current.id!==id)return false;
+      if(!current || current.id!==id || current.recording)return false;
       const now=this.clock(); let s=focusAt(current,now);
       switch(command) {
         case 'end': this.persist(null);return true;
         case 'pause': if(s.phase==='running')s={...s,phase:'paused',anchorMs:null};break;
         case 'resume': if(s.phase==='paused')s={...s,phase:'running',anchorMs:now};break;
-        case 'reset': s={...s,phase:'paused',elapsedMs:0,anchorMs:null,overtime:false};break;
-        case 'finish': s={...s,phase:'review',anchorMs:null};break;
+        case 'reset': s={...s,reviewedAtMs:undefined,phase:'paused',elapsedMs:0,anchorMs:null,overtime:false};break;
+        case 'finish': s={...s,phase:'review',anchorMs:null,reviewedAtMs:s.reviewedAtMs??s.lastWorkedAtMs??now};break;
         case 'continue':
           if(s.phase==='expired' || s.phase==='review') {
             const expired=Boolean(s.minutes&&!s.overtime&&s.elapsedMs>=s.minutes*60000);
-            s={...s,phase:'running',anchorMs:now,overtime:s.overtime||expired,elapsedMs:expired?0:s.elapsedMs};
+            s={...s,reviewedAtMs:undefined,phase:'running',anchorMs:now,overtime:s.overtime||expired,elapsedMs:expired?0:s.elapsedMs};
           }break;
       }
       this.persist(s);return true;
+    });
+  }
+  /** Persist the exact confirmed payload before network I/O. Retry never changes it. */
+  record(id: string, seconds: number, outcome: FocusOutcome | null, save: (entry: FocusEntry) => Promise<void>): Promise<boolean> {
+    return this.locked(async () => {
+      this.restore();
+      const current = this.state.session;
+      if (!current || current.id !== id) return false;
+      if (this.state.error) throw new Error('Session storage needs recovery');
+      const s = focusAt(current, this.clock());
+      if (s.phase !== 'review' && s.phase !== 'expired') return false;
+      const ended = s.reviewedAtMs ?? s.lastWorkedAtMs ?? this.clock();
+      if (!s.recording && seconds > Math.floor((s.totalMs ?? s.elapsedMs)/1000)) throw new Error('Duration exceeds elapsed time');
+      const entry = s.recording ?? parseEntry({id:s.id,sessionId:s.id,ownerId:this.scope==='guest'?null:this.scope,
+        taskId:s.taskId,subtaskId:s.subtaskId,startedAt:s.startedAtMs == null ? null : new Date(Math.min(s.startedAtMs,ended)).toISOString(),
+        endedAt:new Date(ended).toISOString(),focusedSeconds:seconds,chosenMinutes:s.minutes,outcome,createdAt:new Date(this.clock()).toISOString()},this.scope==='guest'?null:this.scope);
+      if (entry.focusedSeconds > MAX_FOCUSED_SECONDS) throw new Error('Invalid duration');
+      this.persist({...s,phase:'review',anchorMs:null,reviewedAtMs:ended,recording:entry});
+      if (this.state.error) throw new Error('Session storage needs recovery');
+      await save(entry);
+      // The lock is held through acknowledgement; no tab can replace this pending session.
+      this.persist(null);
+      return true;
     });
   }
   connect() {

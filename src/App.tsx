@@ -164,7 +164,7 @@ export function App() {
   }
 
   return (
-    <FocusProvider scope={auth.loading||auth.error?null:auth.session?.user.id??'guest'}>
+    <FocusProvider client={auth.client} scope={auth.loading||auth.error?null:auth.session?.user.id??'guest'}>
       <main className="app-shell" id="page-top" tabIndex={-1}>
         <AppToolbar label={copy.menuLabel} navigation={
           <nav className="section-navigation" aria-label={copy.navigation.label}>

@@ -1,3 +1,4 @@
+import { MyFocus } from './history/MyFocus';
 import { FocusProvider, useFocusSession } from './focus/FocusProvider';
 import { FocusBar } from './focus/FocusBar';
 import { TaskIcon } from './presentation/TaskIcon';
@@ -48,7 +49,7 @@ export function TasksPage() {
  },[]);
  const otherDrafts=[...stores.current.entries()].some(([scope,s])=>scope!==key&&s.getSnapshot().dirty);
  useEffect(()=>{persistLocale(locale);document.documentElement.lang=locale;document.title=`${taskCopy[locale].title} · Carpe Acta`;},[locale]);
- return <FocusProvider scope={auth.loading||auth.error?null:key}>{auth.loading || !store?<div className="tasks-preview kb-preview tasks-production"><div className="kb-shell">{toolbar}<p role="status">{persistenceCopy[locale].loading}</p></div></div>:<TasksWorkspace key={key} store={store} locale={locale} toolbar={toolbar} otherDrafts={otherDrafts}/>}</FocusProvider>;
+ return <FocusProvider client={auth.client} scope={auth.loading||auth.error?null:key}>{auth.loading || !store?<div className="tasks-preview kb-preview tasks-production"><div className="kb-shell">{toolbar}<p role="status">{persistenceCopy[locale].loading}</p></div></div>:<TasksWorkspace key={key} store={store} locale={locale} toolbar={toolbar} otherDrafts={otherDrafts}/>}</FocusProvider>;
 }
 
 
@@ -257,12 +258,13 @@ function TasksWorkspace({store,locale,toolbar,otherDrafts}:{store:TaskStore;loca
             </div>
           </aside>}
         </div>
+        <MyFocus locale={locale} tasks={tasks} openTask={open}/>
         <p className="tasks-live" role="status">{announcement}</p>
         {deleteRequested&&<dialog ref={deleteDialog} onCancel={()=>setDeleteRequested(false)} onClose={()=>setDeleteRequested(false)}><h2>{p.delete}</h2><button autoFocus onClick={()=>{deleteDialog.current?.close();}}>{p.cancel}</button><button onClick={()=>{setTasks(items=>items.filter(task=>task.id!==selected));deleteDialog.current?.close();close();}}>{p.confirm}</button></dialog>}
       </main>
     </div>
     <AppFooter locale={locale} createdByLabel={messages[locale].footer.createdBy} motto={messages[locale].footer.motto}/>
-    <FocusBar locale={locale} onOpen={focus.requestOpen} availability={!state.ready?'loading':state.error?'blocked':focusUnavailable?'unavailable':undefined}/>
+    <FocusBar onComplete={parent=>{if(!focusTask||!focus.session)return;setTasks(items=>parent?completeTask(items,focusTask.id,true):fromEditor(items,focusTask.id,{subtasks:toEditor(focusTask).subtasks.map(s=>s.id===focus.session?.subtaskId?{...s,done:true}:s)},locale));}} tasks={tasks} locale={locale} onOpen={focus.requestOpen} availability={!state.ready?'loading':state.error?'blocked':focusUnavailable?'unavailable':undefined}/>
     {drag && draggedTask && <div className="kb-drag-ghost" aria-hidden="true" style={{ width: drag.width, minHeight: drag.height, transform: `translate3d(${drag.x - drag.offsetX}px, ${drag.y - drag.offsetY}px, 0) rotate(2deg)` }}><strong>{draggedTask.title[locale]}</strong><span className="tasks-stars">{'★'.repeat(draggedTask.difficulty)}{'☆'.repeat(5 - draggedTask.difficulty)}</span><p>{drag.target ? k.columns[drag.target.status] : k.cancelDrag}</p></div>}
   </div>;
 }

@@ -1,4 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { historyCopy } from '../history/copy';
+import { SessionReview } from '../history/SessionReview';
+import type { Task } from '../domain';
+import { accountAdapter, readGuest } from '../persistence';
+import { useEffect, useRef, useState } from 'react';
 import type { Locale } from '../../i18n/locales';
 import { useFocusSession } from './FocusProvider';
 import { focusSeconds } from './controller';
@@ -6,9 +10,26 @@ import { focusCopy } from './copy';
 import { actionCopy } from '../presentation/actionCopy';
 import { EndSessionButton } from './EndSessionButton';
 import './focus.css';
-export function FocusBar({locale,onOpen,availability}:{locale:Locale;onOpen?:()=>void;availability?:'loading'|'unavailable'|'blocked'}) {
+export function FocusBar({locale,onOpen,availability,tasks,onComplete}:{onComplete?:(parent:boolean)=>void;tasks?:Task[];locale:Locale;onOpen?:()=>void;availability?:'loading'|'unavailable'|'blocked'}) {
  const focus=useFocusSession(),c=focusCopy[locale],a=actionCopy[locale];
  const session=focus.session;
+ const [review,setReview]=useState<string|null>(null),[loadedTask,setLoadedTask]=useState<Task>();
+ const [notice,setNotice]=useState('');
+ const seenReview=useRef(focus.reviewRequest);
+ useEffect(()=>{
+   if(seenReview.current!==focus.reviewRequest){seenReview.current=focus.reviewRequest;setReview(session?.id??null);}
+ },[focus.reviewRequest]);
+ useEffect(()=>{setReview(null);setLoadedTask(undefined);},[session?.id]);
+ useEffect(()=>{if(session?.phase==='running'||session?.phase==='paused')setReview(null);},[session?.phase]);
+ useEffect(()=>{
+   if(review!==session?.id||!session||tasks)return;
+   let active=true;
+   const load=async()=>{
+     try {const snapshot=session.scope==='guest'?readGuest():focus.client?await accountAdapter(focus.client,session.scope).load():null;
+       if(active)setLoadedTask(snapshot?.tasks.find(t=>t.id===session.taskId));
+     }catch{if(active)setLoadedTask(undefined);}
+   };void load();return()=>{active=false;};
+ },[review,session?.id,tasks,focus.client]);
  const bar=useRef<HTMLElement>(null);
  useEffect(()=>{
   const element=bar.current;if(!element)return;
@@ -16,7 +37,7 @@ export function FocusBar({locale,onOpen,availability}:{locale:Locale;onOpen?:()=
   size();const observer=typeof ResizeObserver==='undefined'?null:new ResizeObserver(size);observer?.observe(element);
   return()=>{observer?.disconnect();document.documentElement.style.removeProperty('--task-focus-clearance');};
  },[Boolean(session||focus.error)]);
- if(!session&&!focus.error)return null;
+ if(!session&&!focus.error)return notice?<p className="focus-sr-only" role="status">{notice}</p>:null;
  const seconds=session?focusSeconds(session):0;
  return <>
   <div className="task-focus-clearance" aria-hidden="true"/>
@@ -34,5 +55,6 @@ export function FocusBar({locale,onOpen,availability}:{locale:Locale;onOpen?:()=
    {focus.error&&<p role="alert">{c[focus.error]} {focus.error==='conflict'&&<button onClick={()=>focus.controller?.useSaved()}>{c.useSaved}</button>} {focus.error==='storage'&&<button onClick={()=>void focus.controller?.retry()}>{c.retry}</button>}</p>}
   </aside>
 
+  {review===session?.id&&session&&focus.controller&&<SessionReview key={session.id} session={session} controller={focus.controller} locale={locale} onComplete={availability==='blocked'||availability==='loading'?undefined:onComplete} task={tasks?.find(t=>t.id===session.taskId)??loadedTask} onClose={result=>{setReview(null);if(result)setNotice(historyCopy[locale][result]);}}/>}
  </>;
 }
