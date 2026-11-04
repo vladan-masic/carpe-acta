@@ -1,6 +1,6 @@
-# Focus History and Statistics V1 — review checkpoint
+# Focus History and Statistics V1 — validation
 
-4 November 2026. Branch `codex/focus-history-statistics`, based on freshly fetched `origin/main` at `594a8b2` (PR #34). The authoritative checkout was clean before implementation. No commit, push, merge, deployment or hosted database change has been made.
+4 November 2026. Branch `codex/focus-history-statistics`, based on freshly fetched `origin/main` at `594a8b2` (PR #34). The authoritative checkout was clean before implementation. At the initial review checkpoint, no commit, push, merge, deployment or hosted database change had been made. Release validation follows below.
 
 ## Behavior
 
@@ -41,12 +41,16 @@ Screenshots use synthetic guest fixtures and the actual production build. Sectio
 - [Session review](screenshots/session-review-en-light.png)
 - [320 px scrollable review](screenshots/session-review-320.png)
 
-## Before release — requires approval
+## Hosted release validation — 5 November 2026
 
-Apply `supabase/migrations/202611040001_focus_history.sql` to the hosted project only after approval. Then verify with dedicated test accounts: real Supabase Auth/PostgREST persistence, account isolation, ambiguous-network retry, logout/account switching, explicit import, and deletion. Local SQL and adapter tests do not replace hosted authenticated browser testing. Physical mobile-device and assistive-technology testing remain outside the automated/browser checks above. Browser data eviction cannot be prevented; account history is durable after server acknowledgement.
+User authorized the migration and release. Supabase CLI 3.0.0 (official release checksum verified) authenticated through the user's browser authorization. Confirmed healthy `carpe-acta` project `ipfjdjuwlnbkchqirxli`.
 
-The feature is ready for local visual/functional review. Hosted migration, commit, push, merge and deployment remain pending approval.
+- Remote inspection confirmed the existing task schema, no Focus History tables and no migration registry. An isolated CLI work directory contained only the reviewed migration; older manually applied SQL was not replayed or falsely marked as migrated.
+- Dry run listed only `202611040001_focus_history.sql`; vault, roles and seeds were excluded. Reviewed migration SHA256: `70018b64c8c15ef73029dace9ef35c1fb73594da2c34b3ea1100195fff5fc41f`.
+- Hosted schema/security rehearsal passed inside a rolled-back transaction with random disposable identities. Applied the unchanged migration using CLI `db push`; migration list confirmed version `202611040001` both locally and remotely. Post-apply SQL security tests passed and rolled back.
+- Real Supabase Auth/PostgREST checks used two auto-confirmed disposable users (no email sent), public client credentials and user tokens. Production history adapter/store passed saves, concurrent retries without overwrite, authenticated session restoration, owner isolation, anonymous denial, restricted updates, deletion/non-resurrection, explicit guest import failure/retry/source retention, task separation and logout guards. Test accounts and cascaded fixtures were removed afterward. Administrative credentials were confined to a private temporary server-side file for fixture provisioning/cleanup, never frontend code or logs.
+- Chrome automation remains unavailable: navigation fails with `Cannot read properties of undefined (reading 'timeoutMs')`. Hosted authenticated adapter/API checks passed, but hosted interactive browser flows are not claimed as tested. Pre-release production-bundle visual checks and screenshots above remain valid.
 
-## Release progress — 4 November 2026
+## Remaining limitations
 
-Deployment approved by the user. Refetched main and confirmed the feature still starts from PR #34 without divergence. Full release checks passed again: 482 tests, TypeScript, production build, Realm/fixture exclusion, and diff whitespace check. The hosted migration remains a prerequisite for merging; dashboard automation is currently unavailable, and no hosted migration has been attempted.
+Legacy sessions cannot reconstruct elapsed work erased by the old controller. Browser data eviction cannot be prevented. Physical mobile-device and assistive-technology testing remain outside the automated checks. The existing production bundle-size warning remains. Hosted interactive browser smoke testing requires restoration of browser automation.
