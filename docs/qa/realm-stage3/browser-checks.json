@@ -1,0 +1,348 @@
+{
+  "checks": [
+    "en/light/1440",
+    "en/light/768",
+    "en/light/390",
+    "en/light/320",
+    "en/dark/1440",
+    "en/dark/768",
+    "en/dark/390",
+    "en/dark/320",
+    "sr-Latn/light/1440",
+    "sr-Latn/light/768",
+    "sr-Latn/light/390",
+    "sr-Latn/light/320",
+    "sr-Latn/dark/1440",
+    "sr-Latn/dark/768",
+    "sr-Latn/dark/390",
+    "sr-Latn/dark/320"
+  ],
+  "maximumChecks": [
+    {
+      "locale": "en",
+      "theme": "light",
+      "building": "hall",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "building": "farm",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "building": "sawmill",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "building": "quarry",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "building": "mine",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "building": "workshop",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "building": "marketplace",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "building": "academy",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "building": "guild",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "building": "tavern",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "building": "hall",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "building": "farm",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "building": "sawmill",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "building": "quarry",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "building": "mine",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "building": "workshop",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "building": "marketplace",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "building": "academy",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "building": "guild",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "building": "tavern",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "light",
+      "building": "hall",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "light",
+      "building": "farm",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "light",
+      "building": "sawmill",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "light",
+      "building": "quarry",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "light",
+      "building": "mine",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "light",
+      "building": "workshop",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "light",
+      "building": "marketplace",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "light",
+      "building": "academy",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "light",
+      "building": "guild",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "light",
+      "building": "tavern",
+      "opacity": "1",
+      "button": 14.505772058680382,
+      "status": 6.425332759787919
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "dark",
+      "building": "hall",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "dark",
+      "building": "farm",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "dark",
+      "building": "sawmill",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "dark",
+      "building": "quarry",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "dark",
+      "building": "mine",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "dark",
+      "building": "workshop",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "dark",
+      "building": "marketplace",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "dark",
+      "building": "academy",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "dark",
+      "building": "guild",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    },
+    {
+      "locale": "sr-Latn",
+      "theme": "dark",
+      "building": "tavern",
+      "opacity": "1",
+      "button": 10.806295034503224,
+      "status": 6.629237856523803
+    }
+  ],
+  "errors": [],
+  "fullPlaythroughActions": 145,
+  "keyboardSelection": true,
+  "focusReturn": true,
+  "touchSelection": true,
+  "keyboardPanning": true
+}

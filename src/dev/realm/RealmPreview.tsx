@@ -4,15 +4,18 @@ import { AppFooter } from '../../components/AppFooter';
 import { LanguageSelector } from '../../components/LanguageSelector';
 import { getInitialLocale } from '../../i18n/locales';
 import { messages } from '../../i18n/messages';
-import landscape from '../../assets/illustrations/hero-path-1200.webp';
 import botanical from '../../assets/illustrations/botanical-details.webp';
-import { buildings, buildReason, construct, cost, expeditionCost, expeditionReward, explore, exploreReason, hero, initialRealm, MAX_LEVEL, resources, reward, buySupply, supplyAmount, supplyReason, materialBuildings, type Building, type Route, type Stock, type Material } from './model';
+import { hallUnlock, buildReason, construct, cost, expeditionCost, expeditionReward, explore, exploreReason, hero, initialRealm, MAX_LEVEL, resources, reward, buySupply, supplyAmount, supplyReason, materialBuildings, type Building, type Route, type Stock, type Material } from './model';
 import { realmCopy, type RealmCopy } from './copy';
 import { RewardSimulator } from './RewardSimulator';
+import { VillageScene } from './VillageScene';
+import { BuildingActivities } from './BuildingActivities';
+import { expansionCopy } from './expansionCopy';
+import { contracts, destinations, researchCatalog, tradeRate } from './catalog';
 import './realm.css';
 
 // Temporary symbols retained until a matched terrain/building asset set is supplied.
-const symbols = { hall: '♜', farm: '🌾', sawmill: '🌲', quarry: '⛰', mine: '⛏', workshop: '⚒' };
+const symbols = { hall: '♜', farm: '🌾', sawmill: '🌲', quarry: '⛰', mine: '⛏', workshop: '⚒', marketplace: '⇄', academy: '▥', guild: '⌖', tavern: '☕' };
 const resourceSymbols = { wood: '▤', stone: '◆', food: '♧', coins: '◉', iron: '⬡' };
 const materials: Material[] = ['wood', 'stone', 'food', 'iron'];
 function ResourceLine({ stock, copy }: { stock: Stock; copy: RealmCopy }) {
@@ -27,7 +30,7 @@ export function RealmPreview() {
   const [feedback, setFeedback] = useState('');
   const resetDialog = useRef<HTMLDialogElement>(null);
   const detailHeading = useRef<HTMLHeadingElement>(null);
-  const c = realmCopy[locale], profile = hero(state.xp), village = state.village;
+  const c = realmCopy[locale], e = expansionCopy[locale], profile = hero(state.xp), village = state.village;
   const target = selected ? village.levels[selected] + 1 : 0;
   const reason = selected ? buildReason(state, selected) : 'ready';
   const expeditionReason = exploreReason(state);
@@ -62,17 +65,7 @@ export function RealmPreview() {
         }}/>
         <p className="realm-feedback" role="status">{feedback}</p>
         <div className="realm-workspace" data-selected={Boolean(selected)}>
-          <section className="realm-village" aria-label={c.village}>
-            <img className="realm-landscape" src={landscape} alt=""/>
-            <div className="realm-map-label"><h2>{c.village}</h2><span>{c.artwork}</span></div>
-            <div className="realm-plots">{buildings.map(building => <button id={`plot-${building}`} key={building} className={`realm-plot realm-plot-${building}`}
-              aria-label={`${c.buildings[building]}, ${village.levels[building] ? `${c.level} ${village.levels[building]}` : c.plot}`} aria-pressed={selected === building} onClick={() => selectBuilding(building)}>
-              <span className="realm-building-symbol" aria-hidden="true">{symbols[building]}</span><strong>{c.buildings[building]}</strong>
-              <span>{village.levels[building] ? `${c.level} ${village.levels[building]}` : c.plot}</span>
-              {buildReason(state, building) === 'ready' && <small title={village.levels[building] ? c.upgrade : c.construct} aria-hidden="true">＋</small>}
-            </button>)}</div>
-            <div className="realm-map-caption">{c.choose}</div>
-          </section>
+          <VillageScene village={village} selected={selected} onSelect={selectBuilding} copy={c} expansion={e}/>
           {selected && <aside className="realm-detail realm-paper" aria-labelledby="realm-detail-heading">
             <div className="realm-detail-header"><span aria-hidden="true">{symbols[selected]}</span><div><p className="realm-eyebrow">{c.overview}</p>
               <h2 id="realm-detail-heading" ref={detailHeading} tabIndex={-1}>{c.buildings[selected]}</h2><p>{village.levels[selected] ? `${c.level} ${village.levels[selected]} / ${MAX_LEVEL}` : c.plot}</p></div>
@@ -82,16 +75,19 @@ export function RealmPreview() {
               <h3>{c.benefits}</h3><div className="realm-benefit">
                 {selected === 'hall' ? <><strong>{c.hallBenefit}: {Math.min(MAX_LEVEL, village.levels.hall + 1)} → {Math.min(MAX_LEVEL, target + 1)}</strong><p>{c.hallSupply}: +{village.levels.hall - 1} → +{target - 1}</p><p>{c.hallUnlock}</p></> :
                   selected === 'workshop' ? <><strong>{c.workshopBenefit}: +{village.levels.workshop * 2} → +{target * 2}</strong><p>{c.workshopUnlock}: {Math.min(MAX_LEVEL, target + 2)}</p></> :
-                  selectedMaterial && <strong>{c.bundleBenefit}: {selected === 'mine' && village.levels.mine === 0 ? '—' : supplyAmount(village, selectedMaterial)} → {supplyAmount({ ...village, levels: { ...village.levels, [selected]: target } }, selectedMaterial)}</strong>}
+                  selectedMaterial ? <strong>{c.bundleBenefit}: {selected === 'mine' && village.levels.mine === 0 ? '—' : supplyAmount(village, selectedMaterial)} → {supplyAmount({ ...village, levels: { ...village.levels, [selected]: target } }, selectedMaterial)}</strong> : <p>{c.level} {target}: {selected === 'academy' ? e.researchNames[researchCatalog[target - 1].id] : selected === 'guild' ? e.destinations[destinations[target - 1].id] : selected === 'tavern' ? e.travelers[contracts[target - 1].id] : `${tradeRate(target).pay} → ${tradeRate(target).receive} · ${e.marketHelp}`}</p>}
               </div>
+              <p>{e.requires}: {c.buildings.hall} {Math.max(hallUnlock[selected], selected === 'hall' ? village.levels.hall : target - 1)}{target >= 3 && selected !== 'workshop' ? ` · ${c.buildings.workshop} ${target - 2}` : ''}</p>
               <h3>{c.requirements} <span>· {c.level} {target}</span></h3>
-              <ul className="realm-cost">{resources.filter(key => cost(selected, target)[key] > 0).map(key => <li key={key}><span>{c.resources[key]}</span><strong>{cost(selected, target)[key]}</strong><small data-enough={village.stock[key] >= cost(selected, target)[key]}>{village.stock[key]} / {cost(selected, target)[key]} {village.stock[key] >= cost(selected, target)[key] ? '✓' : '−'}</small></li>)}</ul>
+              <ul className="realm-cost">{resources.filter(key => cost(selected, target, village)[key] > 0).map(key => <li key={key}><span>{c.resources[key]}</span><strong>{cost(selected, target, village)[key]}</strong><small data-enough={village.stock[key] >= cost(selected, target, village)[key]}>{village.stock[key]} / {cost(selected, target, village)[key]} {village.stock[key] >= cost(selected, target, village)[key] ? '✓' : '−'}</small></li>)}</ul>
             </>}
-            <p className="realm-duration">{c.instant}</p>
-            <button className="realm-primary realm-build" disabled={reason !== 'ready'} aria-describedby="realm-build-reason" onClick={() => { setState(current => construct(current, selected)); setFeedback(c.built); requestAnimationFrame(() => detailHeading.current?.focus({ preventScroll: true })); }}>{village.levels[selected] ? `${c.upgrade} ${Math.min(target, MAX_LEVEL)}` : c.construct}</button>
+            {reason !== 'maximum' && <p className="realm-duration">{c.instant}</p>}
+            <button className={`realm-build ${reason === 'maximum' ? 'realm-fully-upgraded' : 'realm-primary'}`} disabled={reason !== 'ready'} aria-describedby="realm-build-reason" onClick={() => { setState(current => construct(current, selected)); setFeedback(c.built); requestAnimationFrame(() => detailHeading.current?.focus({ preventScroll: true })); }}>{reason === 'maximum' ? `${c.fullyUpgraded} — ${c.level} ${MAX_LEVEL}` : village.levels[selected] ? `${c.upgrade} ${target}` : c.construct}</button>
             <p id="realm-build-reason" className="realm-hint">{c.reasons[reason]}</p>
+
           </aside>}
         </div>
+        {selected && ['marketplace', 'academy', 'guild', 'tavern'].includes(selected) && <div className="realm-activities-panel realm-paper"><BuildingActivities building={selected} state={state} copy={c} expansion={e} onAction={action => { setState(action); setFeedback(e.changed); }}/></div>}
         <details className="realm-artwork-note"><summary>{c.artwork}</summary><p>{c.artworkHelp}</p></details>
         <section className="realm-supplies realm-paper" aria-labelledby="realm-supply-heading">
           <h2 id="realm-supply-heading">{c.supplies}</h2><p>{c.suppliesHelp}</p>

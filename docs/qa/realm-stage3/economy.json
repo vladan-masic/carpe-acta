@@ -1,0 +1,64 @@
+[
+  {
+    "earlyResearch": false,
+    "purchases": 66,
+    "constructions": 47,
+    "tenBuilt": {
+      "spent": 469,
+      "purchases": 41,
+      "levels": {
+        "hall": 4,
+        "farm": 4,
+        "sawmill": 4,
+        "quarry": 4,
+        "mine": 4,
+        "workshop": 4,
+        "marketplace": 4,
+        "academy": 4,
+        "guild": 4,
+        "tavern": 1
+      }
+    },
+    "remaining": {
+      "coins": 117,
+      "wood": 55,
+      "stone": 93,
+      "food": 33,
+      "iron": 96
+    },
+    "issued": 900,
+    "xp": 200,
+    "actions": 145
+  },
+  {
+    "earlyResearch": true,
+    "purchases": 62,
+    "constructions": 47,
+    "tenBuilt": {
+      "spent": 479,
+      "purchases": 43,
+      "levels": {
+        "hall": 4,
+        "farm": 4,
+        "sawmill": 4,
+        "quarry": 4,
+        "mine": 4,
+        "workshop": 4,
+        "marketplace": 4,
+        "academy": 4,
+        "guild": 4,
+        "tavern": 1
+      }
+    },
+    "remaining": {
+      "coins": 137,
+      "wood": 40,
+      "stone": 84,
+      "food": 51,
+      "iron": 63
+    },
+    "issued": 900,
+    "xp": 200,
+    "actions": 141
+  }
+]
