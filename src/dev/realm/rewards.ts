@@ -6,8 +6,8 @@ export const activities: Activity[] = [
   ...Array.from({ length: 4 }, (_, i) => ({ id: `sample-tip-${i + 1}`, kind: 'tip' as const, index: i })),
   ...Array.from({ length: 2 }, (_, i) => ({ id: `sample-milestone-${i + 1}`, kind: 'milestone' as const, index: i })),
 ];
-export const rewardValues = { task: { coins: 20, xp: 20 }, tip: { coins: 8, xp: 10 }, milestone: { coins: 30, xp: 35 } };
-export const REWARD_CAP = { coins: 200, xp: 200 };
+export const rewardValues = { task: { coins: 80, xp: 20 }, tip: { coins: 32, xp: 10 }, milestone: { coins: 120, xp: 35 } };
+export const REWARD_CAP = { coins: 900, xp: 200 };
 export type RewardEvent = { id: string; activityId: string; action: 'complete' | 'undo' };
 export type RewardOutcome = 'awarded' | 'restored' | 'reversed' | 'duplicate' | 'inactive' | 'unknown' | 'capped';
 export type Claim = { active: boolean; coins: number; xp: number };

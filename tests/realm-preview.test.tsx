@@ -46,7 +46,7 @@ it('reverses unspent coins and XP once; restoring keeps the same entitlement', (
   expect(reversed.village.stock.coins).toBe(0); expect(reversed.xp).toBe(0); expect(reversed.rewards.adjustment).toBe(0);
   expect(undo(reversed).rewards.history[0].outcome).toBe('inactive');
   const restored = complete(reversed);
-  expect(restored.village.stock.coins).toBe(20); expect(restored.rewards.grossCoins).toBe(20);
+  expect(restored.village.stock.coins).toBe(80); expect(restored.rewards.grossCoins).toBe(80);
 });
 it('records spent rewards as adjustment, blocks spending and reconciles restoration without resource farming', () => {
   let state = complete(initialRealm());
@@ -58,18 +58,18 @@ it('records spent rewards as adjustment, blocks spending and reconciles restorat
   expect(buySupply(state, 'food')).toBe(state); expect(construct(state, 'hall')).toBe(state);
   expect(explore(state, 'gather')).toBe(state);
   state = complete(state);
-  expect(state.rewards.adjustment).toBe(0); expect(state.village.stock.coins).toBe(12);
+  expect(state.rewards.adjustment).toBe(0); expect(state.village.stock.coins).toBe(72);
   for (let i = 0; i < 4; i++) state = complete(undo(state));
-  expect(state.village.stock.coins).toBe(12); expect(state.village.stock.wood).toBe(wood);
+  expect(state.village.stock.coins).toBe(72); expect(state.village.stock.wood).toBe(wood);
 });
 it('applies new rewards to an outstanding adjustment before making coins spendable', () => {
   let state = complete(initialRealm());
-  for (let i = 0; i < 4; i++) state = buySupply(state, 'wood');
-  state = undo(state); expect(state.rewards.adjustment).toBe(20);
+  for (let i = 0; i < 16; i++) state = buySupply(state, 'wood');
+  state = undo(state); expect(state.rewards.adjustment).toBe(80);
   state = complete(state, 'sample-tip-1');
-  expect(state.rewards.adjustment).toBe(12); expect(state.village.stock.coins).toBe(0);
+  expect(state.rewards.adjustment).toBe(48); expect(state.village.stock.coins).toBe(0);
   state = complete(state, 'sample-task-2');
-  expect(state.rewards.adjustment).toBe(0); expect(state.village.stock.coins).toBe(8);
+  expect(state.rewards.adjustment).toBe(0); expect(state.village.stock.coins).toBe(32);
 });
 it('has all five resources and supports paid supplies without passive gain or purchase XP', () => {
   expect(resources).toEqual(['coins', 'wood', 'stone', 'food', 'iron']);
@@ -83,6 +83,7 @@ it('has all five resources and supports paid supplies without passive gain or pu
     expect(state.village.stock.coins).toBe(before.village.stock.coins - 5);
     expect(state.xp).toBe(before.xp);
   }
+  state.village.stock.coins = 0;
   expect(buySupply(state, 'wood')).toBe(state);
 });
 it.each(buildings)('constructs/upgrades %s with exact costs and enforces the level cap', building => {
