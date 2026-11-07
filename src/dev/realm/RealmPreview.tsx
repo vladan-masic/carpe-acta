@@ -9,13 +9,12 @@ import { hallUnlock, buildReason, construct, cost, expeditionCost, expeditionRew
 import { realmCopy, type RealmCopy } from './copy';
 import { RewardSimulator } from './RewardSimulator';
 import { VillageScene } from './VillageScene';
+import { BuildingArtwork } from './artwork';
 import { BuildingActivities } from './BuildingActivities';
 import { expansionCopy } from './expansionCopy';
 import { contracts, destinations, researchCatalog, tradeRate } from './catalog';
 import './realm.css';
 
-// Temporary symbols retained until a matched terrain/building asset set is supplied.
-const symbols = { hall: '♜', farm: '🌾', sawmill: '🌲', quarry: '⛰', mine: '⛏', workshop: '⚒', marketplace: '⇄', academy: '▥', guild: '⌖', tavern: '☕' };
 const resourceSymbols = { wood: '▤', stone: '◆', food: '♧', coins: '◉', iron: '⬡' };
 const materials: Material[] = ['wood', 'stone', 'food', 'iron'];
 function ResourceLine({ stock, copy }: { stock: Stock; copy: RealmCopy }) {
@@ -67,7 +66,7 @@ export function RealmPreview() {
         <div className="realm-workspace" data-selected={Boolean(selected)}>
           <VillageScene village={village} selected={selected} onSelect={selectBuilding} copy={c} expansion={e}/>
           {selected && <aside className="realm-detail realm-paper" aria-labelledby="realm-detail-heading">
-            <div className="realm-detail-header"><span aria-hidden="true">{symbols[selected]}</span><div><p className="realm-eyebrow">{c.overview}</p>
+            <div className="realm-detail-header">{village.levels[selected] > 0 && <div className="realm-detail-art"><BuildingArtwork building={selected}/></div>}<div><p className="realm-eyebrow">{c.overview}</p>
               <h2 id="realm-detail-heading" ref={detailHeading} tabIndex={-1}>{c.buildings[selected]}</h2><p>{village.levels[selected] ? `${c.level} ${village.levels[selected]} / ${MAX_LEVEL}` : c.plot}</p></div>
               <button className="realm-close" aria-label={c.close} onClick={() => { const previous = selected; setSelected(null); requestAnimationFrame(() => document.getElementById(`plot-${previous}`)?.focus()); }}>×</button></div>
             <p>{c.functions[selected]}</p>

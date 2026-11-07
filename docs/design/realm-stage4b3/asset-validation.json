@@ -1,0 +1,212 @@
+{
+  "academy": {
+    "src": "assets/academy.png",
+    "size": [
+      1685,
+      934
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 556421,
+    "partialAlphaPixels": 1016804,
+    "visibleBounds": [
+      33,
+      25,
+      1660,
+      901
+    ],
+    "sha256": "0b889d1ad4634305928816061201fd6a1d04c2f8f950742b8b6614a0ddf87ede"
+  },
+  "farm": {
+    "src": "assets/farm.png",
+    "size": [
+      1975,
+      796
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 398351,
+    "partialAlphaPixels": 1173234,
+    "visibleBounds": [
+      3,
+      2,
+      1969,
+      795
+    ],
+    "sha256": "7a247b54e2cd7eef0d7c3372a8c73a7ab76b25ad2c3704b0546ad1b1fa9d7265"
+  },
+  "guild": {
+    "src": "assets/guild.png",
+    "size": [
+      1609,
+      977
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 519500,
+    "partialAlphaPixels": 1051840,
+    "visibleBounds": [
+      29,
+      18,
+      1580,
+      951
+    ],
+    "sha256": "b0a8f2f2392d7e0832f3df08589ccff1a3b46538bc24a5518909bc56009bb84e"
+  },
+  "hall": {
+    "src": "assets/hall.png",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 725921,
+    "partialAlphaPixels": 846417,
+    "visibleBounds": [
+      24,
+      81,
+      2149,
+      674
+    ],
+    "sha256": "327ead1b0e9094cdd966646bd38b18ca9589142d1a075b159384413593f19da1"
+  },
+  "marketplace": {
+    "src": "assets/marketplace.png",
+    "size": [
+      2170,
+      725
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 651259,
+    "partialAlphaPixels": 921239,
+    "visibleBounds": [
+      50,
+      40,
+      2128,
+      673
+    ],
+    "sha256": "712d1d88dbaa3d49556b98d79e5a2d1f0cefa2ba84fdfcf5573925264dc3b659"
+  },
+  "mine": {
+    "src": "assets/mine.png",
+    "size": [
+      1682,
+      935
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 486251,
+    "partialAlphaPixels": 1086297,
+    "visibleBounds": [
+      64,
+      8,
+      1629,
+      917
+    ],
+    "sha256": "184e0323ebd8ab954ea39038ebf48e0f6a8c8964854ced0396e39a09e6f726a8"
+  },
+  "quarry": {
+    "src": "assets/quarry.png",
+    "size": [
+      1816,
+      866
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 403844,
+    "partialAlphaPixels": 1168070,
+    "visibleBounds": [
+      38,
+      0,
+      1758,
+      865
+    ],
+    "sha256": "f889c1824dec6151d6d8596a4d9656eabc13697cca6ff9aa7a0b6ec89c5240bf"
+  },
+  "sawmill": {
+    "src": "assets/sawmill.png",
+    "size": [
+      1728,
+      910
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 482010,
+    "partialAlphaPixels": 1090195,
+    "visibleBounds": [
+      28,
+      9,
+      1700,
+      903
+    ],
+    "sha256": "5779a343daf2d76fbc4301a93eba003f6e929afb11d1c46c64828e9c44414992"
+  },
+  "tavern": {
+    "src": "assets/tavern.png",
+    "size": [
+      1983,
+      793
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 501803,
+    "partialAlphaPixels": 1070524,
+    "visibleBounds": [
+      95,
+      8,
+      1902,
+      768
+    ],
+    "sha256": "17255fe1d95b7897bd3be243589798b1019020f0220cd9e82d8cd1faa8cebfdf"
+  },
+  "workshop": {
+    "src": "assets/workshop.png",
+    "size": [
+      2022,
+      778
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 414910,
+    "partialAlphaPixels": 1157746,
+    "visibleBounds": [
+      108,
+      6,
+      1912,
+      771
+    ],
+    "sha256": "4f1e1c6c4d430e43bb49326d0498bb5ce53d82cab4784abc258b9229069c1a61"
+  }
+}
