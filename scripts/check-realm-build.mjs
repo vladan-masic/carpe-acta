@@ -18,3 +18,9 @@ approvedHashes.add(hash(await readFile(new URL('../docs/design/realm-stage4a/cle
 for (const file of files) assert.ok(!approvedHashes.has(hash(await readFile(new URL(`../dist/assets/${file}`, import.meta.url)))), `Realm artwork leaked into production: ${file}`);
 assert.ok(!output.includes('clean-terrain') && !output.includes('realm-stage4b3'), 'Realm artwork reference leaked');
 console.log('Approved terrain and all ten RGBA sprites excluded from production.');
+
+const tierDir = new URL('../docs/design/realm-stage5a/assets/', import.meta.url);
+const tierHashes = new Set(await Promise.all((await readdir(tierDir)).filter(name => name.endsWith('.png')).map(async name => hash(await readFile(new URL(name, tierDir))))));
+for (const file of files) assert.ok(!tierHashes.has(hash(await readFile(new URL(`../dist/assets/${file}`, import.meta.url)))), `Town Hall tier leaked: ${file}`);
+assert.ok(!output.includes('realm-stage5a') && !output.includes('hall-early') && !output.includes('hall-developed'), 'Town Hall tier reference leaked');
+console.log('Town Hall visual tiers excluded from production.');

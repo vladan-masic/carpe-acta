@@ -2,7 +2,7 @@ const en = {
   realm: 'The Realm', home: 'Home', tasks: 'My Tasks', menu: 'Menu', language: 'Language', theme: 'Theme', light: 'Light', dark: 'Dark',
   lead: 'A brighter you.', accent: 'A growing world.', intro: 'Meaningful actions become small beginnings. Build a world at your own pace.',
   note: 'Small actions.\nNew horizons.', village: 'Your village', prototype: 'Stage 3 · development prototype',
-  artwork: 'Village artwork', artworkHelp: 'Approved terrain and ten separate illustrations. Empty plots show no completed building. One mature illustration is used for every constructed level until upgrade artwork is approved.',
+  artwork: 'Village artwork', artworkHelp: 'Approved terrain and ten separate illustrations. Empty plots show no completed building. Town Hall artwork changes at levels 1, 3 and 5; other buildings retain one illustration.',
   isolated: 'Isolated simulation. Sample accomplishments only; real tasks, tips and accounts are untouched. Reloading resets this session.',
   reset: 'Reset simulation', resetConfirm: 'Reset this simulated village and reward history?', cancel: 'Keep village', confirm: 'Reset village',
   resources: { wood: 'Wood', stone: 'Stone', food: 'Food', coins: 'Coins', iron: 'Iron' },
@@ -36,7 +36,7 @@ export type RealmCopy = Localized<typeof en>;
 const sr: RealmCopy = {
   realm: 'Kraljevstvo', home: 'Početna', tasks: 'Moji zadaci', menu: 'Meni', language: 'Jezik', theme: 'Tema', light: 'Svetla', dark: 'Tamna',
   lead: 'Ti, u boljem svetlu.', accent: 'Svet koji raste.', intro: 'Smislene aktivnosti postaju mali počeci. Gradi svet svojim tempom.', note: 'Mala dela.\nNovi horizonti.', village: 'Tvoje selo', prototype: 'Faza 3 · razvojni prototip',
-  artwork: 'Ilustracije sela', artworkHelp: 'Odobreni teren i deset zasebnih ilustracija. Prazna mesta ne prikazuju završene zgrade. Jedna ilustracija se koristi za sve izgrađene nivoe dok se ne odobre ilustracije nadogradnji.',
+  artwork: 'Ilustracije sela', artworkHelp: 'Odobreni teren i deset zasebnih ilustracija. Prazna mesta ne prikazuju završene zgrade. Gradska kuća menja ilustraciju na nivoima 1, 3 i 5; ostale zgrade zadržavaju jednu ilustraciju.',
   isolated: 'Izolovana simulacija. Samo izmišljena postignuća; stvarni zadaci, saveti i nalozi ostaju nepromenjeni. Osvežavanje vraća početno stanje.',
   reset: 'Ponovi simulaciju', resetConfirm: 'Vrati simulirano selo i istoriju nagrada na početak?', cancel: 'Zadrži selo', confirm: 'Vrati selo',
   resources: { wood: 'Drvo', stone: 'Kamen', food: 'Hrana', coins: 'Novčići', iron: 'Gvožđe' },

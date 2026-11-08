@@ -24,7 +24,7 @@ export function VillageScene({ village, selected, onSelect, copy: c, expansion: 
         {placements.map(({ building: id, x, y, width, height, z }) => {
           const built = village.levels[id] > 0;
           return <button key={id} id={`plot-${id}`} className="realm-location" data-built={built} data-locked={village.levels.hall < hallUnlock[id]} style={{ '--x': `${x}%`, '--y': `${y}%`, '--width': `${width}%`, '--height': `${height}%`, zIndex: z } as CSSProperties} aria-label={`${c.buildings[id]}, ${status(id)}`} aria-pressed={selected === id} title={`${c.buildings[id]} · ${status(id)}`} onClick={() => onSelect(id)}>
-            {built ? <BuildingArtwork building={id}/> : <span className="realm-plot-marker" aria-hidden="true">{c.buildings[id]}<small>{status(id)}</small></span>}
+            {built ? <BuildingArtwork building={id} level={village.levels[id]}/> : <span className="realm-plot-marker" aria-hidden="true">{c.buildings[id]}<small>{status(id)}</small></span>}
           </button>;
         })}
       </div>
