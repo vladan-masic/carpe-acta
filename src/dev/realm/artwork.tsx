@@ -24,10 +24,21 @@ import workshopEarly from '../../../docs/design/realm-stage5c/assets/workshop-ea
 import workshopDeveloped from '../../../docs/design/realm-stage5c/assets/workshop-developed.png';
 import marketplaceEarly from '../../../docs/design/realm-stage5c/assets/marketplace-early.png';
 import marketplaceDeveloped from '../../../docs/design/realm-stage5c/assets/marketplace-developed.png';
+import remainingMetrics from '../../../docs/design/realm-stage5d/asset-validation.json';
+import guildEarly from '../../../docs/design/realm-stage5d/assets/guild-early.png';
+import guildDeveloped from '../../../docs/design/realm-stage5d/assets/guild-developed.png';
+import academyEarly from '../../../docs/design/realm-stage5d/assets/academy-early.png';
+import academyDeveloped from '../../../docs/design/realm-stage5d/assets/academy-developed.png';
+import mineEarly from '../../../docs/design/realm-stage5d/assets/mine-early.png';
+import mineDeveloped from '../../../docs/design/realm-stage5d/assets/mine-developed.png';
+import quarryEarly from '../../../docs/design/realm-stage5d/assets/quarry-early.png';
+import quarryDeveloped from '../../../docs/design/realm-stage5d/assets/quarry-developed.png';
+import tavernEarly from '../../../docs/design/realm-stage5d/assets/tavern-early.png';
+import tavernDeveloped from '../../../docs/design/realm-stage5d/assets/tavern-developed.png';
 const sprites: Record<Building, string> = { guild, academy, mine, hall, sawmill, farm, marketplace, workshop, quarry, tavern };
 export const sceneArtwork = { terrain, buildings: sprites };
 type Artwork = { src: string; size: number[]; bounds: number[] };
-const tieredArtwork: Partial<Record<Building, { early: Artwork; developed: Artwork }>> = {
+const tieredArtwork: Record<Building, { early: Artwork; developed: Artwork }> = {
   hall: {
     early: { src: hallEarly, size: tierMetrics.early.size, bounds: tierMetrics.early.viewBounds },
     developed: { src: hallDeveloped, size: tierMetrics.developed.size, bounds: tierMetrics.developed.viewBounds },
@@ -48,8 +59,28 @@ const tieredArtwork: Partial<Record<Building, { early: Artwork; developed: Artwo
     early: { src: marketplaceEarly, size: craftMetrics.marketplace.early.size, bounds: craftMetrics.marketplace.early.viewBounds },
     developed: { src: marketplaceDeveloped, size: craftMetrics.marketplace.developed.size, bounds: craftMetrics.marketplace.developed.viewBounds },
   },
+  guild: {
+    early: { src: guildEarly, size: remainingMetrics.guild.early.size, bounds: remainingMetrics.guild.early.viewBounds },
+    developed: { src: guildDeveloped, size: remainingMetrics.guild.developed.size, bounds: remainingMetrics.guild.developed.viewBounds },
+  },
+  academy: {
+    early: { src: academyEarly, size: remainingMetrics.academy.early.size, bounds: remainingMetrics.academy.early.viewBounds },
+    developed: { src: academyDeveloped, size: remainingMetrics.academy.developed.size, bounds: remainingMetrics.academy.developed.viewBounds },
+  },
+  mine: {
+    early: { src: mineEarly, size: remainingMetrics.mine.early.size, bounds: remainingMetrics.mine.early.viewBounds },
+    developed: { src: mineDeveloped, size: remainingMetrics.mine.developed.size, bounds: remainingMetrics.mine.developed.viewBounds },
+  },
+  quarry: {
+    early: { src: quarryEarly, size: remainingMetrics.quarry.early.size, bounds: remainingMetrics.quarry.early.viewBounds },
+    developed: { src: quarryDeveloped, size: remainingMetrics.quarry.developed.size, bounds: remainingMetrics.quarry.developed.viewBounds },
+  },
+  tavern: {
+    early: { src: tavernEarly, size: remainingMetrics.tavern.early.size, bounds: remainingMetrics.tavern.early.viewBounds },
+    developed: { src: tavernDeveloped, size: remainingMetrics.tavern.developed.size, bounds: remainingMetrics.tavern.developed.viewBounds },
+  },
 };
-/** Reviewed tier sets share thresholds; unlisted buildings keep their approved sprite. */
+/** All buildings share thresholds and reuse their approved middle sprite. */
 export function buildingArtwork(building: Building, level: number): Artwork {
   const variants = tieredArtwork[building];
   if (variants && level < 3) return variants.early;

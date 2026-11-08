@@ -40,12 +40,11 @@ it.each(['en', 'sr-Latn'] as const)('shows only constructed sprites; all five le
   expect(onSelect).toHaveBeenLastCalledWith('tavern');
 });
 
-it.each(['hall', 'farm', 'sawmill', 'workshop', 'marketplace'] as const)('changes %s tiers at levels 3 and 5, reusing the approved middle sprite', building => {
+it.each(buildings)('changes %s tiers at levels 3 and 5, reusing the approved middle sprite', building => {
   expect(buildingArtwork(building, 1)).toEqual(buildingArtwork(building, 2));
   expect(buildingArtwork(building, 3)).toEqual(buildingArtwork(building, 4));
   expect(buildingArtwork(building, 3).src).toBe(sceneArtwork.buildings[building]);
   expect(new Set([1,3,5].map(level => buildingArtwork(building, level).src)).size).toBe(3);
-  for (const id of buildings.filter(id => !['hall', 'farm', 'sawmill', 'workshop', 'marketplace'].includes(id))) for (const level of [1,2,3,4,5]) expect(buildingArtwork(id, level).src).toBe(sceneArtwork.buildings[id]);
   const ratios = [1,3,5].map(level => { const [l,t,r,b] = buildingArtwork(building, level).bounds; return (r-l)/(b-t); });
   for (const ratio of ratios) expect(ratio).toBeCloseTo(ratios[0], 8);
 });
@@ -60,7 +59,7 @@ it('updates the rendered tier through real upgrade actions without moving the pl
   expect(view.container.querySelector('#plot-quarry image')).toBeNull();
   state = construct(state, 'quarry');
   view.rerender(<VillageScene {...props} village={state.village}/>);
-  expect(view.container.querySelector('#plot-quarry image')?.getAttribute('href')).toBe(sceneArtwork.buildings.quarry);
+  expect(view.container.querySelector('#plot-quarry image')?.getAttribute('href')).toBe(buildingArtwork('quarry', 1).src);
   for (const target of [2,3,4,5]) {
     if (target >= 3) {
       expect(construct(state, 'hall')).toBe(state); // Workshop prerequisite still applies.
@@ -75,7 +74,7 @@ it('updates the rendered tier through real upgrade actions without moving the pl
   expect(construct(state, 'hall')).toBe(state);
 });
 
-it.each(['farm', 'sawmill', 'workshop', 'marketplace'] as const)('shows %s construction and upgrades without shifting its frame, with no sprite for an empty plot', building => {
+it.each(['farm', 'sawmill', 'workshop', 'marketplace', 'guild', 'academy', 'mine', 'quarry', 'tavern'] as const)('shows %s construction and upgrades without shifting its frame, with no sprite for an empty plot', building => {
   let state = initialRealm();
   state.village.levels = { ...state.village.levels, hall: 5, workshop: 3, [building]: 0 };
   state.village.stock = { coins: 1000, wood: 1000, stone: 1000, food: 1000, iron: 1000 };

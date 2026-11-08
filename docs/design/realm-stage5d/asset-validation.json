@@ -1,0 +1,252 @@
+{
+  "guild": {
+    "early": {
+      "size": [
+        1609,
+        977
+      ],
+      "visibleBounds": [
+        29,
+        15,
+        1580,
+        948
+      ],
+      "viewBounds": [
+        29,
+        18,
+        1580,
+        951
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "7143dc41864036ae5ac9e792de38a797d2dfddd453852c38b6b226de66cbc63d"
+    },
+    "developed": {
+      "size": [
+        1609,
+        977
+      ],
+      "visibleBounds": [
+        29,
+        16,
+        1582,
+        946
+      ],
+      "viewBounds": [
+        29,
+        18,
+        1580,
+        951
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "c27145a74a7e91dd0a32f3f0abb7bf40611b00b8f95c045185164816e685cc1d"
+    }
+  },
+  "academy": {
+    "early": {
+      "size": [
+        1685,
+        934
+      ],
+      "visibleBounds": [
+        28,
+        21,
+        1665,
+        903
+      ],
+      "viewBounds": [
+        33,
+        25,
+        1660,
+        901
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "eef7396b575c8f3cd30a650168bce650044043bd8bcf676b6c4544e21e57d1f5"
+    },
+    "developed": {
+      "size": [
+        1685,
+        934
+      ],
+      "visibleBounds": [
+        30,
+        23,
+        1665,
+        901
+      ],
+      "viewBounds": [
+        33,
+        25,
+        1660,
+        901
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "4abee254aadcfdb8aea349c2830f90674b760cbefee7502125924407ce684225"
+    }
+  },
+  "mine": {
+    "early": {
+      "size": [
+        1683,
+        935
+      ],
+      "visibleBounds": [
+        58,
+        8,
+        1635,
+        919
+      ],
+      "viewBounds": [
+        64,
+        8,
+        1629,
+        917
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "9bb1906110b98a7e6687b5c0c1e188d477a60bf864dc392d7a4e2ed2d4b5dfb6"
+    },
+    "developed": {
+      "size": [
+        1683,
+        935
+      ],
+      "visibleBounds": [
+        61,
+        8,
+        1633,
+        921
+      ],
+      "viewBounds": [
+        64,
+        8,
+        1629,
+        917
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "d36a303ad6a72536103decb387b23bf78d0e7d2a47164997ec116430129147dc"
+    }
+  },
+  "quarry": {
+    "early": {
+      "size": [
+        1816,
+        866
+      ],
+      "visibleBounds": [
+        37,
+        0,
+        1756,
+        864
+      ],
+      "viewBounds": [
+        38,
+        0,
+        1758,
+        865
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "5a60420e377158de59b76f15a501b77dbf25aed709c5ec558a0e058e31fd4dc2"
+    },
+    "developed": {
+      "size": [
+        1816,
+        866
+      ],
+      "visibleBounds": [
+        38,
+        0,
+        1764,
+        866
+      ],
+      "viewBounds": [
+        38,
+        0,
+        1758,
+        865
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "b8bd8350909face0f655add612008570ce6bf74e70e7e288ca002f5965782077"
+    }
+  },
+  "tavern": {
+    "early": {
+      "size": [
+        1983,
+        793
+      ],
+      "visibleBounds": [
+        94,
+        5,
+        1902,
+        769
+      ],
+      "viewBounds": [
+        95,
+        8,
+        1902,
+        768
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "372279241a49c90c349f8dfd63a0ec0b7a33d67ed2b3cb7d6ffa0c3bb6422a98"
+    },
+    "developed": {
+      "size": [
+        1984,
+        793
+      ],
+      "visibleBounds": [
+        95,
+        5,
+        1904,
+        768
+      ],
+      "viewBounds": [
+        95,
+        8,
+        1902,
+        768
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "5ef19038f1cd10b9be38ae6d9f33550aea7590256283f8d99111658f354d540b"
+    }
+  }
+}
