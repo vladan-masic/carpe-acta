@@ -1,6 +1,6 @@
 const en = {
   selector: 'Choose a village location', pan: 'Scroll horizontally or use the building selector. Select a building or an empty plot to view its requirements.',
-  locked: 'Locked plot', available: 'Available plot', terrain: 'Approved village artwork. Town Hall and Farm artwork changes at levels 1, 3 and 5; other buildings retain one illustration.',
+  locked: 'Locked plot', available: 'Available plot', terrain: 'Approved village artwork. Town Hall, Farm, Sawmill, Workshop and Marketplace artwork changes at levels 1, 3 and 5; other buildings retain one illustration.',
   hall: 'Town Hall', workshop: 'Workshop', requires: 'Requires', none: 'None', cost: 'Cost', outcome: 'Guaranteed outcome', after: 'Balance after trade', trade: 'Exchange materials', from: 'Give', to: 'Receive', rate: 'Exact exchange',
   marketHelp: 'Level 1: wood and stone; 2: food; 3: iron. Give 6, receive 3. Level 4 receives 4; level 5 receives 5. No coins or XP.',
   research: 'Research', researchHelp: 'Five permanent, one-time improvements. Each Academy level unlocks the corresponding tier. No coins or XP are awarded.',
@@ -18,7 +18,7 @@ type Localized<T> = T extends string ? string : { [K in keyof T]: Localized<T[K]
 export type ExpansionCopy = Localized<typeof en>;
 const sr: ExpansionCopy = {
   selector: 'Izaberi mesto u selu', pan: 'Pomeraj prikaz vodoravno ili koristi izbor zgrade. Izaberi zgradu ili prazno mesto da vidiš uslove gradnje.',
-  locked: 'Zaključeno mesto', available: 'Dostupno mesto', terrain: 'Odobrene ilustracije sela. Gradska kuća i farma menjaju ilustraciju na nivoima 1, 3 i 5; ostale zgrade zadržavaju jednu ilustraciju.',
+  locked: 'Zaključeno mesto', available: 'Dostupno mesto', terrain: 'Odobrene ilustracije sela. Gradska kuća, farma, pilana, radionica i pijaca menjaju ilustraciju na nivoima 1, 3 i 5; ostale zgrade zadržavaju jednu ilustraciju.',
   hall: 'Gradska kuća', workshop: 'Radionica', requires: 'Potrebno', none: 'Nema', cost: 'Trošak', outcome: 'Zagarantovani ishod', after: 'Stanje posle razmene', trade: 'Razmeni materijale', from: 'Daješ', to: 'Dobijaš', rate: 'Tačna razmena',
   marketHelp: 'Nivo 1: drvo i kamen; 2: hrana; 3: gvožđe. Daješ 6, dobijaš 3. Nivo 4 daje 4; nivo 5 daje 5. Bez novčića i XP.',
   research: 'Istraživanje', researchHelp: 'Pet trajnih, jednokratnih poboljšanja. Svaki nivo akademije otključava odgovarajući stepen. Nema nagrada u novčićima ili XP.',

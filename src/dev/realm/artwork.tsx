@@ -17,6 +17,13 @@ import tierMetrics from '../../../docs/design/realm-stage5a/asset-validation.jso
 import farmEarly from '../../../docs/design/realm-stage5b/assets/farm-early.png';
 import farmDeveloped from '../../../docs/design/realm-stage5b/assets/farm-developed.png';
 import farmMetrics from '../../../docs/design/realm-stage5b/asset-validation.json';
+import craftMetrics from '../../../docs/design/realm-stage5c/asset-validation.json';
+import sawmillEarly from '../../../docs/design/realm-stage5c/assets/sawmill-early.png';
+import sawmillDeveloped from '../../../docs/design/realm-stage5c/assets/sawmill-developed.png';
+import workshopEarly from '../../../docs/design/realm-stage5c/assets/workshop-early.png';
+import workshopDeveloped from '../../../docs/design/realm-stage5c/assets/workshop-developed.png';
+import marketplaceEarly from '../../../docs/design/realm-stage5c/assets/marketplace-early.png';
+import marketplaceDeveloped from '../../../docs/design/realm-stage5c/assets/marketplace-developed.png';
 const sprites: Record<Building, string> = { guild, academy, mine, hall, sawmill, farm, marketplace, workshop, quarry, tavern };
 export const sceneArtwork = { terrain, buildings: sprites };
 type Artwork = { src: string; size: number[]; bounds: number[] };
@@ -28,6 +35,18 @@ const tieredArtwork: Partial<Record<Building, { early: Artwork; developed: Artwo
   farm: {
     early: { src: farmEarly, size: farmMetrics.early.size, bounds: farmMetrics.early.viewBounds },
     developed: { src: farmDeveloped, size: farmMetrics.developed.size, bounds: farmMetrics.developed.viewBounds },
+  },
+  sawmill: {
+    early: { src: sawmillEarly, size: craftMetrics.sawmill.early.size, bounds: craftMetrics.sawmill.early.viewBounds },
+    developed: { src: sawmillDeveloped, size: craftMetrics.sawmill.developed.size, bounds: craftMetrics.sawmill.developed.viewBounds },
+  },
+  workshop: {
+    early: { src: workshopEarly, size: craftMetrics.workshop.early.size, bounds: craftMetrics.workshop.early.viewBounds },
+    developed: { src: workshopDeveloped, size: craftMetrics.workshop.developed.size, bounds: craftMetrics.workshop.developed.viewBounds },
+  },
+  marketplace: {
+    early: { src: marketplaceEarly, size: craftMetrics.marketplace.early.size, bounds: craftMetrics.marketplace.early.viewBounds },
+    developed: { src: marketplaceDeveloped, size: craftMetrics.marketplace.developed.size, bounds: craftMetrics.marketplace.developed.viewBounds },
   },
 };
 /** Reviewed tier sets share thresholds; unlisted buildings keep their approved sprite. */
