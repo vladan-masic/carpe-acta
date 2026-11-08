@@ -136,7 +136,7 @@ it('runs the UI simulator, selection, duplicate/reopen, purchases, localization 
   expect(screen.getByRole('status').textContent).toBe('Reward awarded');
   fireEvent.click(screen.getByRole('button', { name: 'Replay last event' }));
   expect(screen.getByRole('status').textContent).toBe('Duplicate ignored');
-  const plot = screen.getByRole('button', { name: 'Quarry, Open plot' });
+  const plot = screen.getByRole('button', { name: 'Quarry, Available plot' });
   // Native buttons support keyboard activation; focus moves into the selected details.
   plot.focus(); await act(async () => fireEvent.click(plot));
   expect(document.activeElement?.id).toBe('realm-detail-heading');

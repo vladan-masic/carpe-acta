@@ -1,0 +1,11 @@
+{
+  "spriteCount": 10,
+  "emptySites": [],
+  "mobile": {
+    "viewport": 390,
+    "document": 390,
+    "pan": 740,
+    "selected": "mine"
+  },
+  "errors": []
+}

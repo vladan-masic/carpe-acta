@@ -16,7 +16,7 @@ const value = (s: Stock) => materials.reduce((sum, key) => sum + s[key], 0);
 it('all ten locations have distinct non-overlapping plot reservations and five levels', () => {
   expect(new Set(placements.map(p => p.building))).toEqual(new Set(buildings));
   for (const a of placements) for (const b of placements) if (a !== b) {
-    expect(Math.abs(a.x - b.x) >= (a.width + b.width) / 2 || Math.abs(a.y - b.y) >= (a.height + b.height) / 2).toBe(true);
+    expect(Math.abs(a.x - b.x) >= (a.width + b.width) / 2 || a.y <= b.y - b.height || b.y <= a.y - a.height).toBe(true);
   }
 });
 it.each(buildings)('enforces availability and advanced Workshop gates for %s', id => {

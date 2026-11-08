@@ -258,25 +258,16 @@
 
 .realm-scene-scroll{overflow:auto;overscroll-behavior-x:contain;margin:16px 0;scrollbar-gutter:stable}
 
-.realm-scene-plan{position:relative;min-width:820px;width:100%;aspect-ratio:1.6;background:var(--surface-page)}
-
-.realm-terrain{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-
-.realm-preview .realm-location{position:absolute;left:var(--x);top:var(--y);width:var(--width);min-height:var(--height);transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px;border:1px dashed var(--ink-muted);border-radius:4px;background:var(--surface-raised);font-size:11px;gap:4px}
-
-.realm-location strong{font-family:var(--font-display);font-size:15px}
-
-.realm-location small{font-size:10px;color:var(--ink-muted)}
-
-.realm-preview .realm-location[data-built=true]{border-style:solid;border-color:var(--progress-ink)}
-
-.realm-location-number{font-size:12px;font-weight:700;color:var(--progress-ink)}
-
-.realm-preview .realm-location[aria-pressed=true]{outline:3px solid var(--action);outline-offset:3px}
-
-.realm-location[data-locked=true] .realm-location-number{color:var(--ink-muted)}
-
-.realm-location img{max-width:100%;pointer-events:none}
+.realm-scene-plan{position:relative;min-width:1100px;width:100%;aspect-ratio:1670/941;isolation:isolate;background:var(--surface-page)}
+.realm-terrain{display:block;width:100%;height:100%}
+.realm-preview .realm-location{position:absolute;left:var(--x);top:var(--y);width:var(--width);height:var(--height);min-height:0;transform:translate(-50%,-100%);padding:0;border:0;border-radius:0;background:transparent;display:flex;align-items:flex-end;justify-content:center}
+.realm-preview .realm-location:hover{border:0;background:transparent}
+.realm-preview .realm-location[aria-pressed=true],.realm-preview .realm-location:focus-visible{outline:3px solid #fff5c0;outline-offset:3px;box-shadow:0 0 0 5px #354a35}
+.realm-building-art{display:block;width:100%;height:100%;overflow:hidden;pointer-events:none}
+.realm-plot-marker{display:block;border:1px dashed #526048;border-radius:6px;background:#fff8e8ed;color:#283624;padding:5px 9px;font-size:12px;line-height:1.2;min-height:44px;max-width:100%;box-shadow:0 1px 4px #0003}
+.realm-plot-marker small{display:block;font-size:10px;margin-top:3px}
+.realm-location[data-locked=true] .realm-plot-marker{background:#e7e2d4ed;color:#45483d}
+.realm-detail-art{width:90px;height:60px;flex-shrink:0}
 
 .realm-building-activities{border-top:1px solid var(--rule);margin-top:20px;font-size:12px;overflow-wrap:anywhere}
 
@@ -312,7 +303,7 @@
 @media(max-width:900px){.realm-building-activities{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:580px){.realm-building-activities{display:block}}
 
-.realm-building-art{position:absolute;transform:translate(-50%,-100%);pointer-events:none}
+
 
 /* A completed building is a readable status, not a faded upgrade invitation. */
 .realm-preview .realm-fully-upgraded:disabled{opacity:1;color:var(--ink);background:var(--surface-raised);border-color:var(--paper-edge);cursor:default;font-weight:600}
