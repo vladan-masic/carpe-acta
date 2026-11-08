@@ -14,12 +14,27 @@ import tavern from '../../../docs/design/realm-stage4b3/assets/tavern.png';
 import hallEarly from '../../../docs/design/realm-stage5a/assets/hall-early.png';
 import hallDeveloped from '../../../docs/design/realm-stage5a/assets/hall-developed.png';
 import tierMetrics from '../../../docs/design/realm-stage5a/asset-validation.json';
+import farmEarly from '../../../docs/design/realm-stage5b/assets/farm-early.png';
+import farmDeveloped from '../../../docs/design/realm-stage5b/assets/farm-developed.png';
+import farmMetrics from '../../../docs/design/realm-stage5b/asset-validation.json';
 const sprites: Record<Building, string> = { guild, academy, mine, hall, sawmill, farm, marketplace, workshop, quarry, tavern };
 export const sceneArtwork = { terrain, buildings: sprites };
-/** Only the Town Hall has approved review tiers; all other artwork remains unchanged. */
-export function buildingArtwork(building: Building, level: number) {
-  const tier = building === 'hall' ? level >= 5 ? 'developed' : level >= 3 ? null : 'early' : null;
-  if (tier) return { src: tier === 'early' ? hallEarly : hallDeveloped, size: tierMetrics[tier].size, bounds: tierMetrics[tier].viewBounds };
+type Artwork = { src: string; size: number[]; bounds: number[] };
+const tieredArtwork: Partial<Record<Building, { early: Artwork; developed: Artwork }>> = {
+  hall: {
+    early: { src: hallEarly, size: tierMetrics.early.size, bounds: tierMetrics.early.viewBounds },
+    developed: { src: hallDeveloped, size: tierMetrics.developed.size, bounds: tierMetrics.developed.viewBounds },
+  },
+  farm: {
+    early: { src: farmEarly, size: farmMetrics.early.size, bounds: farmMetrics.early.viewBounds },
+    developed: { src: farmDeveloped, size: farmMetrics.developed.size, bounds: farmMetrics.developed.viewBounds },
+  },
+};
+/** Reviewed tier sets share thresholds; unlisted buildings keep their approved sprite. */
+export function buildingArtwork(building: Building, level: number): Artwork {
+  const variants = tieredArtwork[building];
+  if (variants && level < 3) return variants.early;
+  if (variants && level >= 5) return variants.developed;
   return { src: sprites[building], size: metrics[building].size, bounds: metrics[building].visibleBounds };
 }
 /** Shared aspect and bottom-center framing keeps the entrance anchored across tiers. */

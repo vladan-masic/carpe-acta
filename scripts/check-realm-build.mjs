@@ -19,8 +19,11 @@ for (const file of files) assert.ok(!approvedHashes.has(hash(await readFile(new 
 assert.ok(!output.includes('clean-terrain') && !output.includes('realm-stage4b3'), 'Realm artwork reference leaked');
 console.log('Approved terrain and all ten RGBA sprites excluded from production.');
 
-const tierDir = new URL('../docs/design/realm-stage5a/assets/', import.meta.url);
-const tierHashes = new Set(await Promise.all((await readdir(tierDir)).filter(name => name.endsWith('.png')).map(async name => hash(await readFile(new URL(name, tierDir))))));
-for (const file of files) assert.ok(!tierHashes.has(hash(await readFile(new URL(`../dist/assets/${file}`, import.meta.url)))), `Town Hall tier leaked: ${file}`);
-assert.ok(!output.includes('realm-stage5a') && !output.includes('hall-early') && !output.includes('hall-developed'), 'Town Hall tier reference leaked');
-console.log('Town Hall visual tiers excluded from production.');
+for (const stage of ['realm-stage5a', 'realm-stage5b']) {
+  const tierDir = new URL(`../docs/design/${stage}/assets/`, import.meta.url);
+  const tierHashes = new Set(await Promise.all((await readdir(tierDir)).filter(name => name.endsWith('.png')).map(async name => hash(await readFile(new URL(name, tierDir))))));
+  for (const file of files) assert.ok(!tierHashes.has(hash(await readFile(new URL(`../dist/assets/${file}`, import.meta.url)))), `Building tier leaked: ${file}`);
+  assert.ok(!output.includes(stage), `Building tier reference leaked: ${stage}`);
+}
+for (const name of ['hall-early', 'hall-developed', 'farm-early', 'farm-developed']) assert.ok(!output.includes(name), `Building tier reference leaked: ${name}`);
+console.log('Town Hall and Farm visual tiers excluded from production.');

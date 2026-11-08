@@ -40,13 +40,13 @@ it.each(['en', 'sr-Latn'] as const)('shows only constructed sprites; all five le
   expect(onSelect).toHaveBeenLastCalledWith('tavern');
 });
 
-it('changes only Town Hall tiers at levels 3 and 5, reusing the approved middle sprite', () => {
-  expect(buildingArtwork('hall', 1)).toEqual(buildingArtwork('hall', 2));
-  expect(buildingArtwork('hall', 3)).toEqual(buildingArtwork('hall', 4));
-  expect(buildingArtwork('hall', 3).src).toBe(sceneArtwork.buildings.hall);
-  expect(new Set([1,3,5].map(level => buildingArtwork('hall', level).src)).size).toBe(3);
-  for (const id of buildings.filter(id => id !== 'hall')) for (const level of [1,2,3,4,5]) expect(buildingArtwork(id, level).src).toBe(sceneArtwork.buildings[id]);
-  const ratios = [1,3,5].map(level => { const [l,t,r,b] = buildingArtwork('hall', level).bounds; return (r-l)/(b-t); });
+it.each(['hall', 'farm'] as const)('changes %s tiers at levels 3 and 5, reusing the approved middle sprite', building => {
+  expect(buildingArtwork(building, 1)).toEqual(buildingArtwork(building, 2));
+  expect(buildingArtwork(building, 3)).toEqual(buildingArtwork(building, 4));
+  expect(buildingArtwork(building, 3).src).toBe(sceneArtwork.buildings[building]);
+  expect(new Set([1,3,5].map(level => buildingArtwork(building, level).src)).size).toBe(3);
+  for (const id of buildings.filter(id => id !== 'hall' && id !== 'farm')) for (const level of [1,2,3,4,5]) expect(buildingArtwork(id, level).src).toBe(sceneArtwork.buildings[id]);
+  const ratios = [1,3,5].map(level => { const [l,t,r,b] = buildingArtwork(building, level).bounds; return (r-l)/(b-t); });
   for (const ratio of ratios) expect(ratio).toBeCloseTo(ratios[0], 8);
 });
 
@@ -73,4 +73,24 @@ it('updates the rendered tier through real upgrade actions without moving the pl
     expect(plot().getAttribute('style')).toBe(geometry);
   }
   expect(construct(state, 'hall')).toBe(state);
+});
+
+it('shows Farm construction and upgrades without shifting its frame, with no sprite for an empty plot', () => {
+  let state = initialRealm();
+  state.village.levels = { ...state.village.levels, hall: 5, workshop: 3, farm: 0 };
+  state.village.stock = { coins: 1000, wood: 1000, stone: 1000, food: 1000, iron: 1000 };
+  const props = { selected: null, onSelect: vi.fn(), copy: realmCopy.en, expansion: expansionCopy.en };
+  const view = render(<VillageScene {...props} village={state.village}/>);
+  const plot = () => view.container.querySelector('#plot-farm')!;
+  const geometry = plot().getAttribute('style');
+  expect(plot().querySelector('image')).toBeNull();
+  for (const target of [1,2,3,4,5]) {
+    state = construct(state, 'farm');
+    expect(state.village.levels.farm).toBe(target);
+    view.rerender(<VillageScene {...props} village={state.village}/>);
+    expect(plot().querySelector('image')?.getAttribute('href')).toBe(buildingArtwork('farm', target).src);
+    expect(plot().getAttribute('style')).toBe(geometry);
+    expect(buildingArtwork('farm', target).bounds).toEqual(buildingArtwork('farm', 3).bounds);
+  }
+  expect(construct(state, 'farm')).toBe(state);
 });
