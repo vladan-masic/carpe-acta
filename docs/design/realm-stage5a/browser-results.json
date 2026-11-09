@@ -1,0 +1,31 @@
+{
+  "positions": [
+    {
+      "x": 798,
+      "y": 357,
+      "w": 296,
+      "h": 83,
+      "src": "/docs/design/realm-stage5a/assets/hall-early.png"
+    },
+    {
+      "x": 798,
+      "y": 357,
+      "w": 296,
+      "h": 83,
+      "src": "/docs/design/realm-stage4b3/assets/hall.png"
+    },
+    {
+      "x": 798,
+      "y": 357,
+      "w": 296,
+      "h": 83,
+      "src": "/docs/design/realm-stage5a/assets/hall-developed.png"
+    }
+  ],
+  "errors": [],
+  "initialHall": "/docs/design/realm-stage5a/assets/hall-early.png",
+  "viewport": {
+    "width": 390,
+    "scrollWidth": 390
+  }
+}

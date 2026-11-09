@@ -1,0 +1,152 @@
+{
+  "sawmill": {
+    "early": {
+      "size": [
+        1728,
+        910
+      ],
+      "visibleBounds": [
+        26,
+        7,
+        1699,
+        900
+      ],
+      "viewBounds": [
+        28,
+        9,
+        1700,
+        903
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "63fea58098c5d7fa27fc93c66c65d34125e2e6074b884b604c0a1f2ecd47b6da"
+    },
+    "developed": {
+      "size": [
+        1728,
+        910
+      ],
+      "visibleBounds": [
+        24,
+        6,
+        1702,
+        902
+      ],
+      "viewBounds": [
+        28,
+        9,
+        1700,
+        903
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "963841b1ed06624a8ca72d9414f92104d1399f051f6e0456338e2e22d177178b"
+    }
+  },
+  "workshop": {
+    "early": {
+      "size": [
+        2022,
+        778
+      ],
+      "visibleBounds": [
+        106,
+        6,
+        1914,
+        762
+      ],
+      "viewBounds": [
+        108,
+        6,
+        1912,
+        771
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "738fa1b91a00ac45ed181e4046bb8c6a54908af1234e5a90e9ae7a87cffc375d"
+    },
+    "developed": {
+      "size": [
+        2022,
+        778
+      ],
+      "visibleBounds": [
+        106,
+        6,
+        1917,
+        759
+      ],
+      "viewBounds": [
+        108,
+        6,
+        1912,
+        771
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "210426b2e96787fc23178f0a4362ba2bc5b58798ea732eabef7123447415dfa2"
+    }
+  },
+  "marketplace": {
+    "developed": {
+      "size": [
+        2169,
+        725
+      ],
+      "visibleBounds": [
+        48,
+        33,
+        2132,
+        674
+      ],
+      "viewBounds": [
+        50,
+        40,
+        2128,
+        673
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "13e81d9e45073320d406b4b57356fbbb0eb32f188e226bff9ca579a3cd99ab75"
+    },
+    "early": {
+      "size": [
+        2170,
+        725
+      ],
+      "visibleBounds": [
+        49,
+        35,
+        2127,
+        669
+      ],
+      "viewBounds": [
+        50,
+        40,
+        2128,
+        673
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        255
+      ],
+      "sha256": "e20d267624c79c37b99ac57302a49aaf179e33edf7b7ff090426a2b18326fbcd"
+    }
+  }
+}

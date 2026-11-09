@@ -1,0 +1,65 @@
+{
+  "mode": "built-in image_gen",
+  "entries": [
+    {
+      "id": "guild",
+      "tier": "early",
+      "prompt": "Use case: precise-object-edit. Edit target: attached approved guild watercolor village sprite. Create ONLY levels 1–2 predecessor. Simplify to a modest expedition lodge: plain timber doorway, fewer supplies, a simple map table inside, one backpack and rolled map in existing right shelter. Keep recognizable compass emblem, roof cupola and entrance location; remove flower boxes and ornate lamps. Preserve exact canvas dimensions, elevated three-quarter perspective, orientation, architectural positions, entrance alignment, ground contact and overall silhouette envelope. Same building, not a redesign. Match soft hand-painted watercolor, cream plaster, terracotta roof, sage accents and warm lighting. Genuine transparent RGBA background. Entire sprite visible. No landscape, terrain, paths, people, animals, text, labels or extra buildings. No expanded footprint.",
+      "path": "/home/vladan/.codex/generated_images/01a1ab06-3020-7452-ae03-e8da8c3a6247/exec-c59506ff-11b9-4d77-993d-17476f014ecd.png"
+    },
+    {
+      "id": "guild",
+      "tier": "developed",
+      "prompt": "Use case: precise-object-edit. Edit target: attached approved guild watercolor village sprite. Create ONLY fully developed level-5 evolution. Refine the expedition lodge: carved compass emblem and sturdy doorway, orderly maps and navigation instruments on the existing interior table, well-organized packs and rope in the right shelter. Keep roof cupola and all massing unchanged. No flags or extra structures. Preserve exact canvas dimensions, elevated three-quarter perspective, orientation, architectural positions, entrance alignment, ground contact and overall silhouette envelope. Same building, not a redesign. Match soft hand-painted watercolor, cream plaster, terracotta roof, sage accents and warm lighting. Genuine transparent RGBA background. Entire sprite visible. No landscape, terrain, paths, people, animals, text, labels or extra buildings. No expanded footprint.",
+      "path": "/home/vladan/.codex/generated_images/01a1ab06-3020-7452-ae03-e8da8c3a6247/exec-2e36dab4-52cd-48ea-92a1-9f0dba8e701a.png"
+    },
+    {
+      "id": "academy",
+      "tier": "early",
+      "prompt": "Use case: precise-object-edit. Edit target: attached approved academy watercolor village sprite. Create ONLY levels 1–2 predecessor. Simplify to a modest learning hall: plain stone doorway and window surrounds, simple book emblem without laurel, fewer books and simple reading tables under existing right arcade. Remove climbing foliage and ornate lighting. Keep cupola and all massing unchanged. Preserve exact canvas dimensions, elevated three-quarter perspective, orientation, architectural positions, entrance alignment, ground contact and overall silhouette envelope. Same building, not a redesign. Match soft hand-painted watercolor, cream plaster, terracotta roof, sage accents and warm lighting. Genuine transparent RGBA background. Entire sprite visible. No landscape, terrain, paths, people, animals, text, labels or extra buildings. No expanded footprint.",
+      "path": "/home/vladan/.codex/generated_images/01a1ab06-3020-7452-ae03-e8da8c3a6247/exec-7d45e44f-5332-479d-bb3b-cb9a1f88d9b1.png"
+    },
+    {
+      "id": "academy",
+      "tier": "developed",
+      "prompt": "Use case: precise-object-edit. Edit target: attached approved academy watercolor village sprite. Create ONLY fully developed level-5 evolution. Refine the learned academy: elegant stone window tracery and doorway, detailed book-and-laurel emblem, neatly stocked shelves and scholarly instruments within existing arcade. Preserve cupola height, roof shape, arcade footprint and entrance. No new floors, towers or extensions. Preserve exact canvas dimensions, elevated three-quarter perspective, orientation, architectural positions, entrance alignment, ground contact and overall silhouette envelope. Same building, not a redesign. Match soft hand-painted watercolor, cream plaster, terracotta roof, sage accents and warm lighting. Genuine transparent RGBA background. Entire sprite visible. No landscape, terrain, paths, people, animals, text, labels or extra buildings. No expanded footprint.",
+      "path": "/home/vladan/.codex/generated_images/01a1ab06-3020-7452-ae03-e8da8c3a6247/exec-3310068b-e18c-4054-b47e-2ef75d5a900e.png"
+    },
+    {
+      "id": "mine",
+      "tier": "early",
+      "prompt": "Use case: precise-object-edit. Edit target: attached approved mine watercolor village sprite. Create ONLY levels 1–2 predecessor. Simplify the Iron Mine: plain timber portal, basic small wooden ore cart, sparse sorting bench and fewer crates within current right shelter. Preserve EXACT surrounding rock silhouette and coloration, dark mine opening, roof and chimney, pickaxe and shovel. Rock must remain integrated not detached. Preserve exact canvas dimensions, elevated three-quarter perspective, orientation, architectural positions, entrance alignment, ground contact and overall silhouette envelope. Same building, not a redesign. Match soft hand-painted watercolor, cream plaster, terracotta roof, sage accents and warm lighting. Genuine transparent RGBA background. Entire sprite visible. No landscape, terrain, paths, people, animals, text, labels or extra buildings. No expanded footprint.",
+      "path": "/home/vladan/.codex/generated_images/01a1ab06-3020-7452-ae03-e8da8c3a6247/exec-496b5286-1a00-4f20-a2b0-0d62584bf547.png"
+    },
+    {
+      "id": "mine",
+      "tier": "developed",
+      "prompt": "Use case: precise-object-edit. Edit target: attached approved mine watercolor village sprite. Create ONLY fully developed level-5 evolution. Improve Iron Mine equipment within existing footprint: iron-braced timber portal, robust iron-strapped ore cart, reinforced sorting bench and neatly organized ore bins within current shelter. Preserve EXACT rock surround silhouette and coloration, mine opening, roof and chimney. No extra rocks, tracks extending outward, machinery towers or terrain patches. Preserve exact canvas dimensions, elevated three-quarter perspective, orientation, architectural positions, entrance alignment, ground contact and overall silhouette envelope. Same building, not a redesign. Match soft hand-painted watercolor, cream plaster, terracotta roof, sage accents and warm lighting. Genuine transparent RGBA background. Entire sprite visible. No landscape, terrain, paths, people, animals, text, labels or extra buildings. No expanded footprint.",
+      "path": "/home/vladan/.codex/generated_images/01a1ab06-3020-7452-ae03-e8da8c3a6247/exec-abad7acc-366b-4894-9568-f1953a6d74e0.png"
+    },
+    {
+      "id": "quarry",
+      "tier": "early",
+      "prompt": "Use case: precise-object-edit. Edit target: attached approved quarry watercolor village sprite. Create ONLY levels 1–2 predecessor. Simplify stone-working quarry: plain open shed, a modest hand chisel workbench and fewer stone blocks. Preserve crane location, height and reach but use simple rope hoist and plain timber supports. Keep stone workshop, roof, chimney and stone ground contact identical. Preserve exact canvas dimensions, elevated three-quarter perspective, orientation, architectural positions, entrance alignment, ground contact and overall silhouette envelope. Same building, not a redesign. Match soft hand-painted watercolor, cream plaster, terracotta roof, sage accents and warm lighting. Genuine transparent RGBA background. Entire sprite visible. No landscape, terrain, paths, people, animals, text, labels or extra buildings. No expanded footprint.",
+      "path": "/home/vladan/.codex/generated_images/01a1ab06-3020-7452-ae03-e8da8c3a6247/exec-5c45c388-1153-45cb-bbca-7cbd2da61062.png"
+    },
+    {
+      "id": "quarry",
+      "tier": "developed",
+      "prompt": "Use case: precise-object-edit. Edit target: attached approved quarry watercolor village sprite. Create ONLY fully developed level-5 evolution. Refine stone-working quarry equipment: stronger iron-braced timber crane and detailed compact pulley within EXACT original crane silhouette/reach, organized dressed stone blocks and refined chisel station inside existing shed. Keep suspended stone location, roof and ground footprint. No enlarged rock piles or extra ground patch. Preserve exact canvas dimensions, elevated three-quarter perspective, orientation, architectural positions, entrance alignment, ground contact and overall silhouette envelope. Same building, not a redesign. Match soft hand-painted watercolor, cream plaster, terracotta roof, sage accents and warm lighting. Genuine transparent RGBA background. Entire sprite visible. No landscape, terrain, paths, people, animals, text, labels or extra buildings. No expanded footprint.",
+      "path": "/home/vladan/.codex/generated_images/01a1ab06-3020-7452-ae03-e8da8c3a6247/exec-ed4bf566-32d7-4dcc-8ba8-27d812004643.png"
+    },
+    {
+      "id": "tavern",
+      "tier": "early",
+      "prompt": "Use case: precise-object-edit. Edit target: attached approved tavern watercolor village sprite. Create ONLY levels 1–2 predecessor. Simplify to a modest village tavern: plain timber entrance, simple tankard pictogram sign, fewer barrels and no flower planters. Keep welcoming warm doorway, existing sheltered right bench, roof and chimney, same foundation and entrance steps. Preserve exact canvas dimensions, elevated three-quarter perspective, orientation, architectural positions, entrance alignment, ground contact and overall silhouette envelope. Same building, not a redesign. Match soft hand-painted watercolor, cream plaster, terracotta roof, sage accents and warm lighting. Genuine transparent RGBA background. Entire sprite visible. No landscape, terrain, paths, people, animals, text, labels or extra buildings. No expanded footprint.",
+      "path": "/home/vladan/.codex/generated_images/01a1ab06-3020-7452-ae03-e8da8c3a6247/exec-1430ddb1-ff22-4e76-81ca-bb25c7938e63.png"
+    },
+    {
+      "id": "tavern",
+      "tier": "developed",
+      "prompt": "Use case: precise-object-edit. Edit target: attached approved tavern watercolor village sprite. Create ONLY fully developed level-5 evolution. Refine cozy prosperous tavern: crafted timber entrance arch and door ironwork, refined tankard pictogram sign, tidy barrels and attractive flowers in existing positions, upgraded carved bench under same right shelter. Preserve roof, chimney, foundation and doorway. No extra seating outside, awnings, extensions or signage text. Preserve exact canvas dimensions, elevated three-quarter perspective, orientation, architectural positions, entrance alignment, ground contact and overall silhouette envelope. Same building, not a redesign. Match soft hand-painted watercolor, cream plaster, terracotta roof, sage accents and warm lighting. Genuine transparent RGBA background. Entire sprite visible. No landscape, terrain, paths, people, animals, text, labels or extra buildings. No expanded footprint.",
+      "path": "/home/vladan/.codex/generated_images/01a1ab06-3020-7452-ae03-e8da8c3a6247/exec-982f5ea6-89dd-45b2-841d-8d9e7878199d.png"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "early": {
+    "size": [
+      1975,
+      796
+    ],
+    "visibleBounds": [
+      1,
+      0,
+      1968,
+      794
+    ],
+    "viewBounds": [
+      3,
+      2,
+      1969,
+      795
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "sha256": "be7b99f9dd5b157ac0992a86acea557739cbb7a9d2a42e34b66532ec79249e6f"
+  },
+  "developed": {
+    "size": [
+      1975,
+      796
+    ],
+    "visibleBounds": [
+      1,
+      0,
+      1974,
+      796
+    ],
+    "viewBounds": [
+      3,
+      2,
+      1969,
+      795
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "sha256": "f0ec7f9461ef35011082150f6970ef52eacc87ed19a96603ff713986e345ad04"
+  }
+}

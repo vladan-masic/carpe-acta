@@ -11,12 +11,86 @@ import marketplace from '../../../docs/design/realm-stage4b3/assets/marketplace.
 import workshop from '../../../docs/design/realm-stage4b3/assets/workshop.png';
 import quarry from '../../../docs/design/realm-stage4b3/assets/quarry.png';
 import tavern from '../../../docs/design/realm-stage4b3/assets/tavern.png';
+import hallEarly from '../../../docs/design/realm-stage5a/assets/hall-early.png';
+import hallDeveloped from '../../../docs/design/realm-stage5a/assets/hall-developed.png';
+import tierMetrics from '../../../docs/design/realm-stage5a/asset-validation.json';
+import farmEarly from '../../../docs/design/realm-stage5b/assets/farm-early.png';
+import farmDeveloped from '../../../docs/design/realm-stage5b/assets/farm-developed.png';
+import farmMetrics from '../../../docs/design/realm-stage5b/asset-validation.json';
+import craftMetrics from '../../../docs/design/realm-stage5c/asset-validation.json';
+import sawmillEarly from '../../../docs/design/realm-stage5c/assets/sawmill-early.png';
+import sawmillDeveloped from '../../../docs/design/realm-stage5c/assets/sawmill-developed.png';
+import workshopEarly from '../../../docs/design/realm-stage5c/assets/workshop-early.png';
+import workshopDeveloped from '../../../docs/design/realm-stage5c/assets/workshop-developed.png';
+import marketplaceEarly from '../../../docs/design/realm-stage5c/assets/marketplace-early.png';
+import marketplaceDeveloped from '../../../docs/design/realm-stage5c/assets/marketplace-developed.png';
+import remainingMetrics from '../../../docs/design/realm-stage5d/asset-validation.json';
+import guildEarly from '../../../docs/design/realm-stage5d/assets/guild-early.png';
+import guildDeveloped from '../../../docs/design/realm-stage5d/assets/guild-developed.png';
+import academyEarly from '../../../docs/design/realm-stage5d/assets/academy-early.png';
+import academyDeveloped from '../../../docs/design/realm-stage5d/assets/academy-developed.png';
+import mineEarly from '../../../docs/design/realm-stage5d/assets/mine-early.png';
+import mineDeveloped from '../../../docs/design/realm-stage5d/assets/mine-developed.png';
+import quarryEarly from '../../../docs/design/realm-stage5d/assets/quarry-early.png';
+import quarryDeveloped from '../../../docs/design/realm-stage5d/assets/quarry-developed.png';
+import tavernEarly from '../../../docs/design/realm-stage5d/assets/tavern-early.png';
+import tavernDeveloped from '../../../docs/design/realm-stage5d/assets/tavern-developed.png';
 const sprites: Record<Building, string> = { guild, academy, mine, hall, sawmill, farm, marketplace, workshop, quarry, tavern };
 export const sceneArtwork = { terrain, buildings: sprites };
-/** Same alpha-bound framing as the approved review; no raster alteration. */
-export function BuildingArtwork({ building }: { building: Building }) {
-  const { size, visibleBounds: [left, top, right, bottom] } = metrics[building];
+type Artwork = { src: string; size: number[]; bounds: number[] };
+const tieredArtwork: Record<Building, { early: Artwork; developed: Artwork }> = {
+  hall: {
+    early: { src: hallEarly, size: tierMetrics.early.size, bounds: tierMetrics.early.viewBounds },
+    developed: { src: hallDeveloped, size: tierMetrics.developed.size, bounds: tierMetrics.developed.viewBounds },
+  },
+  farm: {
+    early: { src: farmEarly, size: farmMetrics.early.size, bounds: farmMetrics.early.viewBounds },
+    developed: { src: farmDeveloped, size: farmMetrics.developed.size, bounds: farmMetrics.developed.viewBounds },
+  },
+  sawmill: {
+    early: { src: sawmillEarly, size: craftMetrics.sawmill.early.size, bounds: craftMetrics.sawmill.early.viewBounds },
+    developed: { src: sawmillDeveloped, size: craftMetrics.sawmill.developed.size, bounds: craftMetrics.sawmill.developed.viewBounds },
+  },
+  workshop: {
+    early: { src: workshopEarly, size: craftMetrics.workshop.early.size, bounds: craftMetrics.workshop.early.viewBounds },
+    developed: { src: workshopDeveloped, size: craftMetrics.workshop.developed.size, bounds: craftMetrics.workshop.developed.viewBounds },
+  },
+  marketplace: {
+    early: { src: marketplaceEarly, size: craftMetrics.marketplace.early.size, bounds: craftMetrics.marketplace.early.viewBounds },
+    developed: { src: marketplaceDeveloped, size: craftMetrics.marketplace.developed.size, bounds: craftMetrics.marketplace.developed.viewBounds },
+  },
+  guild: {
+    early: { src: guildEarly, size: remainingMetrics.guild.early.size, bounds: remainingMetrics.guild.early.viewBounds },
+    developed: { src: guildDeveloped, size: remainingMetrics.guild.developed.size, bounds: remainingMetrics.guild.developed.viewBounds },
+  },
+  academy: {
+    early: { src: academyEarly, size: remainingMetrics.academy.early.size, bounds: remainingMetrics.academy.early.viewBounds },
+    developed: { src: academyDeveloped, size: remainingMetrics.academy.developed.size, bounds: remainingMetrics.academy.developed.viewBounds },
+  },
+  mine: {
+    early: { src: mineEarly, size: remainingMetrics.mine.early.size, bounds: remainingMetrics.mine.early.viewBounds },
+    developed: { src: mineDeveloped, size: remainingMetrics.mine.developed.size, bounds: remainingMetrics.mine.developed.viewBounds },
+  },
+  quarry: {
+    early: { src: quarryEarly, size: remainingMetrics.quarry.early.size, bounds: remainingMetrics.quarry.early.viewBounds },
+    developed: { src: quarryDeveloped, size: remainingMetrics.quarry.developed.size, bounds: remainingMetrics.quarry.developed.viewBounds },
+  },
+  tavern: {
+    early: { src: tavernEarly, size: remainingMetrics.tavern.early.size, bounds: remainingMetrics.tavern.early.viewBounds },
+    developed: { src: tavernDeveloped, size: remainingMetrics.tavern.developed.size, bounds: remainingMetrics.tavern.developed.viewBounds },
+  },
+};
+/** All buildings share thresholds and reuse their approved middle sprite. */
+export function buildingArtwork(building: Building, level: number): Artwork {
+  const variants = tieredArtwork[building];
+  if (variants && level < 3) return variants.early;
+  if (variants && level >= 5) return variants.developed;
+  return { src: sprites[building], size: metrics[building].size, bounds: metrics[building].visibleBounds };
+}
+/** Shared aspect and bottom-center framing keeps the entrance anchored across tiers. */
+export function BuildingArtwork({ building, level }: { building: Building; level: number }) {
+  const { src, size, bounds: [left, top, right, bottom] } = buildingArtwork(building, level);
   return <svg className="realm-building-art" viewBox={`${left} ${top} ${right - left} ${bottom - top}`} preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
-    <image href={sprites[building]} width={size[0]} height={size[1]}/>
+    <image href={src} width={size[0]} height={size[1]}/>
   </svg>;
 }
