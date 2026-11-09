@@ -93,3 +93,13 @@ it.each(['farm', 'sawmill', 'workshop', 'marketplace', 'guild', 'academy', 'mine
   }
   expect(construct(state, building)).toBe(state);
 });
+
+it('starts with only Town Hall, Farm and Sawmill and never renders any level-zero building sprite', () => {
+  const village = initialRealm().village;
+  expect(buildings.filter(id => village.levels[id] > 0).sort()).toEqual(['farm', 'hall', 'sawmill']);
+  const props = { selected: null, onSelect: vi.fn(), copy: realmCopy.en, expansion: expansionCopy.en };
+  const view = render(<VillageScene {...props} village={{...village, levels: Object.fromEntries(buildings.map(id => [id, 0])) as typeof village.levels}}/>);
+  expect(view.container.querySelectorAll('.realm-location')).toHaveLength(10);
+  expect(view.container.querySelectorAll('.realm-location image')).toHaveLength(0);
+  for (const id of buildings) expect(view.container.querySelector(`#plot-${id}`)?.getAttribute('aria-label')).toContain(realmCopy.en.buildings[id]);
+});

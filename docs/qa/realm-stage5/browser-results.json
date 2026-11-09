@@ -1,0 +1,263 @@
+{
+  "initial": [
+    "plot-farm",
+    "plot-hall",
+    "plot-sawmill"
+  ],
+  "levels": {
+    "hall": 5,
+    "farm": 5,
+    "sawmill": 5,
+    "quarry": 5,
+    "mine": 5,
+    "workshop": 5,
+    "marketplace": 5,
+    "academy": 5,
+    "guild": 5,
+    "tavern": 5
+  },
+  "transitions": [
+    {
+      "building": "hall",
+      "level": 2,
+      "src": "/docs/design/realm-stage5a/assets/hall-early.png"
+    },
+    {
+      "building": "workshop",
+      "level": 1,
+      "src": "/docs/design/realm-stage5c/assets/workshop-early.png"
+    },
+    {
+      "building": "mine",
+      "level": 1,
+      "src": "/docs/design/realm-stage5d/assets/mine-early.png"
+    },
+    {
+      "building": "sawmill",
+      "level": 2,
+      "src": "/docs/design/realm-stage5c/assets/sawmill-early.png"
+    },
+    {
+      "building": "quarry",
+      "level": 1,
+      "src": "/docs/design/realm-stage5d/assets/quarry-early.png"
+    },
+    {
+      "building": "quarry",
+      "level": 2,
+      "src": "/docs/design/realm-stage5d/assets/quarry-early.png"
+    },
+    {
+      "building": "farm",
+      "level": 2,
+      "src": "/docs/design/realm-stage5b/assets/farm-early.png"
+    },
+    {
+      "building": "mine",
+      "level": 2,
+      "src": "/docs/design/realm-stage5d/assets/mine-early.png"
+    },
+    {
+      "building": "workshop",
+      "level": 2,
+      "src": "/docs/design/realm-stage5c/assets/workshop-early.png"
+    },
+    {
+      "building": "marketplace",
+      "level": 1,
+      "src": "/docs/design/realm-stage5c/assets/marketplace-early.png"
+    },
+    {
+      "building": "marketplace",
+      "level": 2,
+      "src": "/docs/design/realm-stage5c/assets/marketplace-early.png"
+    },
+    {
+      "building": "hall",
+      "level": 3,
+      "src": "/docs/design/realm-stage4b3/assets/hall.png"
+    },
+    {
+      "building": "sawmill",
+      "level": 3,
+      "src": "/docs/design/realm-stage4b3/assets/sawmill.png"
+    },
+    {
+      "building": "quarry",
+      "level": 3,
+      "src": "/docs/design/realm-stage4b3/assets/quarry.png"
+    },
+    {
+      "building": "farm",
+      "level": 3,
+      "src": "/docs/design/realm-stage4b3/assets/farm.png"
+    },
+    {
+      "building": "mine",
+      "level": 3,
+      "src": "/docs/design/realm-stage4b3/assets/mine.png"
+    },
+    {
+      "building": "workshop",
+      "level": 3,
+      "src": "/docs/design/realm-stage4b3/assets/workshop.png"
+    },
+    {
+      "building": "marketplace",
+      "level": 3,
+      "src": "/docs/design/realm-stage4b3/assets/marketplace.png"
+    },
+    {
+      "building": "academy",
+      "level": 1,
+      "src": "/docs/design/realm-stage5d/assets/academy-early.png"
+    },
+    {
+      "building": "academy",
+      "level": 2,
+      "src": "/docs/design/realm-stage5d/assets/academy-early.png"
+    },
+    {
+      "building": "academy",
+      "level": 3,
+      "src": "/docs/design/realm-stage4b3/assets/academy.png"
+    },
+    {
+      "building": "guild",
+      "level": 1,
+      "src": "/docs/design/realm-stage5d/assets/guild-early.png"
+    },
+    {
+      "building": "guild",
+      "level": 2,
+      "src": "/docs/design/realm-stage5d/assets/guild-early.png"
+    },
+    {
+      "building": "guild",
+      "level": 3,
+      "src": "/docs/design/realm-stage4b3/assets/guild.png"
+    },
+    {
+      "building": "hall",
+      "level": 4,
+      "src": "/docs/design/realm-stage4b3/assets/hall.png"
+    },
+    {
+      "building": "sawmill",
+      "level": 4,
+      "src": "/docs/design/realm-stage4b3/assets/sawmill.png"
+    },
+    {
+      "building": "quarry",
+      "level": 4,
+      "src": "/docs/design/realm-stage4b3/assets/quarry.png"
+    },
+    {
+      "building": "farm",
+      "level": 4,
+      "src": "/docs/design/realm-stage4b3/assets/farm.png"
+    },
+    {
+      "building": "mine",
+      "level": 4,
+      "src": "/docs/design/realm-stage4b3/assets/mine.png"
+    },
+    {
+      "building": "workshop",
+      "level": 4,
+      "src": "/docs/design/realm-stage4b3/assets/workshop.png"
+    },
+    {
+      "building": "marketplace",
+      "level": 4,
+      "src": "/docs/design/realm-stage4b3/assets/marketplace.png"
+    },
+    {
+      "building": "academy",
+      "level": 4,
+      "src": "/docs/design/realm-stage4b3/assets/academy.png"
+    },
+    {
+      "building": "guild",
+      "level": 4,
+      "src": "/docs/design/realm-stage4b3/assets/guild.png"
+    },
+    {
+      "building": "tavern",
+      "level": 1,
+      "src": "/docs/design/realm-stage5d/assets/tavern-early.png"
+    },
+    {
+      "building": "tavern",
+      "level": 2,
+      "src": "/docs/design/realm-stage5d/assets/tavern-early.png"
+    },
+    {
+      "building": "tavern",
+      "level": 3,
+      "src": "/docs/design/realm-stage4b3/assets/tavern.png"
+    },
+    {
+      "building": "tavern",
+      "level": 4,
+      "src": "/docs/design/realm-stage4b3/assets/tavern.png"
+    },
+    {
+      "building": "hall",
+      "level": 5,
+      "src": "/docs/design/realm-stage5a/assets/hall-developed.png"
+    },
+    {
+      "building": "sawmill",
+      "level": 5,
+      "src": "/docs/design/realm-stage5c/assets/sawmill-developed.png"
+    },
+    {
+      "building": "quarry",
+      "level": 5,
+      "src": "/docs/design/realm-stage5d/assets/quarry-developed.png"
+    },
+    {
+      "building": "farm",
+      "level": 5,
+      "src": "/docs/design/realm-stage5b/assets/farm-developed.png"
+    },
+    {
+      "building": "mine",
+      "level": 5,
+      "src": "/docs/design/realm-stage5d/assets/mine-developed.png"
+    },
+    {
+      "building": "workshop",
+      "level": 5,
+      "src": "/docs/design/realm-stage5c/assets/workshop-developed.png"
+    },
+    {
+      "building": "marketplace",
+      "level": 5,
+      "src": "/docs/design/realm-stage5c/assets/marketplace-developed.png"
+    },
+    {
+      "building": "academy",
+      "level": 5,
+      "src": "/docs/design/realm-stage5d/assets/academy-developed.png"
+    },
+    {
+      "building": "guild",
+      "level": 5,
+      "src": "/docs/design/realm-stage5d/assets/guild-developed.png"
+    },
+    {
+      "building": "tavern",
+      "level": 5,
+      "src": "/docs/design/realm-stage5d/assets/tavern-developed.png"
+    }
+  ],
+  "withoutReload": true,
+  "keyboardSelection": true,
+  "closeRestoresFocus": true,
+  "tabTarget": "plot-academy",
+  "mobileSelectorPan": 736,
+  "keyboardPan": true,
+  "errors": []
+}
