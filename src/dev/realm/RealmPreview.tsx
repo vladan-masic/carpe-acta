@@ -15,10 +15,10 @@ import { expansionCopy } from './expansionCopy';
 import { contracts, destinations, researchCatalog, tradeRate } from './catalog';
 import './realm.css';
 
-const resourceSymbols = { wood: '▤', stone: '◆', food: '♧', coins: '◉', iron: '⬡' };
+import { HeroPortrait, ResourceIcon } from './ResourceArtwork';
 const materials: Material[] = ['wood', 'stone', 'food', 'iron'];
 function ResourceLine({ stock, copy }: { stock: Stock; copy: RealmCopy }) {
-  return <ul className="realm-resource-line">{resources.filter(key => stock[key] > 0).map(key => <li key={key}><span aria-hidden="true">{resourceSymbols[key]}</span> {stock[key]} {copy.resources[key]}</li>)}</ul>;
+  return <ul className="realm-resource-line">{resources.filter(key => stock[key] > 0).map(key => <li key={key}><ResourceIcon resource={key}/> {stock[key]} {copy.resources[key]}</li>)}</ul>;
 }
 export function RealmPreview() {
   const [locale, setLocale] = useState(getInitialLocale);
@@ -54,7 +54,7 @@ export function RealmPreview() {
       <main>
         <header className="realm-intro"><div><p className="realm-eyebrow">{c.realm}</p><h1>{c.lead}<br/><em>{c.accent}</em></h1><p>{c.intro}</p></div>
           <section className="realm-balances" aria-label={c.village}>{resources.map(key => <div className={`realm-balance realm-${key}`} key={key}>
-            <span aria-hidden="true">{resourceSymbols[key]}</span><div><span>{c.resources[key]}</span><strong>{village.stock[key]}</strong></div>
+            <ResourceIcon resource={key}/><div><span>{c.resources[key]}</span><strong>{village.stock[key]}</strong></div>
           </div>)}</section>
           <p className="realm-note">{c.note}<span aria-hidden="true"> ♥</span><img src={botanical} alt=""/></p>
         </header>
@@ -78,7 +78,7 @@ export function RealmPreview() {
               </div>
               <p>{e.requires}: {c.buildings.hall} {Math.max(hallUnlock[selected], selected === 'hall' ? village.levels.hall : target - 1)}{target >= 3 && selected !== 'workshop' ? ` · ${c.buildings.workshop} ${target - 2}` : ''}</p>
               <h3>{c.requirements} <span>· {c.level} {target}</span></h3>
-              <ul className="realm-cost">{resources.filter(key => cost(selected, target, village)[key] > 0).map(key => <li key={key}><span>{c.resources[key]}</span><strong>{cost(selected, target, village)[key]}</strong><small data-enough={village.stock[key] >= cost(selected, target, village)[key]}>{village.stock[key]} / {cost(selected, target, village)[key]} {village.stock[key] >= cost(selected, target, village)[key] ? '✓' : '−'}</small></li>)}</ul>
+              <ul className="realm-cost">{resources.filter(key => cost(selected, target, village)[key] > 0).map(key => <li key={key}><span><ResourceIcon resource={key}/> {c.resources[key]}</span><strong>{cost(selected, target, village)[key]}</strong><small data-enough={village.stock[key] >= cost(selected, target, village)[key]}>{village.stock[key]} / {cost(selected, target, village)[key]} {village.stock[key] >= cost(selected, target, village)[key] ? '✓' : '−'}</small></li>)}</ul>
             </>}
             {reason !== 'maximum' && <p className="realm-duration">{c.instant}</p>}
             <button className={`realm-build ${reason === 'maximum' ? 'realm-fully-upgraded' : 'realm-primary'}`} disabled={reason !== 'ready'} aria-describedby="realm-build-reason" onClick={() => { setState(current => construct(current, selected)); setFeedback(c.built); requestAnimationFrame(() => detailHeading.current?.focus({ preventScroll: true })); }}>{reason === 'maximum' ? `${c.fullyUpgraded} — ${c.level} ${MAX_LEVEL}` : village.levels[selected] ? `${c.upgrade} ${target}` : c.construct}</button>
@@ -91,13 +91,13 @@ export function RealmPreview() {
         <section className="realm-supplies realm-paper" aria-labelledby="realm-supply-heading">
           <h2 id="realm-supply-heading">{c.supplies}</h2><p>{c.suppliesHelp}</p>
           <div className="realm-supply-grid">{materials.map(material => <div key={material}>
-            <strong>{c.resources[material]}</strong><p>+{supplyAmount(village, material)} {c.forCoins}</p>
+            <strong><ResourceIcon resource={material}/> {c.resources[material]}</strong><p>+{supplyAmount(village, material)} <ResourceIcon resource="coins"/> {c.forCoins}</p>
             <button aria-describedby={`supply-${material}`} disabled={supplyReason(state, material) !== 'ready'} onClick={() => { setState(current => buySupply(current, material)); setFeedback(c.bought); }}>{c.buyResource[material]}</button>
             <small id={`supply-${material}`}>{c.reasons[supplyReason(state, material)]}</small>
           </div>)}</div>
         </section>
         <div className="realm-summary">
-          <section className="realm-paper"><h2>{c.hero}</h2><div className="realm-hero-profile"><span aria-hidden="true">☼</span><div><strong>{c.heroName}</strong><p>{c.level} {profile.level} · {profile.progress} / {profile.next} {c.xp}</p></div></div>
+          <section className="realm-paper"><h2>{c.hero}</h2><div className="realm-hero-profile"><HeroPortrait/><div><strong>{c.heroName}</strong><p>{c.level} {profile.level} · {profile.progress} / {profile.next} {c.xp}</p></div></div>
             <progress aria-label={c.xp} value={profile.progress} max={profile.next}/><p>{c.scouting}: {Math.min(3, profile.level - 1)} / 3 {c.stages}</p><p>{c.heroHelp}</p></section>
           <section className="realm-paper"><h2>{c.goals}</h2><ul className="realm-goals">{[[c.goalHall, village.levels.hall >= 2], [c.goalMine, village.levels.mine >= 1], [c.goalForest, village.explored === 3]].map(([label, complete]) => <li key={String(label)}><span role="img" aria-label={complete ? c.complete : c.pending}>{complete ? '✓' : '○'}</span>{label}</li>)}</ul></section>
           <section className="realm-paper"><h2>{c.events}</h2>{state.journal.length ? <ol className="realm-journal">{state.journal.map(event => <li key={event.id}>{event.kind === 'built' ? `${c.eventBuilt}: ${c.buildings[event.building!]}` : `${c.returned}: ${event.stage}`}</li>)}</ol> : <p>{c.emptyJournal}</p>}</section>

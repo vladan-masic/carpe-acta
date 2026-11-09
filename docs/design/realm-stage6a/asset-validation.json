@@ -1,0 +1,80 @@
+{
+  "wood": {
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 20638,
+    "sha256": "8e7a96db4365a3b0855bc900408ba5183ca966a7e2b7d80b8333f7f5c9c542e1"
+  },
+  "stone": {
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 17306,
+    "sha256": "acbd7d568a4e993bed3a84001f415cc24d1ada3441437fcc7ab3780e532a4d11"
+  },
+  "food": {
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 20208,
+    "sha256": "ee0e468adca989ba09331a8abad8fc57daf48173af4a43d11b75ff751a07d1ab"
+  },
+  "coins": {
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 17710,
+    "sha256": "b020b9e8c9b665a79b775391d8c39bc8b20cc84b51f8cad9ed987108673e0590"
+  },
+  "iron": {
+    "size": [
+      128,
+      128
+    ],
+    "mode": "RGBA",
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 17632,
+    "sha256": "79f54f6047f8127b7626d4a25d22233fce85ce467e426132db7f50d59a4292d1"
+  },
+  "wayfinder": {
+    "size": [
+      256,
+      256
+    ],
+    "mode": "RGBA",
+    "alpha": [
+      0,
+      255
+    ],
+    "bytes": 70866,
+    "sha256": "f5414228272dfba4051075d31bc19fb236ec89da8cefd08c8679aa250243ac9b"
+  }
+}
