@@ -1,0 +1,254 @@
+[
+  {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "theme": "light",
+    "locale": "en",
+    "icons": true,
+    "hero": 256,
+    "labels": [
+      "Coins0",
+      "Wood20",
+      "Stone15",
+      "Food10",
+      "Iron0"
+    ],
+    "initial": [
+      "plot-hall",
+      "plot-sawmill",
+      "plot-farm"
+    ],
+    "errors": []
+  },
+  {
+    "width": 390,
+    "scrollWidth": 390,
+    "theme": "light",
+    "locale": "en",
+    "icons": true,
+    "hero": 256,
+    "labels": [
+      "Coins0",
+      "Wood20",
+      "Stone15",
+      "Food10",
+      "Iron0"
+    ],
+    "initial": [
+      "plot-hall",
+      "plot-sawmill",
+      "plot-farm"
+    ],
+    "errors": []
+  },
+  {
+    "width": 320,
+    "scrollWidth": 320,
+    "theme": "light",
+    "locale": "en",
+    "icons": true,
+    "hero": 256,
+    "labels": [
+      "Coins0",
+      "Wood20",
+      "Stone15",
+      "Food10",
+      "Iron0"
+    ],
+    "initial": [
+      "plot-hall",
+      "plot-sawmill",
+      "plot-farm"
+    ],
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "theme": "dark",
+    "locale": "en",
+    "icons": true,
+    "hero": 256,
+    "labels": [
+      "Coins0",
+      "Wood20",
+      "Stone15",
+      "Food10",
+      "Iron0"
+    ],
+    "initial": [
+      "plot-hall",
+      "plot-sawmill",
+      "plot-farm"
+    ],
+    "errors": []
+  },
+  {
+    "width": 390,
+    "scrollWidth": 390,
+    "theme": "dark",
+    "locale": "en",
+    "icons": true,
+    "hero": 256,
+    "labels": [
+      "Coins0",
+      "Wood20",
+      "Stone15",
+      "Food10",
+      "Iron0"
+    ],
+    "initial": [
+      "plot-hall",
+      "plot-sawmill",
+      "plot-farm"
+    ],
+    "errors": []
+  },
+  {
+    "width": 320,
+    "scrollWidth": 320,
+    "theme": "dark",
+    "locale": "en",
+    "icons": true,
+    "hero": 256,
+    "labels": [
+      "Coins0",
+      "Wood20",
+      "Stone15",
+      "Food10",
+      "Iron0"
+    ],
+    "initial": [
+      "plot-hall",
+      "plot-sawmill",
+      "plot-farm"
+    ],
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "theme": "light",
+    "locale": "sr-Latn",
+    "icons": true,
+    "hero": 256,
+    "labels": [
+      "Novčići0",
+      "Drvo20",
+      "Kamen15",
+      "Hrana10",
+      "Gvožđe0"
+    ],
+    "initial": [
+      "plot-hall",
+      "plot-sawmill",
+      "plot-farm"
+    ],
+    "errors": []
+  },
+  {
+    "width": 390,
+    "scrollWidth": 390,
+    "theme": "light",
+    "locale": "sr-Latn",
+    "icons": true,
+    "hero": 256,
+    "labels": [
+      "Novčići0",
+      "Drvo20",
+      "Kamen15",
+      "Hrana10",
+      "Gvožđe0"
+    ],
+    "initial": [
+      "plot-hall",
+      "plot-sawmill",
+      "plot-farm"
+    ],
+    "errors": []
+  },
+  {
+    "width": 320,
+    "scrollWidth": 320,
+    "theme": "light",
+    "locale": "sr-Latn",
+    "icons": true,
+    "hero": 256,
+    "labels": [
+      "Novčići0",
+      "Drvo20",
+      "Kamen15",
+      "Hrana10",
+      "Gvožđe0"
+    ],
+    "initial": [
+      "plot-hall",
+      "plot-sawmill",
+      "plot-farm"
+    ],
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "theme": "dark",
+    "locale": "sr-Latn",
+    "icons": true,
+    "hero": 256,
+    "labels": [
+      "Novčići0",
+      "Drvo20",
+      "Kamen15",
+      "Hrana10",
+      "Gvožđe0"
+    ],
+    "initial": [
+      "plot-hall",
+      "plot-sawmill",
+      "plot-farm"
+    ],
+    "errors": []
+  },
+  {
+    "width": 390,
+    "scrollWidth": 390,
+    "theme": "dark",
+    "locale": "sr-Latn",
+    "icons": true,
+    "hero": 256,
+    "labels": [
+      "Novčići0",
+      "Drvo20",
+      "Kamen15",
+      "Hrana10",
+      "Gvožđe0"
+    ],
+    "initial": [
+      "plot-hall",
+      "plot-sawmill",
+      "plot-farm"
+    ],
+    "errors": []
+  },
+  {
+    "width": 320,
+    "scrollWidth": 320,
+    "theme": "dark",
+    "locale": "sr-Latn",
+    "icons": true,
+    "hero": 256,
+    "labels": [
+      "Novčići0",
+      "Drvo20",
+      "Kamen15",
+      "Hrana10",
+      "Gvožđe0"
+    ],
+    "initial": [
+      "plot-hall",
+      "plot-sawmill",
+      "plot-farm"
+    ],
+    "errors": []
+  }
+]

@@ -21,7 +21,7 @@
 .realm-intro p:not(.realm-eyebrow):not(.realm-note){max-width:340px;color:var(--ink-muted);margin-bottom:0}
 .realm-balances{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
 .realm-balance{display:flex;align-items:center;gap:12px;background:var(--surface-raised);border:1px solid var(--paper-edge);border-radius:14px;padding:16px 12px;box-shadow:0 3px 8px #43351d06}
-.realm-balance>span{font-size:30px;color:var(--action-ink)}
+
 .realm-balance div>span{display:block;font-size:12px}
 .realm-balance strong{display:block;font-size:21px;margin:4px 0}
 .realm-balance small{color:var(--progress-ink);font-weight:600}
@@ -56,7 +56,7 @@
 .realm-summary h2{font-size:18px}
 .realm-summary p{font-size:12px}
 .realm-hero-profile{display:flex;align-items:center;gap:12px}
-.realm-hero-profile>span{font-size:40px;color:var(--action-ink);background:var(--action-tint);border-radius:50%;width:60px;height:60px;text-align:center}
+
 .realm-hero-profile p{margin:6px 0}
 .realm-preview progress{width:100%;height:8px;accent-color:var(--progress-ink);border:0;display:block;border-radius:8px;background:var(--rule);margin:12px 0}
 .realm-preview progress::-webkit-progress-bar{background:var(--rule);border-radius:8px}
@@ -117,7 +117,7 @@
 .realm-intro>div>p{font-size:13px}
 .realm-balances{gap:6px}
 .realm-balance{padding:10px 4px;gap:4px}
-.realm-balance>span{display:none}
+
 .realm-balance div>span{font-size:11px}
 .realm-balance strong{font-size:19px}
 .realm-village{min-height:590px}
@@ -150,7 +150,7 @@
 
 .realm-balance{gap:8px;padding:14px 10px}
 
-.realm-balance>span{font-size:24px}
+
 
 .realm-summary{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:18px}
 
@@ -209,7 +209,7 @@
 .realm-supply-grid button{width:100%}
 
 @media(max-width:1150px){.realm-intro{grid-template-columns:1fr 1.5fr}
-.realm-balance>span{display:none}
+
 }
 
 @media(max-width:900px){.realm-intro{grid-template-columns:1fr}
@@ -307,3 +307,12 @@
 
 /* A completed building is a readable status, not a faded upgrade invitation. */
 .realm-preview .realm-fully-upgraded:disabled{opacity:1;color:var(--ink);background:var(--surface-raised);border-color:var(--paper-edge);cursor:default;font-weight:600}
+
+/* Supporting illustrations keep localized text as the accessible source of truth. */
+.realm-resource-icon{display:inline-block;width:24px;height:24px;object-fit:contain;vertical-align:middle;flex-shrink:0}
+.realm-balance>.realm-resource-icon{width:32px;height:32px}
+.realm-hero-portrait{display:block;width:60px;height:60px;object-fit:contain;flex-shrink:0}
+.realm-stock-line{display:inline-flex;flex-wrap:wrap;gap:4px 12px;vertical-align:middle}
+.realm-stock-line>span{display:inline-flex;align-items:center;gap:4px}
+@media(max-width:1150px){.realm-balance{flex-direction:column;gap:4px}}
+@media(max-width:580px){.realm-balance>.realm-resource-icon{width:28px;height:28px}}

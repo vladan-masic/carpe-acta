@@ -27,3 +27,9 @@ for (const stage of ['realm-stage5a', 'realm-stage5b', 'realm-stage5c', 'realm-s
 }
 for (const name of ['hall-early', 'hall-developed', 'farm-early', 'farm-developed', 'sawmill-early', 'sawmill-developed', 'workshop-early', 'workshop-developed', 'marketplace-early', 'marketplace-developed', 'guild-early', 'guild-developed', 'academy-early', 'academy-developed', 'mine-early', 'mine-developed', 'quarry-early', 'quarry-developed', 'tavern-early', 'tavern-developed']) assert.ok(!output.includes(name), `Building tier reference leaked: ${name}`);
 console.log('All ten building visual tier sets excluded from production.');
+
+const supportingDir = new URL('../docs/design/realm-stage6a/assets/', import.meta.url);
+const supportingHashes = new Set(await Promise.all((await readdir(supportingDir)).map(async name => hash(await readFile(new URL(name, supportingDir))))));
+for (const file of files) assert.ok(!supportingHashes.has(hash(await readFile(new URL(`../dist/assets/${file}`, import.meta.url)))), `Realm supporting artwork leaked: ${file}`);
+for (const marker of ['realm-stage6a', 'realm-resource-icon', 'realm-hero-portrait', 'ResourceArtwork']) assert.ok(!output.includes(marker), `Realm supporting artwork reference leaked: ${marker}`);
+console.log('Five resource illustrations and Wayfinder portrait excluded from production.');
