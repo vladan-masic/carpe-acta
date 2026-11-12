@@ -1,0 +1,98 @@
+{
+  "woods-400.webp": {
+    "size": [
+      400,
+      250
+    ],
+    "bytes": 39140,
+    "sha256": "0443e680d5ae8e52a400ffe72c1fd16f17d9ea096191c6d816386fb91bcd4173"
+  },
+  "woods-800.webp": {
+    "size": [
+      800,
+      500
+    ],
+    "bytes": 147034,
+    "sha256": "6e16dea6a6b559d710641304f9d62fb0a87e0be3d72ec129e5ab181e2cb5102c"
+  },
+  "meadow-400.webp": {
+    "size": [
+      400,
+      250
+    ],
+    "bytes": 27970,
+    "sha256": "80be39118b01d3e873ecae6faf7ee0a2d3586bfacf6132822d578b2dc6ec9b57"
+  },
+  "meadow-800.webp": {
+    "size": [
+      800,
+      500
+    ],
+    "bytes": 100304,
+    "sha256": "32f08bdcee7b557a0293d44b8437fbab3dad2a8a5159fdab898d0f07c3fdf40e"
+  },
+  "river-400.webp": {
+    "size": [
+      400,
+      250
+    ],
+    "bytes": 35266,
+    "sha256": "5d5f24ebdda913fa9a90dd544ed500074f59cbb77593038cce13df11f6ec06f9"
+  },
+  "river-800.webp": {
+    "size": [
+      800,
+      500
+    ],
+    "bytes": 136020,
+    "sha256": "7822ff16ccae9ae111f7aff7cec079ebc89703bb9c2fd462846e137ffb47c5a3"
+  },
+  "ridge-400.webp": {
+    "size": [
+      400,
+      250
+    ],
+    "bytes": 31118,
+    "sha256": "a09e2dfa37dc3358bc72366380df99cfc4d9a82586a96f1492df1c2f03418b81"
+  },
+  "ridge-800.webp": {
+    "size": [
+      800,
+      500
+    ],
+    "bytes": 119672,
+    "sha256": "932424baf4c227f2b68acec818974593080cf8169da136a996eed650000c5021"
+  },
+  "orchard-400.webp": {
+    "size": [
+      400,
+      250
+    ],
+    "bytes": 37014,
+    "sha256": "3cff6e61a7e012720f24a19a0643d6939a98b25a3734f35afcdeb11b6d83cd4c"
+  },
+  "orchard-800.webp": {
+    "size": [
+      800,
+      500
+    ],
+    "bytes": 136330,
+    "sha256": "6c0255274a800b0eeaeee6e5b3f784e9752788cbcc996fd6627aa3faaf056935"
+  },
+  "pass-400.webp": {
+    "size": [
+      400,
+      250
+    ],
+    "bytes": 34606,
+    "sha256": "ac44ce04e27e2c7e370829d8652a828bf25dac95ef0a23b136b0cac20718dfbf"
+  },
+  "pass-800.webp": {
+    "size": [
+      800,
+      500
+    ],
+    "bytes": 131528,
+    "sha256": "6d3bdf2b39df68dae9c081e5fa840f07aafde0f95f24e4f6ad8f6e8d9bc79b2f"
+  }
+}
