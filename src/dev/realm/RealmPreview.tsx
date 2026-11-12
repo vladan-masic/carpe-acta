@@ -9,6 +9,7 @@ import { hallUnlock, buildReason, construct, cost, expeditionCost, expeditionRew
 import { realmCopy, type RealmCopy } from './copy';
 import { RewardSimulator } from './RewardSimulator';
 import { VillageScene } from './VillageScene';
+import { ExplorationArtwork } from './ExplorationArtwork';
 import { BuildingArtwork } from './artwork';
 import { BuildingActivities } from './BuildingActivities';
 import { expansionCopy } from './expansionCopy';
@@ -103,7 +104,7 @@ export function RealmPreview() {
           <section className="realm-paper"><h2>{c.events}</h2>{state.journal.length ? <ol className="realm-journal">{state.journal.map(event => <li key={event.id}>{event.kind === 'built' ? `${c.eventBuilt}: ${c.buildings[event.building!]}` : `${c.returned}: ${event.stage}`}</li>)}</ol> : <p>{c.emptyJournal}</p>}</section>
         </div>
         <section className="realm-exploration realm-paper" aria-labelledby="realm-explore"><div><p className="realm-eyebrow">{c.region} · {c.stage} {Math.min(3, village.explored + 1)} / 3</p>
-          <h2 id="realm-explore">{c.explore}</h2><p>{c.explorationHelp}</p><progress aria-label={c.region} value={village.explored} max={3}/><p id="expedition-reason">{c.reasons[expeditionReason]}</p></div>
+          <h2 id="realm-explore">{c.explore}</h2><ExplorationArtwork scene="woods" description={c.forestArtwork}/><p>{c.explorationHelp}</p><progress aria-label={c.region} value={village.explored} max={3}/><p id="expedition-reason">{c.reasons[expeditionReason]}</p></div>
           {village.explored < 3 && <div><fieldset><legend>{c.reward}</legend>{(['gather', 'survey'] as Route[]).map(choice => <label className="realm-route" key={choice}><input type="radio" name="route" checked={route === choice} onChange={() => setRoute(choice)}/><span><strong>{c[choice]}</strong><small>{choice === 'gather' ? c.gatherHelp : c.surveyHelp}</small></span></label>)}</fieldset>
             <ResourceLine stock={expeditionReward(village.explored, route)} copy={c}/><h3>{c.price}</h3><ResourceLine stock={expeditionCost(village.explored)} copy={c}/>
             <button className="realm-primary" aria-describedby="expedition-reason" disabled={expeditionReason !== 'ready'} onClick={() => { setState(current => explore(current, route)); setFeedback(c.departed); }}>{c.depart}</button></div>}

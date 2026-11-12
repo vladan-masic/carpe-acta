@@ -1,0 +1,560 @@
+[
+  {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "locale": "en",
+    "theme": "light",
+    "images": [
+      {
+        "alt": "A wildflower meadow opens onto rolling hills and a winding path.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/meadow-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Two wooden boats rest beside a small landing on a gentle river.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/river-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Layered slate outcrops border a highland path above a distant valley.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/ridge-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "A path passes through an old stone wall among mature fruit trees.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/orchard-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "An alpine trail crosses rocky slopes above a valley and distant snowy peaks.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/pass-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Sunlight filters through ancient trees above a winding woodland path.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/woods-800.webp",
+        "ratio": 1.6,
+        "loaded": true
+      }
+    ],
+    "locked": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "scrollWidth": 390,
+    "locale": "en",
+    "theme": "light",
+    "images": [
+      {
+        "alt": "A wildflower meadow opens onto rolling hills and a winding path.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/meadow-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Two wooden boats rest beside a small landing on a gentle river.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/river-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Layered slate outcrops border a highland path above a distant valley.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/ridge-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "A path passes through an old stone wall among mature fruit trees.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/orchard-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "An alpine trail crosses rocky slopes above a valley and distant snowy peaks.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/pass-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Sunlight filters through ancient trees above a winding woodland path.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/woods-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      }
+    ],
+    "locked": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "scrollWidth": 320,
+    "locale": "en",
+    "theme": "light",
+    "images": [
+      {
+        "alt": "A wildflower meadow opens onto rolling hills and a winding path.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/meadow-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Two wooden boats rest beside a small landing on a gentle river.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/river-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Layered slate outcrops border a highland path above a distant valley.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/ridge-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "A path passes through an old stone wall among mature fruit trees.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/orchard-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "An alpine trail crosses rocky slopes above a valley and distant snowy peaks.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/pass-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Sunlight filters through ancient trees above a winding woodland path.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/woods-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      }
+    ],
+    "locked": true,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "locale": "en",
+    "theme": "dark",
+    "images": [
+      {
+        "alt": "A wildflower meadow opens onto rolling hills and a winding path.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/meadow-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Two wooden boats rest beside a small landing on a gentle river.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/river-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Layered slate outcrops border a highland path above a distant valley.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/ridge-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "A path passes through an old stone wall among mature fruit trees.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/orchard-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "An alpine trail crosses rocky slopes above a valley and distant snowy peaks.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/pass-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Sunlight filters through ancient trees above a winding woodland path.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/woods-800.webp",
+        "ratio": 1.6,
+        "loaded": true
+      }
+    ],
+    "locked": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "scrollWidth": 390,
+    "locale": "en",
+    "theme": "dark",
+    "images": [
+      {
+        "alt": "A wildflower meadow opens onto rolling hills and a winding path.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/meadow-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Two wooden boats rest beside a small landing on a gentle river.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/river-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Layered slate outcrops border a highland path above a distant valley.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/ridge-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "A path passes through an old stone wall among mature fruit trees.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/orchard-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "An alpine trail crosses rocky slopes above a valley and distant snowy peaks.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/pass-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Sunlight filters through ancient trees above a winding woodland path.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/woods-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      }
+    ],
+    "locked": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "scrollWidth": 320,
+    "locale": "en",
+    "theme": "dark",
+    "images": [
+      {
+        "alt": "A wildflower meadow opens onto rolling hills and a winding path.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/meadow-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Two wooden boats rest beside a small landing on a gentle river.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/river-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Layered slate outcrops border a highland path above a distant valley.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/ridge-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "A path passes through an old stone wall among mature fruit trees.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/orchard-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "An alpine trail crosses rocky slopes above a valley and distant snowy peaks.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/pass-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Sunlight filters through ancient trees above a winding woodland path.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/woods-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      }
+    ],
+    "locked": true,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "locale": "sr-Latn",
+    "theme": "light",
+    "images": [
+      {
+        "alt": "Livada puna poljskog cveća otvara se ka brežuljcima i vijugavoj stazi.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/meadow-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Dva drvena čamca miruju uz malo pristanište na mirnoj reci.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/river-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Slojevite stene škriljca okružuju stazu na visoravni iznad udaljene doline.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/ridge-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Staza prolazi kroz stari kameni zid među zrelim voćkama.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/orchard-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Planinska staza prelazi kamenite padine iznad doline i udaljenih snežnih vrhova.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/pass-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Sunčeva svetlost prolazi kroz krošnje drevnih stabala iznad vijugave šumske staze.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/woods-800.webp",
+        "ratio": 1.6,
+        "loaded": true
+      }
+    ],
+    "locked": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "scrollWidth": 390,
+    "locale": "sr-Latn",
+    "theme": "light",
+    "images": [
+      {
+        "alt": "Livada puna poljskog cveća otvara se ka brežuljcima i vijugavoj stazi.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/meadow-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Dva drvena čamca miruju uz malo pristanište na mirnoj reci.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/river-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Slojevite stene škriljca okružuju stazu na visoravni iznad udaljene doline.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/ridge-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Staza prolazi kroz stari kameni zid među zrelim voćkama.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/orchard-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Planinska staza prelazi kamenite padine iznad doline i udaljenih snežnih vrhova.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/pass-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Sunčeva svetlost prolazi kroz krošnje drevnih stabala iznad vijugave šumske staze.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/woods-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      }
+    ],
+    "locked": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "scrollWidth": 320,
+    "locale": "sr-Latn",
+    "theme": "light",
+    "images": [
+      {
+        "alt": "Livada puna poljskog cveća otvara se ka brežuljcima i vijugavoj stazi.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/meadow-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Dva drvena čamca miruju uz malo pristanište na mirnoj reci.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/river-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Slojevite stene škriljca okružuju stazu na visoravni iznad udaljene doline.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/ridge-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Staza prolazi kroz stari kameni zid među zrelim voćkama.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/orchard-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Planinska staza prelazi kamenite padine iznad doline i udaljenih snežnih vrhova.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/pass-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Sunčeva svetlost prolazi kroz krošnje drevnih stabala iznad vijugave šumske staze.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/woods-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      }
+    ],
+    "locked": true,
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "locale": "sr-Latn",
+    "theme": "dark",
+    "images": [
+      {
+        "alt": "Livada puna poljskog cveća otvara se ka brežuljcima i vijugavoj stazi.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/meadow-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Dva drvena čamca miruju uz malo pristanište na mirnoj reci.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/river-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Slojevite stene škriljca okružuju stazu na visoravni iznad udaljene doline.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/ridge-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Staza prolazi kroz stari kameni zid među zrelim voćkama.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/orchard-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Planinska staza prelazi kamenite padine iznad doline i udaljenih snežnih vrhova.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/pass-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Sunčeva svetlost prolazi kroz krošnje drevnih stabala iznad vijugave šumske staze.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/woods-800.webp",
+        "ratio": 1.6,
+        "loaded": true
+      }
+    ],
+    "locked": true,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "scrollWidth": 390,
+    "locale": "sr-Latn",
+    "theme": "dark",
+    "images": [
+      {
+        "alt": "Livada puna poljskog cveća otvara se ka brežuljcima i vijugavoj stazi.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/meadow-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Dva drvena čamca miruju uz malo pristanište na mirnoj reci.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/river-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Slojevite stene škriljca okružuju stazu na visoravni iznad udaljene doline.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/ridge-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Staza prolazi kroz stari kameni zid među zrelim voćkama.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/orchard-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Planinska staza prelazi kamenite padine iznad doline i udaljenih snežnih vrhova.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/pass-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Sunčeva svetlost prolazi kroz krošnje drevnih stabala iznad vijugave šumske staze.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/woods-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      }
+    ],
+    "locked": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "scrollWidth": 320,
+    "locale": "sr-Latn",
+    "theme": "dark",
+    "images": [
+      {
+        "alt": "Livada puna poljskog cveća otvara se ka brežuljcima i vijugavoj stazi.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/meadow-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Dva drvena čamca miruju uz malo pristanište na mirnoj reci.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/river-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Slojevite stene škriljca okružuju stazu na visoravni iznad udaljene doline.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/ridge-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Staza prolazi kroz stari kameni zid među zrelim voćkama.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/orchard-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Planinska staza prelazi kamenite padine iznad doline i udaljenih snežnih vrhova.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/pass-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      },
+      {
+        "alt": "Sunčeva svetlost prolazi kroz krošnje drevnih stabala iznad vijugave šumske staze.",
+        "source": "http://127.0.0.1:4175/docs/design/realm-stage6b/assets/woods-400.webp",
+        "ratio": 1.6,
+        "loaded": true
+      }
+    ],
+    "locked": true,
+    "errors": []
+  },
+  {
+    "actualControls": true,
+    "availableCount": 3,
+    "meadowCompleted": true,
+    "forestCompleted": true
+  }
+]

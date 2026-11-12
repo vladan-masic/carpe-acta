@@ -33,3 +33,9 @@ const supportingHashes = new Set(await Promise.all((await readdir(supportingDir)
 for (const file of files) assert.ok(!supportingHashes.has(hash(await readFile(new URL(`../dist/assets/${file}`, import.meta.url)))), `Realm supporting artwork leaked: ${file}`);
 for (const marker of ['realm-stage6a', 'realm-resource-icon', 'realm-hero-portrait', 'ResourceArtwork']) assert.ok(!output.includes(marker), `Realm supporting artwork reference leaked: ${marker}`);
 console.log('Five resource illustrations and Wayfinder portrait excluded from production.');
+
+const explorationDir = new URL('../docs/design/realm-stage6b/assets/', import.meta.url);
+const explorationHashes = new Set(await Promise.all((await readdir(explorationDir)).map(async name => hash(await readFile(new URL(name, explorationDir))))));
+for (const file of files) assert.ok(!explorationHashes.has(hash(await readFile(new URL(`../dist/assets/${file}`, import.meta.url)))), `Exploration artwork leaked: ${file}`);
+for (const marker of ['realm-stage6b', 'realm-exploration-art', 'ExplorationArtwork']) assert.ok(!output.includes(marker), `Exploration artwork reference leaked: ${marker}`);
+console.log('All six exploration landscapes excluded from production.');
